@@ -22,9 +22,11 @@
         <!-- TOP BAR -->
         <div class="hero-top d-flex justify-content-between align-items-start">
 
-                <a href="{{ route('customer.catalog') }}" class="btn btn-back mt-1">
-                    <i class="bi bi-arrow-left"></i> Kembali ke Katalog
-                </a>
+                 <button type="button"
+                        class="btn btn-back"
+                        onclick="if (history.length > 1) { history.back(); } else { window.location.href='{{ route('customer.catalog') }}'; }">
+                    <i class="bi bi-arrow-left"></i> Kembali
+                </button>
 
                 <div class="hero-right">
 

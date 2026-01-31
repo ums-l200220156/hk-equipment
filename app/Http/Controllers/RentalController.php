@@ -31,9 +31,10 @@ class RentalController extends Controller
     {
         $equipment = Equipment::findOrFail($id);
 
+        // ✅ VALIDASI LENGKAP & AMAN
         $request->validate([
             'rent_date' => 'required|date|after_or_equal:today',
-            'start_time' => 'required',
+            'start_time' => ['required', 'regex:/^([01]\d|2[0-3]):[0-5]\d$/'],
             'duration_hours' => 'required|integer|min:1',
             'location' => 'required|string|max:255',
             'notes' => 'nullable|string',
@@ -43,7 +44,7 @@ class RentalController extends Controller
             'user_id' => Auth::id(),
             'equipment_id' => $equipment->id,
             'rent_date' => $request->rent_date,
-            'start_time' => $request->start_time,
+            'start_time' => $request->start_time, // contoh: 21:00
             'duration_hours' => $request->duration_hours,
             'location' => $request->location,
             'notes' => $request->notes,
@@ -51,16 +52,14 @@ class RentalController extends Controller
             'status' => 'waiting_payment',
         ]);
 
-        // Alat langsung dikunci (tidak bisa disewa user lain)
+        // Alat langsung dikunci
         $equipment->update(['status' => 'rented']);
 
-        // Redirect ke halaman pembayaran
         return redirect()->route('payment.show', $rental->id);
     }
 
     /**
-     * ❌ CUSTOMER MEMBATALKAN PENYEWAAN
-     * HANYA BOLEH sebelum disetujui admin
+     * Customer membatalkan penyewaan
      */
     public function cancel($id)
     {
@@ -69,7 +68,6 @@ class RentalController extends Controller
             ->with('equipment')
             ->firstOrFail();
 
-        // Validasi status
         if (!in_array($rental->status, ['waiting_payment', 'paid'])) {
             return back()->with(
                 'error',
@@ -77,15 +75,8 @@ class RentalController extends Controller
             );
         }
 
-        // Batalkan rental
-        $rental->update([
-            'status' => 'cancelled'
-        ]);
-
-        // Kembalikan alat
-        $rental->equipment->update([
-            'status' => 'available'
-        ]);
+        $rental->update(['status' => 'cancelled']);
+        $rental->equipment->update(['status' => 'available']);
 
         return redirect()
             ->route('customer.rentals')

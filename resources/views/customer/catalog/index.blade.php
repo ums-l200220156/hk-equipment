@@ -24,15 +24,16 @@
 <section class="catalog-hero">
     <div class="container">
 
-        <!-- TOP BAR (SAMA POLA DENGAN SHOW) -->
         <div class="hero-top d-flex justify-content-between align-items-start">
 
             <!-- LEFT -->
             <div class="hero-left">
 
-                <a href="{{ route('customer.home') }}" class="btn btn-back">
+                <button type="button"
+                        class="btn btn-back"
+                        onclick="if (history.length > 1) { history.back(); } else { window.location.href='{{ route('customer.home') }}'; }">
                     <i class="bi bi-arrow-left"></i> Beranda
-                </a>
+                </button>
 
                 @php
                     $titleCategory = 'Alat Berat';
@@ -52,13 +53,24 @@
 
             </div>
 
-            <!-- RIGHT : ANIMASI (IDENTIK DENGAN SHOW) -->
-            <div class="hero-right">
+            <!-- RIGHT -->
+            <div class="hero-right text-center">
 
-                <div class="hero-anim hero-anim-lg">
+                <div class="hero-anim hero-anim-lg mb-3">
                     <i class="bi bi-gear-fill gear gear-xl"></i>
                     <i class="bi bi-gear-fill gear gear-lg"></i>
                     <span class="pulse-line"></span>
+                </div>
+
+                {{-- HERO COMPARE ENTRY POINT --}}
+                <a href="{{ route('customer.compare.select') }}"
+                   class="btn btn-outline-primary btn-compare-hero mt-2">
+                    <i class="bi bi-bar-chart-steps"></i>
+                    Bandingkan Alat Berat
+                </a>
+
+                <div class="small text-muted mt-2">
+                    Pilih 2–4 alat untuk melihat perbandingan
                 </div>
 
             </div>
@@ -67,8 +79,6 @@
 
     </div>
 </section>
-
-
 
 <!-- ===== CONTENT ===== -->
 <div class="container catalog-wrapper">
@@ -80,18 +90,15 @@
             <div class="col-lg-4">
                 <div class="filter-input filter-search">
                     <i class="bi bi-search search-icon"></i>
-                    <input type="text"
-                        id="searchInput"
-                        class="form-control"
-                        placeholder="Cari alat berat...">
+                    <input type="text" id="searchInput" class="form-control"
+                           placeholder="Cari alat berat...">
                 </div>
             </div>
 
             <div class="col-lg-4">
                 <div class="filter-input">
                     <i class="bi bi-grid-3x3-gap"></i>
-                    <select id="categorySelect"
-                            class="form-select"
+                    <select id="categorySelect" class="form-select"
                             {{ $lockCategory ? 'disabled' : '' }}>
                         <option value="">Semua Kategori</option>
                         @foreach($categories as $cat)
@@ -102,7 +109,6 @@
                         @endforeach
                     </select>
                 </div>
-
                 @if($lockCategory)
                     <input type="hidden" id="lockedCategory" value="{{ $selectedCategory }}">
                 @endif
@@ -133,20 +139,11 @@
 
             <div class="equipment-card">
 
-            <!-- STATUS BAR -->
-            <div class="status-bar {{ $item->status }}"></div>
+                <div class="status-bar {{ $item->status }}"></div>
 
-            <!-- STATUS LABEL -->
-            <span class="status-label {{ $item->status }}">
-                @if($item->status === 'available')
-                    Tersedia
-                @elseif($item->status === 'rented')
-                    Disewa
-                @else
-                    Maintenance
-                @endif
-            </span>
-
+                <span class="status-label {{ $item->status }}">
+                    {{ $item->status === 'available' ? 'Tersedia' : ($item->status === 'rented' ? 'Disewa' : 'Maintenance') }}
+                </span>
 
                 <div class="equipment-image">
                     <img src="{{ asset('uploads/equipment/'.$item->image) }}">
@@ -160,8 +157,7 @@
                     <h5>{{ $item->name }}</h5>
 
                     <div class="price">
-                        Rp {{ number_format($item->price_per_hour) }}
-                        <span>/ jam</span>
+                        Rp {{ number_format($item->price_per_hour) }} <span>/ jam</span>
                     </div>
 
                     <a href="{{ route('customer.catalog.show',$item->id) }}"

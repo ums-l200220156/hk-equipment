@@ -1,0 +1,352 @@
+/* =========================================================
+   01. VARIABEL WARNA & SHADOW (TEMA PROFESIONAL)
+========================================================= */
+:root {
+    --primary: #2563eb;       /* Biru Profesional */
+    --primary-dark: #1e40af;
+    --accent: #f59e0b;        /* Kuning Alat Berat */
+    --bg-dark: #0f172a;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --glass-white: rgba(255, 255, 255, 0.95);
+    --shadow-soft: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* =========================================================
+   02. BODY & BACKGROUND UTAMA
+========================================================= */
+body {
+    margin: 0;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: var(--text-main);
+    background-color: #f1f5f9;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* =========================================================
+   03. BACKGROUND OVERLAY (GAMBAR ALAT BERAT)
+========================================================= */
+.bg-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    background: linear-gradient(
+        135deg,
+        rgba(15, 23, 42, 0.8),
+        rgba(15, 23, 42, 0.4)
+    ),
+    url('https://images.unsplash.com/photo-1581094288338-2314dddb7903?auto=format&fit=crop&q=80&w=2000');
+
+    background-size: cover;
+    background-position: center;
+    z-index: -1;
+}
+
+/* =========================================================
+   04. WRAPPER & LAYOUT UTAMA
+========================================================= */
+.page-wrapper {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.content-grid {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 30px;
+    align-items: start;
+}
+
+/* =========================================================
+   05. NAVIGASI ATAS
+========================================================= */
+.top-nav {
+    margin-bottom: 25px;
+}
+
+.back-btn {
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.3s;
+}
+
+.back-btn:hover {
+    color: var(--accent);
+}
+
+/* =========================================================
+   06. KARTU INFO ALAT (KIRI)
+========================================================= */
+.equipment-card {
+    background: var(--glass-white);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+.image-container {
+    position: relative;
+    height: 240px;
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.category-badge {
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    background: var(--accent);
+    color: #ffffff;
+    padding: 5px 15px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 12px;
+}
+
+.info-body {
+    padding: 25px;
+}
+
+.status-tag {
+    font-size: 12px;
+    color: #059669;
+    background: #ecfdf5;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+.info-body h3 {
+    margin: 15px 0 10px;
+    font-weight: 800;
+}
+
+.price-tag {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+}
+
+.price-tag .currency {
+    font-size: 14px;
+}
+
+.price-tag .amount {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--primary);
+}
+
+.price-tag .unit {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.equipment-features {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.equipment-features li {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* =========================================================
+   07. KONTAINER FORM (KANAN)
+========================================================= */
+.form-container {
+    background: var(--glass-white);
+    padding: 40px;
+    border-radius: 24px;
+    box-shadow: var(--shadow-soft);
+}
+
+.form-header h2 {
+    font-weight: 800;
+    color: var(--bg-dark);
+}
+
+.form-header p {
+    color: var(--text-muted);
+    margin-bottom: 30px;
+}
+
+/* =========================================================
+   08. INPUT & TEXTAREA
+========================================================= */
+.input-group-custom {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.input-group-custom label {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.input-group-custom input,
+.input-group-custom textarea {
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 2px solid #e2e8f0;
+    font-size: 15px;
+    transition: 0.3s;
+}
+
+.input-group-custom input:focus,
+.input-group-custom textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
+/* =========================================================
+   09. HINT FORMAT JAM 24 (KECIL & AMAN)
+========================================================= */
+.time-hint {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+/* =========================================================
+   10. INPUT TOTAL HARGA (HIGHLIGHT)
+========================================================= */
+.input-group-custom.highlight input {
+    background: #f0f7ff;
+    border-color: var(--primary);
+    color: var(--primary);
+    font-weight: 800;
+    font-size: 18px;
+}
+
+/* =========================================================
+   11. TOMBOL SUBMIT
+========================================================= */
+.btn-main-submit {
+    margin-top: 30px;
+    width: 100%;
+    padding: 18px;
+    border: none;
+    border-radius: 14px;
+    background: var(--primary);
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-main-submit:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(30, 64, 175, 0.3);
+}
+
+/* =========================================================
+   12. RESPONSIVE
+========================================================= */
+@media (max-width: 992px) {
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .page-wrapper {
+        margin: 20px auto;
+    }
+}
+
+.time-error {
+    font-size: 12px;
+    color: #dc2626; /* merah lembut */
+    margin-top: 4px;
+}
+
+/* =========================================================
+   13. TOMBOL BACK MODERN (CUSTOMER STYLE)
+========================================================= */
+
+.btn-back-modern {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 10px 18px;
+    border-radius: 999px;
+
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.btn-back-modern i {
+    font-size: 16px;
+}
+
+/* Hover effect */
+.btn-back-modern:hover {
+    background: #ffffff;
+    color: var(--primary);
+    transform: translateX(-2px);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+}
+
+/* Active (klik) */
+.btn-back-modern:active {
+    transform: scale(0.96);
+}
+
+/* =========================================================
+   14. ANIMASI MASUK HALAMAN (SLIDE + FADE)
+========================================================= */
+
+.page-animate {
+    animation: pageSlideIn 0.6s ease-out both;
+}
+
+@keyframes pageSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(24px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}

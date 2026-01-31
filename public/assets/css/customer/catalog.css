@@ -445,3 +445,62 @@ body{
     color:#cbd5f5;
     max-width:600px;
 }
+
+/* =====================================================
+   HERO COMPARE ENTRY
+===================================================== */
+
+.btn-compare-hero {
+    border-radius: 999px;
+    padding: 10px 20px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all .25s ease;
+}
+
+.btn-compare-hero:hover {
+    background: var(--bs-primary);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,.15);
+}
+
+
+/* =====================================================
+   HERO SPACING ADJUSTMENT (CATALOG)
+   - Lebih rapat ke filter panel
+   - Button compare sedikit diturunkan
+===================================================== */
+
+/* 1. Perkecil jarak hero ke konten bawah */
+.catalog-hero {
+    padding-bottom: 2.2rem; /* default biasanya terlalu besar */
+}
+
+/* 2. Kurangi jarak subtitle */
+.catalog-hero .hero-subtitle {
+    margin-bottom: 1.2rem; /* dari biasanya ~2rem */
+}
+
+/* 3. Naikkan wrapper konten agar lebih dekat hero */
+.catalog-wrapper {
+    margin-top: -2.5rem;
+}
+
+/* =====================================================
+   HERO COMPARE BUTTON POSITION
+===================================================== */
+
+/* Turunkan posisi tombol bandingkan */
+.btn-compare-hero {
+    margin-top: 1.6rem !important; /* sebelumnya terlalu dekat gear */
+}
+
+/* Optional: lebih rapi di desktop besar */
+@media (min-width: 992px) {
+    .btn-compare-hero {
+        margin-top: 1.6rem !important;
+    }
+}
