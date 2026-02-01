@@ -36,4 +36,26 @@ class PaymentController extends Controller
         return redirect()->route('customer.rentals')
             ->with('success', 'Pembayaran berhasil.');
     }
+
+
+    public function cancel(Rental $rental)
+{
+    if ($rental->user_id !== Auth::id()) {
+        abort(403);
+    }
+
+    // Cegah pembatalan jika sudah dibayar
+    if ($rental->status === 'paid') {
+        return redirect()->back()
+            ->with('error', 'Pesanan yang sudah dibayar tidak dapat dibatalkan.');
+    }
+
+    $rental->update([
+        'status' => 'cancelled',
+    ]);
+
+    return redirect()->route('customer.rentals')
+        ->with('success', 'Pesanan berhasil dibatalkan.');
+}
+
 }

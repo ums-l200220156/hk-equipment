@@ -197,6 +197,10 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::post('/payment/{rental}', [PaymentController::class, 'process'])
         ->name('payment.process');
 
+    Route::post('/customer/payment/{rental}/cancel', 
+    [PaymentController::class, 'cancel']
+        )->name('payment.cancel');
+
 });
 
 
