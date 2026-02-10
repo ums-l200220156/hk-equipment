@@ -87,89 +87,84 @@ body {
     border-radius: 999px;
 }
 
-/* 04. HERO & CAROUSEL CORE */
+/* =====================================================
+   04. HERO CAROUSEL 
+===================================================== */
 
 #heroCarousel {
     background: #0f172a;
     overflow: hidden;
 }
 
-.carousel-item {
+.hero-img {
     height: 92vh;
-    min-height: 600px;
-    background-size: cover;
-    background-position: center;
-    /* Menggunakan cubic-bezier untuk gerakan slide yang lebih "mahal" dan halus */
-    transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1.000) !important;
-    backface-visibility: hidden;
-    perspective: 1000px;
+    object-fit: cover;
 }
 
-/* Overlay tetap statis agar tidak berkedip saat transisi */
-.carousel-item::before {
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,.35);
+}
+
+
+/* Dark overlay  */
+#heroCarousel .carousel-item::before {
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(to bottom, rgba(0,0,0,.35), rgba(0,0,0,.65));
+    background: rgba(0,0,0,.35);
     z-index: 1;
 }
 
-/* Caption muncul bersamaan dengan slide (Tanpa Jeda) */
-.carousel-caption {
+/* Caption animation */
+#heroCarousel .carousel-caption {
     inset: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 2;
-    /* Opacity mengikuti durasi slide tanpa delay */
-    transition: opacity 1s ease-in-out;
-}
 
-/* Pastikan caption slide yang tidak aktif langsung hilang */
-.carousel-item:not(.active) .carousel-caption {
     opacity: 0;
+    transform: translateY(30px);
+    transition: opacity .9s ease,
+                transform .9s ease;
 }
 
-.carousel-item.active .carousel-caption {
+#heroCarousel .carousel-item.active .carousel-caption {
     opacity: 1;
+    transform: translateY(0);
 }
 
-/* Kontrol Navigasi Hero */
+/* Controls fade */
 #heroCarousel .carousel-control-prev,
 #heroCarousel .carousel-control-next {
-    width: 5%;
+    width: 6%;
     opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: 10;
+    transition: opacity .4s ease;
 }
 
 #heroCarousel:hover .carousel-control-prev,
 #heroCarousel:hover .carousel-control-next {
-    opacity: 0.7;
+    opacity: .8;
 }
 
-/* Indikator Slide */
-.carousel-indicators {
-    z-index: 10;
-    margin-bottom: 2rem;
-}
-
-.carousel-indicators [data-bs-target] {
+/* Indicators */
+#heroCarousel .carousel-indicators button {
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    margin: 0 6px;
-    background-color: #fff;
-    opacity: 0.5;
-    transition: all 0.3s ease;
+    opacity: .5;
+    transition: .3s;
 }
 
-.carousel-indicators .active {
+#heroCarousel .carousel-indicators .active {
     width: 30px;
     border-radius: 10px;
     opacity: 1;
-    background-color: var(--accent-color);
+    background: var(--accent-color);
 }
+
 
 /* HERO BADGE WRAPPER */
 .hero-badge-wrapper {
@@ -219,7 +214,7 @@ body {
 .alat-card {
     border: none;
     border-radius: var(--radius-md);
-    background: #fff;
+    background: #ffffff;
     box-shadow: var(--shadow-soft);
     transition: all .35s ease;
     height: 100%;
@@ -248,7 +243,7 @@ body {
 /* Card Internals */
 .alat-img-container, .alat-premium-image {
     height: 230px;
-    background: #f1f5f9;
+    background: #e6e6e6;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -477,4 +472,20 @@ body {
     .hero-cta {
         justify-content: center;
     }
+}
+
+
+/* =====================================================
+   11. SCROLL ANIMATION (GLOBAL SECTION REVEAL)
+===================================================== */
+
+.reveal {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all .9s cubic-bezier(.19,1,.22,1);
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
 }

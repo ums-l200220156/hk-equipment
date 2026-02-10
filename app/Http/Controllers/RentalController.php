@@ -62,24 +62,25 @@ class RentalController extends Controller
      * Customer membatalkan penyewaan
      */
     public function cancel($id)
-    {
-        $rental = Rental::where('id', $id)
-            ->where('user_id', Auth::id())
-            ->with('equipment')
-            ->firstOrFail();
+{
+    $rental = Rental::where('id', $id)
+        ->where('user_id', Auth::id())
+        ->with('equipment')
+        ->firstOrFail();
 
-        if (!in_array($rental->status, ['waiting_payment', 'paid'])) {
-            return back()->with(
-                'error',
-                'Penyewaan tidak dapat dibatalkan karena sudah diproses admin.'
-            );
-        }
-
-        $rental->update(['status' => 'cancelled']);
-        $rental->equipment->update(['status' => 'available']);
-
-        return redirect()
-            ->route('customer.rentals')
-            ->with('success', 'Penyewaan berhasil dibatalkan.');
+    // PERUBAHAN LOGIKA: Hanya bisa batal jika Menunggu Pembayaran
+    if ($rental->status !== 'waiting_payment') {
+        return back()->with(
+            'error',
+            'Penyewaan tidak dapat dibatalkan karena pembayaran sudah dilakukan atau sedang diproses.'
+        );
     }
+
+    $rental->update(['status' => 'cancelled']);
+    $rental->equipment->update(['status' => 'available']);
+
+    return redirect()
+        ->route('customer.rentals')
+        ->with('success', 'Penyewaan berhasil dibatalkan.');
+}
 }

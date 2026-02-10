@@ -1,4 +1,4 @@
-<section id="alat" class="section-padding bg-light">
+<section id="alat" class="section-padding bg-gray">
 <div class="container">
 
     {{-- HEADER --}}

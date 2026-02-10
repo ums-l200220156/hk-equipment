@@ -116,7 +116,19 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 });
 
 
+Route::middleware(['auth', 'role:admin'])->group(function () {
+// Testimoni Admin
+    Route::get('/admin/testimonis', [App\Http\Controllers\Admin\TestimoniAdminController::class, 'index'])->name('admin.testimonis.index');
+    Route::delete('/admin/testimonis/{id}', [App\Http\Controllers\Admin\TestimoniAdminController::class, 'destroy'])->name('admin.testimonis.destroy');
+});
 
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+// Finance Admin
+Route::get('/admin/finance', [App\Http\Controllers\Admin\FinanceAdminController::class, 'index'])->name('admin.finance.index');
+Route::post('/admin/finance', [App\Http\Controllers\Admin\FinanceAdminController::class, 'store'])->name('admin.finance.store');
+Route::delete('/admin/finance/{id}', [App\Http\Controllers\Admin\FinanceAdminController::class, 'destroy'])->name('admin.finance.destroy');
+});
 
 
 
@@ -188,18 +200,23 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::get('/my-rentals/{id}', [RentalHistoryController::class, 'show'])->name('customer.rentals.show');
 });
 
-
+    /* PAYMENT */
 Route::middleware(['auth', 'role:customer'])->group(function () {
 
-    Route::get('/payment/{rental}', [PaymentController::class, 'show'])
+    Route::get('/customer/payment/{rental}', [PaymentController::class, 'show'])
         ->name('payment.show');
 
-    Route::post('/payment/{rental}', [PaymentController::class, 'process'])
+    Route::post('/customer/payment/{rental}', [PaymentController::class, 'process'])
         ->name('payment.process');
 
-    Route::post('/customer/payment/{rental}/cancel', 
-    [PaymentController::class, 'cancel']
-        )->name('payment.cancel');
+    Route::get('/customer/payment/{rental}/transfer', [PaymentController::class, 'transfer'])
+        ->name('payment.transfer');
+
+    Route::post('/customer/payment/{rental}/upload', [PaymentController::class, 'uploadProof'])
+        ->name('payment.upload');
+
+    Route::post('/customer/payment/{rental}/cancel', [PaymentController::class, 'cancel'])
+        ->name('payment.cancel');
 
 });
 

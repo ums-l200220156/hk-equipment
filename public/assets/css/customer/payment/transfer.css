@@ -1,0 +1,260 @@
+:root {
+    --primary-gradient: linear-gradient(135deg, #2d3436 0%, #000000 100%);
+    --accent-color: #dc3545;
+    --glass-bg: rgba(255, 255, 255, 0.9);
+}
+
+.transfer-section {
+    padding: 100px 0;
+    background-color: #f8f9fa;
+    background-image: radial-gradient(#dee2e6 0.5px, transparent 0.5px);
+    background-size: 20px 20px;
+    min-height: 100vh;
+}
+
+.transfer-wrapper {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 40px;
+    align-items: start;
+}
+
+/* --- Info Side --- */
+.badge-status {
+    display: inline-block;
+    padding: 6px 16px;
+    background: #fff3cd;
+    color: #856404;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    border: 1px solid #ffeeba;
+}
+
+.title-display {
+    font-weight: 900;
+    font-size: 2.5rem;
+    color: #1a1a1a;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #6c757d;
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+}
+
+/* --- Bank Card (Modern Style) --- */
+.bank-card-modern {
+    background: var(--primary-gradient);
+    border-radius: 24px;
+    padding: 30px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    margin-bottom: 30px;
+}
+
+.bank-chip {
+    width: 50px;
+    height: 40px;
+    background: linear-gradient(135deg, #f1c40f, #f39c12);
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.bank-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+.account-number {
+    font-size: 2rem;
+    letter-spacing: 4px;
+    font-weight: 700;
+    margin: 15px 0;
+}
+
+.account-holder {
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+.btn-copy {
+    position: absolute;
+    right: 30px;
+    bottom: 30px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    backdrop-filter: blur(5px);
+    transition: 0.3s;
+}
+
+.btn-copy:hover {
+    background: white;
+    color: black;
+}
+
+/* --- Form Side --- */
+.upload-box-container {
+    background: white;
+    border-radius: 24px;
+    padding: 35px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    border: 1px solid #edf2f7;
+}
+
+.upload-area {
+    border: 2px dashed #dee2e6;
+    border-radius: 16px;
+    padding: 40px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s;
+    margin: 20px 0;
+}
+
+.upload-area i {
+    font-size: 3rem;
+    color: #cbd5e0;
+    transition: 0.3s;
+}
+
+.upload-area:hover, .upload-area.active {
+    border-color: var(--accent-color);
+    background: #fff5f5;
+}
+
+.upload-area.active i {
+    color: var(--accent-color);
+}
+
+.file-name-display {
+    margin-top: 10px;
+    font-size: 0.85rem;
+    color: #2d3436;
+    font-weight: 600;
+}
+
+.btn-gradient-submit {
+    width: 100%;
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 14px;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    transition: 0.3s;
+    box-shadow: 0 10px 20px rgba(220, 53, 69, 0.2);
+}
+
+.btn-gradient-submit:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 25px rgba(220, 53, 69, 0.3);
+    background: #c82333;
+}
+
+.security-info {
+    font-size: 0.8rem;
+    color: #adb5bd;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* --- Steps --- */
+.payment-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.step-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.step-num {
+    width: 28px;
+    height: 28px;
+    background: white;
+    border: 2px solid #dee2e6;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 800;
+}
+
+/* --- Responsive --- */
+@media (max-width: 992px) {
+    .transfer-wrapper {
+        grid-template-columns: 1fr;
+    }
+    
+    .title-display {
+        font-size: 2rem;
+    }
+}
+
+/* Gaya untuk Preview Gambar */
+.img-preview-result {
+    width: 100%;
+    max-height: 250px;
+    object-fit: contain; /* Agar gambar tidak gepeng */
+    border-radius: 12px;
+    margin-bottom: 15px;
+    display: block;
+    animation: zoomIn 0.3s ease;
+}
+
+/* Animasi muncul kecil ke besar */
+@keyframes zoomIn {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Penyesuaian saat upload area aktif */
+.upload-area.active {
+    padding: 20px; /* Kurangi padding saat ada gambar agar tidak terlalu panjang */
+    border-style: solid; /* Ubah garis putus-putus jadi solid */
+}
+
+
+.upload-area * {
+    pointer-events: none; /* Mencegah gangguan saat drop file */
+}
+
+.upload-area {
+    transition: all 0.3s ease;
+    border: 2px dashed #dee2e6;
+}
+
+/* Saat file diseret di atasnya atau aktif */
+.upload-area.active {
+    border-color: var(--accent-color);
+    background: #fff5f5;
+    border-style: solid;
+    padding: 20px;
+}

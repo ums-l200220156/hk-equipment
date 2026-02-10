@@ -19,90 +19,93 @@ $slides = [
 @endphp
 
 <section id="home">
-    <div id="heroCarousel"
-     class="carousel slide"
+
+<div id="heroCarousel"
+     class="carousel slide carousel-fade"
      data-bs-ride="carousel"
-     data-bs-interval="7000"
-     data-bs-pause="false"
-     data-bs-touch="false">
+     data-bs-interval="7000">
 
+    {{-- Indicators --}}
+    <div class="carousel-indicators">
+        @foreach($slides as $i => $slide)
+        <button type="button"
+                data-bs-target="#heroCarousel"
+                data-bs-slide-to="{{ $i }}"
+                class="{{ $i === 0 ? 'active' : '' }}">
+        </button>
+        @endforeach
+    </div>
 
-        {{-- INDICATORS --}}
-        <div class="carousel-indicators">
-            @foreach($slides as $i => $slide)
-                <button type="button"
-                        data-bs-target="#heroCarousel"
-                        data-bs-slide-to="{{ $i }}"
-                        class="{{ $i === 0 ? 'active' : '' }}"
-                        aria-current="{{ $i === 0 ? 'true' : 'false' }}"
-                        aria-label="Slide {{ $i + 1 }}">
-                </button>
-            @endforeach
-        </div>
+    {{-- Slides --}}
+    <div class="carousel-inner">
 
-        {{-- SLIDES --}}
-        <div class="carousel-inner">
+        @foreach($slides as $i => $slide)
+        <div class="carousel-item {{ $i === 0 ? 'active' : '' }}">
 
-            @foreach($slides as $i => $slide)
-                <div class="carousel-item {{ $i === 0 ? 'active' : '' }}"
-                     style="background-image:url('{{ $slide['img'] }}')">
+            {{-- IMAGE (Builder style) --}}
+            <img src="{{ $slide['img'] }}"
+                 class="d-block w-100 hero-img"
+                 alt="Slide">
 
-                    <div class="hero-overlay"></div>
+            {{-- Overlay --}}
+            <div class="hero-overlay"></div>
 
-                    <div class="carousel-caption">
-                        <div class="hero-premium animate__animated animate__fadeInUp">
+            {{-- Caption --}}
+            <div class="carousel-caption">
 
-                            <div class="hero-badge-wrapper">
-                                <span class="hero-badge">
-                                    <i class="bi bi-shield-check"></i>
-                                    HK Equipment Official
-                                </span>
-                            </div>
+                <div class="hero-premium">
 
-                            <h1 class="hero-title">
-                                {{ $slide['title'] }}
-                            </h1>
-
-                            <p class="hero-subtitle">
-                                {{ $slide['subtitle'] }}
-                            </p>
-
-                            <div class="hero-cta">
-                                <a href="#alat"
-                                   class="btn btn-danger btn-lg shadow">
-                                    <i class="bi bi-truck-front-fill me-2"></i>
-                                    Lihat Armada
-                                </a>
-
-                                <a href="https://wa.me/628123456789"
-                                   target="_blank"
-                                   class="btn btn-outline-light btn-lg ms-2">
-                                    <i class="bi bi-whatsapp me-2"></i>
-                                    Konsultasi
-                                </a>
-                            </div>
-
-                        </div>
+                    <div class="hero-badge-wrapper">
+                        <span class="hero-badge">
+                            HK Equipment Official
+                        </span>
                     </div>
+
+                    <h1 class="hero-title">
+                        {{ $slide['title'] }}
+                    </h1>
+
+                    <p class="hero-subtitle">
+                        {{ $slide['subtitle'] }}
+                    </p>
+
+                    <div class="hero-cta">
+                        <a href="#alat"
+                           class="btn btn-danger btn-lg">
+                           Lihat Armada
+                        </a>
+
+                        <a href="https://wa.me/628123456789"
+                           target="_blank"
+                           class="btn btn-outline-light btn-lg ms-2">
+                           Konsultasi
+                        </a>
+                    </div>
+
                 </div>
-            @endforeach
+
+            </div>
 
         </div>
-
-        {{-- CONTROLS --}}
-        <button class="carousel-control-prev"
-                type="button"
-                data-bs-target="#heroCarousel"
-                data-bs-slide="prev">
-            <span class="carousel-control-prev-icon"></span>
-        </button>
-
-        <button class="carousel-control-next"
-                type="button"
-                data-bs-target="#heroCarousel"
-                data-bs-slide="next">
-            <span class="carousel-control-next-icon"></span>
-        </button>
+        @endforeach
 
     </div>
+
+    {{-- Controls --}}
+    <button class="carousel-control-prev"
+            type="button"
+            data-bs-target="#heroCarousel"
+            data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+    </button>
+
+    <button class="carousel-control-next"
+            type="button"
+            data-bs-target="#heroCarousel"
+            data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+    </button>
+
+</div>
+
 </section>
