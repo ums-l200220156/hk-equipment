@@ -11,12 +11,23 @@
         <div class="header-overlay"></div>
         <div class="header-content d-flex justify-content-between align-items-center">
             <div class="text-white">
-                <h2 class="fw-800 mb-1">MANAJEMEN <span class="text-danger">TESTIMONI</span></h2>
-                <p class="opacity-75 mb-0"><i class="bi bi-chat-quote me-1"></i> Kelola ulasan pelanggan HK Equipment</p>
+                <h2 class="fw-800 mb-1 text-uppercase">Manajemen <span class="text-danger">Testimoni</span></h2>
+                <p class="opacity-75 mb-0 d-none d-sm-block"><i class="bi bi-chat-quote me-1"></i> Kelola ulasan pelanggan HK Equipment</p>
             </div>
-            <div class="header-actions">
+            
+            <div class="header-actions-wrapper d-flex align-items-center gap-2 gap-md-3 mt-3 mt-md-0">
+                <div class="filter-box bg-white p-2 rounded-3 shadow-sm">
+                    <select id="filterRating" class="form-select form-select-sm border-0 fw-bold text-dark" onchange="filterTestimonis()">
+                        <option value="all">⭐ Semua Rating</option>
+                        <option value="5">⭐⭐⭐⭐⭐ Bintang 5</option>
+                        <option value="4">⭐⭐⭐⭐ Bintang 4</option>
+                        <option value="3">⭐⭐⭐ Bintang 3</option>
+                        <option value="2">⭐⭐ Bintang 2</option>
+                        <option value="1">⭐ Bintang 1</option>
+                    </select>
+                </div>
                 <div class="total-testimoni-badge">
-                    <span class="small opacity-75">Total Ulasan:</span>
+                    <span class="small opacity-75">Total:</span>
                     <span class="fw-bold">{{ $testimonis->count() }}</span>
                 </div>
             </div>
@@ -25,30 +36,30 @@
 
     <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
         <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
+            <table class="table table-hover align-middle mb-0" id="testimoniTable">
                 <thead class="bg-dark text-white">
                     <tr class="small text-uppercase tracking-wider">
                         <th class="ps-4 py-3">Informasi Klien</th>
                         <th>Penilaian</th>
                         <th>Isi Ulasan</th>
-                        <th>Lampiran Media</th>
-                        <th class="text-end pe-4">Kendali</th>
+                        <th>Media</th>
+                        <th class="text-end pe-4">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($testimonis as $t)
-                    <tr>
+                    <tr class="testimoni-row" data-rating="{{ $t->rating }}">
                         <td class="ps-4">
-                            <div class="d-flex align-items-center">
+                            <div class="d-flex align-items-center" style="min-width: 180px;">
                                 <img src="https://ui-avatars.com/api/?name={{ urlencode($t->user->name) }}&background=dc3545&color=fff" class="rounded-circle me-3 border shadow-sm" width="45">
                                 <div>
                                     <div class="fw-bold text-dark">{{ $t->user->name }}</div>
-                                    <small class="text-muted">{{ $t->created_at->format('d M Y') }}</small>
+                                    <small class="text-muted">{{ $t->created_at->format('d/m/Y') }}</small>
                                 </div>
                             </div>
                         </td>
                         <td>
-                            <div class="star-rating text-warning">
+                            <div class="star-rating text-warning" style="white-space: nowrap;">
                                 @for($i=1; $i<=5; $i++)
                                     <i class="bi {{ $i <= $t->rating ? 'bi-star-fill' : 'bi-star' }}"></i>
                                 @endfor
@@ -74,12 +85,12 @@
                                         <div class="video-placeholder">
                                             <i class="bi bi-play-fill"></i>
                                         </div>
-                                        <div class="overlay">Lihat Video</div>
+                                        <div class="overlay">Lihat</div>
                                     </button>
                                 @endif
 
                                 @if(!$t->photo && !$t->video)
-                                    <span class="text-muted small italic">N/A</span>
+                                    <span class="text-muted small">N/A</span>
                                 @endif
                             </div>
                         </td>
@@ -111,8 +122,7 @@
         <div class="modal-content bg-transparent border-0">
             <div class="modal-body p-0 text-center position-relative">
                 <button type="button" class="btn-close-custom" data-bs-dismiss="modal"><i class="bi bi-x-lg"></i></button>
-                <div id="mediaContainer" class="rounded-4 overflow-hidden shadow-lg">
-                    </div>
+                <div id="mediaContainer" class="rounded-4 overflow-hidden shadow-lg"></div>
             </div>
         </div>
     </div>

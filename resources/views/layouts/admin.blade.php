@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title ?? 'HK Equipment' }} | Admin Panel</title>
 
+    {{-- 1. FIX FLICKER: Script ini diletakkan di HEAD agar berjalan SEBELUM elemen digambar --}}
+    <script>
+        (function() {
+            const savedState = localStorage.getItem('hk_sidebar_state');
+            if (savedState === 'closed') {
+                document.documentElement.classList.add('sidebar-closed');
+            }
+        })();
+    </script>
+
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -30,7 +40,6 @@
         <div class="container-fluid content-inner">
             @yield('content')
         </div>
-
 
         @include('admin.partials.footer')
     </main>

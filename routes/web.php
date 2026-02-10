@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\RentalAdminController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\CustomerAdminController;
 use App\Http\Controllers\Admin\ScheduleAdminController;
+use App\Http\Controllers\Admin\OvertimeAdminController;
 
 
 
@@ -117,17 +118,25 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin/overtime', [OvertimeAdminController::class, 'index'])->name('admin.overtime.index');
+    Route::post('/admin/overtime/{id}/approve', [OvertimeAdminController::class, 'approve'])->name('admin.overtime.approve');
+    Route::post('/admin/overtime/{id}/reject', [OvertimeAdminController::class, 'reject'])->name('admin.overtime.reject');
+    Route::post('/admin/overtime/{id}/stop', [OvertimeAdminController::class, 'stop'])->name('admin.overtime.stop');
+    Route::delete('/admin/overtime/{id}/delete', [OvertimeAdminController::class, 'destroy'])->name('admin.overtime.delete');
+});
+
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
 // Testimoni Admin
     Route::get('/admin/testimonis', [App\Http\Controllers\Admin\TestimoniAdminController::class, 'index'])->name('admin.testimonis.index');
     Route::delete('/admin/testimonis/{id}', [App\Http\Controllers\Admin\TestimoniAdminController::class, 'destroy'])->name('admin.testimonis.destroy');
 });
 
-
-Route::middleware(['auth', 'role:admin'])->group(function () {
 // Finance Admin
-Route::get('/admin/finance', [App\Http\Controllers\Admin\FinanceAdminController::class, 'index'])->name('admin.finance.index');
-Route::post('/admin/finance', [App\Http\Controllers\Admin\FinanceAdminController::class, 'store'])->name('admin.finance.store');
-Route::delete('/admin/finance/{id}', [App\Http\Controllers\Admin\FinanceAdminController::class, 'destroy'])->name('admin.finance.destroy');
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin/finance', [App\Http\Controllers\Admin\FinanceAdminController::class, 'index'])->name('admin.finance.index');
+    Route::post('/admin/finance', [App\Http\Controllers\Admin\FinanceAdminController::class, 'store'])->name('admin.finance.store');
+    Route::delete('/admin/finance/{id}', [App\Http\Controllers\Admin\FinanceAdminController::class, 'destroy'])->name('admin.finance.destroy');
 });
 
 
@@ -221,22 +230,29 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
 });
 
 
-Route::post('/rentals/{id}/overtime',
-    [OvertimeController::class, 'store']
-)->name('customer.overtime.store');
+Route::middleware(['auth', 'role:customer'])->group(function () {
+        Route::post('/rentals/{id}/overtime',
+            [OvertimeController::class, 'store']
+        )->name('customer.overtime.store');
 
-Route::post('/overtime/{id}/transfer',
-    [PaymentController::class, 'transfer']
-)->name('payment.transfer');
+        Route::get('/customer/overtime/{id}/status', [OvertimeController::class, 'getStatus'])->name('customer.overtime.status');
 
-Route::post('/overtime/{id}/cash',
-    [PaymentController::class, 'cash']
-)->name('payment.cash');
+        // Customer Stop Overtime
+        Route::post('/customer/overtime/{id}/stop', [OvertimeController::class, 'stop'])->name('customer.overtime.stop');
 
-Route::delete('/overtime/{id}/cancel',
-    [OvertimeController::class,'cancel']
-)->name('customer.overtime.cancel');
+        Route::post('/overtime/{id}/transfer',
+            [PaymentController::class, 'transfer']
+        )->name('payment.transfer');
 
+        Route::post('/overtime/{id}/cash',
+            [PaymentController::class, 'cash']
+        )->name('payment.cash');
+
+        Route::delete('/overtime/{id}/cancel',
+            [OvertimeController::class,'cancel']
+        )->name('customer.overtime.cancel');
+
+});
 
 
 Route::post('/my-rentals/{id}/cancel',

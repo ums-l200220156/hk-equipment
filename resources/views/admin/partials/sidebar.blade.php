@@ -1,4 +1,4 @@
-<div class="sidebar" id="sidebar">
+<div class="sidebar sidebar-no-transition" id="sidebar">
     <div class="sidebar-header">
         <div class="brand-wrapper">
             <div class="brand-logo">
@@ -31,6 +31,9 @@
         </a>
         <a class="nav-link {{ Request::is('admin/rentals*') ? 'active' : '' }}" href="{{ route('admin.rentals.index') }}">
             <i class="bi bi-file-earmark-medical"></i> <span class="link-text">Transaksi</span>
+        </a>
+        <a class="nav-link {{ Request::is('admin/overtime*') ? 'active' : '' }}" href="{{ route('admin.overtime.index') }}">
+            <i class="bi bi-lightning-charge"></i> <span class="link-text">Overtime (Lembur)</span>
         </a>
 
         <div class="nav-label">INTERAKSI</div>

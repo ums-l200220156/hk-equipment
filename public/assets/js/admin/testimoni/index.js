@@ -1,20 +1,39 @@
 /**
- * 1. FUNGSI UNTUK MELIHAT MEDIA (POPUP)
- * Digunakan untuk menampilkan foto atau video secara dinamis di modal
+ * 1. FUNGSI FILTER RATING (CLIENT SIDE)
+ */
+function filterTestimonis() {
+    const filterValue = document.getElementById('filterRating').value;
+    const rows = document.querySelectorAll('.testimoni-row');
+
+    rows.forEach(row => {
+        const rating = row.getAttribute('data-rating');
+        if (filterValue === 'all' || filterValue === rating) {
+            row.style.display = ''; // Tampilkan
+        } else {
+            row.style.display = 'none'; // Sembunyikan
+        }
+    });
+}
+
+/**
+ * 2. FUNGSI UNTUK MELIHAT MEDIA (POPUP)
  */
 function viewMedia(url, type) {
     const container = document.getElementById('mediaContainer');
-    const myModal = new bootstrap.Modal(document.getElementById('mediaModal'));
+    const modalEl = document.getElementById('mediaModal');
+    if (!modalEl) return;
+
+    const myModal = new bootstrap.Modal(modalEl);
     
-    container.innerHTML = ''; // Reset isi container
+    container.innerHTML = ''; 
 
     if (type === 'image') {
-        container.innerHTML = `<img src="${url}" class="img-fluid animate__animated animate__zoomIn">`;
+        container.innerHTML = `<img src="${url}" class="img-fluid rounded-4 shadow">`;
     } else if (type === 'video') {
         container.innerHTML = `
-            <video controls autoplay class="w-100 animate__animated animate__zoomIn">
+            <video controls autoplay class="w-100 rounded-4 shadow">
                 <source src="${url}" type="video/mp4">
-                Your browser does not support the video tag.
+                Browser Anda tidak mendukung video.
             </video>`;
     }
 
@@ -22,7 +41,7 @@ function viewMedia(url, type) {
 }
 
 /**
- * 2. KONFIRMASI HAPUS DENGAN SWEETALERT2
+ * 3. KONFIRMASI HAPUS
  */
 function confirmDelete(id) {
     Swal.fire({

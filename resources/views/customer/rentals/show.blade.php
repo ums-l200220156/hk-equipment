@@ -9,32 +9,27 @@
 @section('content')
 <section class="rental-detail-premium">
     <div class="container">
-        
-        {{-- PAGE HEADER --}}
+
+        {{-- 1. PAGE HEADER --}}
         <div class="page-main-header animate__animated animate__fadeIn">
             <h6 class="text-danger fw-bold text-uppercase tracking-widest">Customer Portal</h6>
             <h2 class="fw-black">DETAIL <span class="text-danger">TRANSAKSI</span></h2>
             <div class="header-line"></div>
         </div>
 
-      {{-- TOP NAVIGATION & ACTION --}}
+        {{-- 2. TOP NAVIGATION & ACTION --}}
         <div class="top-nav-wrapper animate__animated animate__fadeInDown">
-            
-            {{-- LOGIKA: Jika baru saja bayar, paksa ke index. Jika tidak, gunakan history back --}}
-            <button type="button" 
-                    class="btn-back-fancy" 
-                    onclick="@if(session('just_paid')) 
-                                window.location.href='{{ route('customer.rentals') }}'; 
-                            @else 
-                                if (history.length > 1) { history.back(); } else { window.location.href='{{ route('customer.rentals') }}'; } 
-                            @endif">
-                <div class="icon-wrap"><i class="bi bi-chevron-left"></i></div>
-                <span>Kembali</span>
-            </button>
-            
+            {{-- Tombol Kembali yang sudah diubah ke Route statis agar sinkron --}}
+            <a href="{{ route('customer.rentals') }}" class="btn-back-fancy text-decoration-none">
+                <div class="icon-wrap">
+                    <i class="bi bi-chevron-left"></i>
+                </div>
+                <span>Kembali ke Daftar Sewa</span>
+            </a>
+
             <div class="action-top">
                 @if($rental->status === 'waiting_payment')
-                    <form method="POST" action="{{ route('customer.rentals.cancel',$rental->id) }}" id="cancelForm">
+                    <form method="POST" action="{{ route('customer.rentals.cancel', $rental->id) }}" id="cancelForm">
                         @csrf
                         <button type="button" class="btn-danger-glass" onclick="confirmCancel()">
                             <i class="bi bi-x-lg"></i> Batalkan Pesanan
@@ -45,111 +40,137 @@
         </div>
 
         <div class="row g-4">
-            {{-- KIRI: FOTO UNIT & HARGA --}}
+            {{-- ================= LEFT COLUMN: UNIT INFO & OVERTIME ================= --}}
             <div class="col-lg-5 animate__animated animate__fadeInLeft">
                 <div class="premium-glass-card main-info">
-                    
+
+                    {{-- UNIT IMAGE --}}
                     <div class="unit-image-showcase">
                         @if($rental->equipment->image)
-                            <img src="{{ asset('uploads/equipment/' . $rental->equipment->image) }}" alt="{{ $rental->equipment->name }}" class="img-fluid unit-img-real">
+                            <img src="{{ asset('uploads/equipment/'.$rental->equipment->image) }}" class="img-fluid unit-img-real">
                         @else
                             <div class="unit-img-placeholder">
                                 <i class="bi bi-truck-flatbed"></i>
                                 <p>Foto tidak tersedia</p>
                             </div>
                         @endif
-                        <div class="unit-badge-overlay">{{ $rental->equipment->category }}</div>
+                        <div class="unit-badge-overlay">
+                            {{ $rental->equipment->category }}
+                        </div>
                     </div>
 
+                    {{-- UNIT NAME --}}
                     <div class="unit-name-wrapper text-center mt-3">
                         <h3 class="fw-bold mb-1">{{ $rental->equipment->name }}</h3>
                         <p class="text-muted small">Unit Alat Berat Konstruksi</p>
                     </div>
 
+                    {{-- PRICE SHOWCASE --}}
                     <div class="price-showcase shadow-sm mt-3">
                         <p class="label-sm">Total Investasi Sewa</p>
-                        <h1 class="total-amount">Rp {{ number_format($rental->total_price,0,',','.') }}</h1>
+                        <h1 class="total-amount">
+                            Rp {{ number_format($rental->total_price, 0, ',', '.') }}
+                        </h1>
                         <div class="badge-status-glow status-{{ $rental->status }}">
-                            {{ strtoupper(str_replace('_',' ',$rental->status)) }}
+                            {{ strtoupper(str_replace('_', ' ', $rental->status)) }}
                         </div>
                     </div>
 
-                    {{-- ================= OVERTIME PANEL (DIUBAH) ================= --}}
-                    <div class="overtime-panel-high-notice mt-4">
-                        <div class="ot-header-glow">
-                            <i class="bi bi-lightning-charge-fill animate-flicker"></i>
-                            <span>LAYANAN LEMBUR (OVERTIME)</span>
-                        </div>
-                        
-                        <div class="ot-content-body">
-                            @if($rental->status === 'on_progress' && $rental->overtime_hours > 0 && !$rental->overtime)
-                                <form method="POST" action="{{ route('customer.overtime.store',$rental->id) }}">
-                                    @csrf
-                                    <button class="btn-apply-ot-premium-glow">
-                                        <div class="btn-ot-text">
-                                            <span>Ajukan Lembur Sekarang</span>
-                                            <small>Tambahan: {{ $rental->overtime_hours }} Jam</small>
-                                        </div>
-                                        <i class="bi bi-arrow-right-circle-fill fs-3"></i>
-                                    </button>
-                                </form>
-                            
-                            @elseif($rental->overtime)
-                                <div class="ot-card-active-modern shadow-sm">
-                                    <div class="ot-status-bar">
-                                        <span class="pulse-dot-large"></span>
-                                        <span>STATUS: <b>{{ strtoupper($rental->overtime->status) }}</b></span>
+                    {{-- OVERTIME SECTION --}}
+                    @php $ot = $rental->overtime; @endphp
+                    @if($rental->status === 'on_progress' || ($ot && $ot->status === 'completed'))
+                        <div class="overtime-panel-high-notice mt-4">
+                            <div class="ot-header-glow">
+                                <i class="bi bi-lightning-charge-fill animate-flicker"></i>
+                                <span>LAYANAN LEMBUR (OVERTIME)</span>
+                            </div>
+
+                            <div class="ot-content-body p-4" id="otWrapper">
+                                {{-- 1. BELUM ADA OVERTIME --}}
+                                @if(!$ot)
+                                    <div class="alert alert-warning border-0 shadow-sm small">
+                                        <h6 class="fw-bold"><i class="bi bi-exclamation-triangle-fill me-2"></i>Info</h6>
+                                        Tarif lembur dihitung real-time per detik setelah disetujui.
                                     </div>
-                                    
-                                    @if($rental->overtime->status === 'approved')
-                                        <div class="ot-price-tag-grid mt-3">
-                                            <div class="price-tag-item">
-                                                <small>Tarif / Jam</small>
-                                                <p>Rp {{ number_format($rental->overtime->price_per_hour,0,',','.') }}</p>
-                                            </div>
-                                            <div class="price-tag-item">
-                                                <small>Tarif / Menit</small>
-                                                <p>Rp {{ number_format($rental->overtime->price_per_hour / 60,0,',','.') }}</p>
-                                            </div>
-                                        </div>
-                                    @endif
+                                    <form method="POST" action="{{ route('customer.overtime.store', $rental->id) }}">
+                                        @csrf
+                                        <button type="submit" class="btn-apply-ot-premium-glow">
+                                            <span>Ajukan Lembur Sekarang</span>
+                                            <i class="bi bi-arrow-right-circle-fill"></i>
+                                        </button>
+                                    </form>
 
-                                    <div class="ot-btn-group mt-3 d-flex gap-2">
-                                        <a target="_blank" href="https://wa.me/6281234567890?text={{ urlencode('Konfirmasi lembur #' . $rental->id) }}" class="btn-wa-modern flex-grow-1">
-                                            <i class="bi bi-whatsapp"></i> Hubungi Admin
-                                        </a>
-
-                                        @if($rental->overtime->status === 'pending')
-                                            <form method="POST" action="{{ route('customer.overtime.cancel',$rental->overtime->id) }}" id="cancelOtForm">
+                                {{-- 2. PENDING --}}
+                                @elseif($ot->status === 'pending')
+                                    <div class="text-center py-3" id="otApp" data-status="pending" data-id="{{ $ot->id }}">
+                                        <div class="spinner-border text-danger mb-2" role="status"></div>
+                                        <h6 class="fw-bold">Menunggu Persetujuan Admin</h6>
+                                        <div class="d-flex gap-2 mt-3">
+                                            <a href="https://wa.me/6281230054652" class="btn btn-success flex-grow-1 fw-bold rounded-3" target="_blank">
+                                                <i class="bi bi-whatsapp"></i> Chat Admin
+                                            </a>
+                                            <form action="{{ route('customer.overtime.cancel', $ot->id) }}" method="POST" id="cancelOtForm">
                                                 @csrf @method('DELETE')
-                                                <button type="button" class="btn-cancel-ot-modern" onclick="confirmCancelOt()">
-                                                    <i class="bi bi-trash3-fill"></i>
+                                                <button type="button" class="btn btn-outline-danger rounded-3" onclick="confirmCancelOt()">
+                                                    <i class="bi bi-trash"></i>
                                                 </button>
                                             </form>
+                                        </div>
+                                    </div>
+
+                                {{-- 3. APPROVED / COMPLETED --}}
+                                @elseif(in_array($ot->status, ['approved', 'completed']))
+                                    <div id="realtimeOtApp" 
+                                         data-id="{{ $ot->id }}"
+                                         data-status="{{ $ot->status }}"
+                                         data-start="{{ $ot->started_at ? $ot->started_at->toIso8601String() : '' }}" 
+                                         data-price="{{ $ot->price_per_hour }}">
+                                        
+                                        <div class="ot-active-display shadow-sm rounded-4 p-3 border border-danger mb-3">
+                                            <div class="row text-center">
+                                                <div class="col-6 border-end">
+                                                    <small class="text-muted d-block">⏱ DURASI LEMBUR</small>
+                                                    <h4 class="fw-bold" id="displayTimer">
+                                                        @if($ot->status === 'completed')
+                                                            @php
+                                                                $h = floor($ot->extra_hours);
+                                                                $m = round(($ot->extra_hours - $h) * 60);
+                                                            @endphp
+                                                            {{ $h }}j {{ $m }}m
+                                                        @else
+                                                            00:00:00
+                                                        @endif
+                                                    </h4>
+                                                </div>
+                                                <div class="col-6">
+                                                    <small class="text-muted d-block">💰 BIAYA LEMBUR</small>
+                                                    <h4 class="fw-bold text-danger" id="displayCost">
+                                                        Rp {{ number_format($ot->price, 0, ',', '.') }}
+                                                    </h4>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        @if($ot->status === 'approved')
+                                            <form action="{{ route('customer.overtime.stop', $ot->id) }}" method="POST">
+                                                @csrf
+                                                <button type="submit" class="btn btn-dark w-100 fw-bold py-2 rounded-3">HENTIKAN LEMBUR</button>
+                                            </form>
+                                        @else
+                                            <div class="badge bg-success w-100 py-2 rounded-3">OVERTIME SELESAI</div>
                                         @endif
                                     </div>
-                                </div>
-                            @else
-                                {{-- KETERANGAN DISINI --}}
-                                <div class="ot-info-locked">
-                                    <div class="locked-icon">
-                                        <i class="bi bi-lock-fill"></i>
-                                    </div>
-                                    <div class="locked-text">
-                                        <p>Fitur lembur akan terbuka secara otomatis jika status pengerjaan telah <b>BERJALAN (On Progress)</b>.</p>
-                                    </div>
-                                </div>
-                            @endif
+                                @endif
+                            </div>
                         </div>
-                    </div>
+                    @endif
                 </div>
             </div>
 
-            {{-- KANAN: SPESIFIKASI & LOGISTIK --}}
+            {{-- ================= RIGHT COLUMN: SPECS ================= --}}
             <div class="col-lg-7 animate__animated animate__fadeInRight">
                 <div class="premium-glass-card detail-specs">
-                    <h4 class="specs-title"><i class="bi bi-info-circle-fill text-danger me-2"></i> Spesifikasi Penyewaan</h4>
-                    
+                    <h4 class="specs-title"><i class="bi bi-info-circle-fill text-danger me-2"></i>Spesifikasi Penyewaan</h4>
                     <div class="specs-grid">
                         <div class="specs-item">
                             <div class="spec-icon-box"><i class="bi bi-calendar3"></i></div>
@@ -169,35 +190,20 @@
                             <div class="spec-icon-box"><i class="bi bi-hourglass-split"></i></div>
                             <div class="specs-content">
                                 <label>Durasi Kontrak</label>
-                                <p>{{ $rental->duration_hours }} Jam Kerja</p>
+                                <p>{{ $rental->duration_hours }} Jam</p>
                             </div>
                         </div>
                         <div class="specs-item">
                             <div class="spec-icon-box"><i class="bi bi-cash-stack"></i></div>
                             <div class="specs-content">
-                                <label>Tarif Sewa Pokok</label>
-                                <p>Rp {{ number_format($rental->equipment->price_per_hour,0,',','.') }} / Jam</p>
+                                <label>Tarif Pokok</label>
+                                <p>Rp {{ number_format($rental->equipment->price_per_hour, 0, ',', '.') }}/Jam</p>
                             </div>
                         </div>
                     </div>
-
                     <div class="location-container-modern mt-4">
-                        <div class="location-header">
-                            <div class="loc-icon"><i class="bi bi-geo-alt-fill"></i></div>
-                            <span>Lokasi Operasional</span>
-                        </div>
-                        <div class="location-body">
-                            <p>{{ $rental->location }}</p>
-                        </div>
-                    </div>
-
-                    <div class="notes-container-modern mt-4">
-                        <div class="notes-header">
-                            <i class="bi bi-chat-left-text-fill"></i> Catatan Pemesanan
-                        </div>
-                        <div class="notes-body">
-                            <p>{{ $rental->notes ?? 'Tidak ada catatan tambahan untuk pesanan ini.' }}</p>
-                        </div>
+                        <div class="location-header"><i class="bi bi-geo-alt-fill me-2"></i>Lokasi Operasional</div>
+                        <div class="location-body"><p>{{ $rental->location }}</p></div>
                     </div>
                 </div>
             </div>
