@@ -73,54 +73,18 @@
                     </div>
                     <div class="col-md-6">
                         <div class="input-group-custom">
-                            <label><i class="fas fa-clock"></i> Jam Mulai</label>
-
-                            <input
-                                type="text"
-                                name="start_time"
-                                id="start_time"
-                                list="time-options"
-                                placeholder="HH:MM (24 jam)"
-                                maxlength="5"
-                                inputmode="numeric"
-                                autocomplete="off"
+                            <label><i class="fas fa-clock"></i> Jam Mulai Operasi</label>
+                            
+                            <input 
+                                type="time" 
+                                name="start_time" 
+                                id="start_time" 
+                                class="form-control" 
                                 required
                             >
 
-                            <datalist id="time-options">
-                                <option value="06:00">
-                                <option value="07:00">
-                                <option value="08:00">
-                                <option value="09:00">
-                                <option value="10:00">
-                                <option value="11:00">
-                                <option value="12:00">
-                                <option value="13:00">
-                                <option value="14:00">
-                                <option value="15:00">
-                                <option value="16:00">
-                                <option value="17:00">
-                                <option value="18:00">
-                                <option value="19:00">
-                                <option value="20:00">
-                                <option value="21:00">
-                                <option value="22:00">
-                                <option value="23:00">
-                                <option value="00:00">
-                                <option value="01:00">
-                                <option value="02:00">
-                                <option value="03:00">
-                                <option value="04:00">
-                                <option value="05:00">
-                            </datalist>
-
-                            <!-- 🔴 ERROR INLINE -->
-                            <small class="time-error d-none">
-                                Format jam tidak valid. Contoh: 21:00
-                            </small>
-
                             <small class="time-hint">
-                                Ketik atau pilih jam (format 24 jam)
+                                Pilih jam mulai operasional alat
                             </small>
                         </div>
                     </div>
@@ -146,10 +110,17 @@
                     <input type="text" name="location" placeholder="Alamat lengkap lokasi pengerjaan" required>
                 </div>
 
-                <div class="input-group-custom mt-3">
-                    <label><i class="fas fa-sticky-note"></i> Catatan Tambahan (Opsional)</label>
-                    <textarea name="notes" rows="3" placeholder="Contoh: Butuh operator tambahan..."></textarea>
-                </div>
+                {{-- Bagian textarea Catatan --}}
+                    <div class="input-group-custom mt-3">
+                        <label><i class="fas fa-sticky-note"></i> Catatan Tambahan (Opsional)</label>
+                        <textarea 
+                            name="notes" 
+                            rows="3" 
+                            minlength="5" 
+                            maxlength="200" 
+                            placeholder="Contoh: Butuh operator tambahan (5-200 karakter)..."
+                        ></textarea>
+                    </div>
 
                 <button type="submit" class="btn-main-submit">
                     <span>Proses Penyewaan</span>

@@ -1,149 +1,194 @@
 @extends('layouts.admin')
 
-@section('title', 'HK Overtime Command Center')
+@section('title', 'HK Overtime Management')
 
 {{-- 01. IMPORT CSS KHUSUS --}}
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/admin/overtime/index.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 @endpush
 
 @section('content')
-<div class="container-fluid py-4 hk-dashboard">
-    {{-- 02. HK PREMIUM HEADER (IDENTITAS PERUSAHAAN) --}}
-    <div class="hk-header-banner animate__animated animate__fadeIn">
-        <div class="hk-banner-inner d-flex justify-content-between align-items-center">
-            <div class="hk-title-area">
-                <div class="hk-badge"><i class="bi bi-shield-check"></i> HK SYSTEM ACTIVE</div>
-                <h1 class="hk-main-title">COMMAND CENTER <span class="text-yellow">OVERTIME</span></h1>
-                <p class="hk-subtitle">Pemantauan real-time operasional lembur unit alat berat HK Equipment secara presisi.</p>
+<div class="hk-overtime-wrapper">
+    {{-- 02. MODERN HEADER SECTION --}}
+    <div class="hk-glass-card mb-4 animate__animated animate__fadeIn">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+            <div>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-2">
+                        <li class="breadcrumb-item"><a href="#">Admin</a></li>
+                        <li class="breadcrumb-item active">Overtime</li>
+                    </ol>
+                </nav>
+                <h2 class="hk-page-title">Overtime <span class="fw-light text-muted">Command Center</span></h2>
+                <p class="text-secondary small mb-0">Monitor dan kelola lembur unit alat berat secara real-time.</p>
             </div>
-            <div class="hk-stats d-none d-lg-flex gap-4">
-                <div class="hk-stat-box">
-                    <span class="hk-stat-label">UNIT BERJALAN</span>
-                    <span class="hk-stat-value text-yellow">{{ $overtimes->where('status', 'approved')->count() }}</span>
+            <div class="hk-header-stats">
+                <div class="stat-item">
+                    <div class="stat-icon"><i class="bi bi-activity"></i></div>
+                    <div class="stat-content">
+                        <span class="label">UNIT AKTIF</span>
+                        <span class="value">{{ $overtimes->where('status', 'approved')->count() }}</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    {{-- 03. INDUSTRIAL FILTER PERIOD (SINKRONISASI DATA) --}}
-    <div class="hk-filter-bar mt-4 mb-4 animate__animated animate__fadeIn">
-        <div class="hk-filter-container shadow-sm border">
-            <span class="hk-filter-label"><i class="bi bi-funnel-fill"></i> FILTER PERIODE:</span>
-            <div class="hk-filter-actions">
-                <a href="{{ request()->fullUrlWithQuery(['period' => 'all']) }}" class="hk-tab {{ request('period') == 'all' || !request('period') ? 'active' : '' }}">SEMUA DATA</a>
-                <a href="{{ request()->fullUrlWithQuery(['period' => 'weekly']) }}" class="hk-tab {{ request('period') == 'weekly' ? 'active' : '' }}">MINGGUAN</a>
-                <a href="{{ request()->fullUrlWithQuery(['period' => 'monthly']) }}" class="hk-tab {{ request('period') == 'monthly' ? 'active' : '' }}">BULANAN</a>
-                <a href="{{ request()->fullUrlWithQuery(['period' => 'yearly']) }}" class="hk-tab {{ request('period') == 'yearly' ? 'active' : '' }}">TAHUNAN</a>
-            </div>
+    {{-- 03. INTERACTIVE FILTER NAVIGATION --}}
+    <div class="hk-filter-nav mb-4 animate__animated animate__fadeIn">
+        <div class="nav-scroll-wrapper">
+            <a href="{{ request()->fullUrlWithQuery(['period' => 'all']) }}" class="nav-link-custom {{ request('period') == 'all' || !request('period') ? 'active' : '' }}">
+                <i class="bi bi-grid-1x2"></i> Semua Data
+            </a>
+            <a href="{{ request()->fullUrlWithQuery(['period' => 'weekly']) }}" class="nav-link-custom {{ request('period') == 'weekly' ? 'active' : '' }}">
+                <i class="bi bi-calendar-event"></i> Mingguan
+            </a>
+            <a href="{{ request()->fullUrlWithQuery(['period' => 'monthly']) }}" class="nav-link-custom {{ request('period') == 'monthly' ? 'active' : '' }}">
+                <i class="bi bi-calendar-month"></i> Bulanan
+            </a>
+            <a href="{{ request()->fullUrlWithQuery(['period' => 'yearly']) }}" class="nav-link-custom {{ request('period') == 'yearly' ? 'active' : '' }}">
+                <i class="bi bi-calendar-check"></i> Tahunan
+            </a>
         </div>
     </div>
 
-    {{-- 04. MONITORING TABLE (KONTROL UTAMA) --}}
-    <div class="hk-table-wrapper animate__animated animate__fadeInUp shadow-lg">
+    {{-- 04. MAIN DATA TABLE CARD --}}
+    <div class="hk-main-card animate__animated animate__fadeInUp">
         <div class="table-responsive">
-            <table class="table table-borderless align-middle hk-main-table text-center">
+            <table class="table align-middle">
                 <thead>
                     <tr>
-                        <th class="ps-4 text-start">UNIT & DETAIL PENYEWA</th>
-                        <th>STATUS OPERASI</th>
-                        <th>MANAJEMEN TARIF</th>
-                        <th>ESTIMASI BILLING</th>
-                        <th class="pe-4 text-end">SISTEM KONTROL</th>
+                        <th class="ps-4">INFORMASI UNIT</th>
+                        <th class="text-center">STATUS & DURASI</th>
+                        <th class="text-center">MANAJEMEN TARIF</th>
+                        <th class="text-center">LIVE BILLING</th>
+                        <th class="text-center">STATUS BAYAR</th>
+                        <th class="text-end pe-4">KONTROL</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($overtimes as $ot)
-                    <tr class="hk-row @if($ot->status === 'approved') row-running @endif"
-                        data-id="{{ $ot->id }}" data-status="{{ $ot->status }}"
+                    <tr class="hk-ot-row @if($ot->status === 'approved') status-running @endif"
+                        data-id="{{ $ot->id }}" 
+                        data-status="{{ $ot->status }}"
                         @if($ot->status === 'approved' && $ot->started_at)
                             data-start="{{ $ot->started_at->toIso8601String() }}"
                             data-price="{{ $ot->price_per_hour }}"
                         @endif>
-
-                        {{-- INFORMASI UNIT --}}
-                        <td class="ps-4 text-start">
-                            <div class="hk-unit-box">
-                                <div class="hk-unit-img">
+                        
+                        {{-- 1. INFORMASI UNIT --}}
+                        <td class="ps-4">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="hk-unit-thumbnail">
                                     <img src="{{ asset('uploads/equipment/'.$ot->rental->equipment->image) }}" alt="Unit">
-                                    <div class="hk-unit-id">#{{ $ot->rental_id }}</div>
+                                    <span class="unit-badge">#{{ $ot->rental_id }}</span>
                                 </div>
-                                <div class="hk-unit-meta">
-                                    <h6 class="hk-unit-name">{{ $ot->rental->equipment->name }}</h6>
-                                    <span class="hk-user-name"><i class="bi bi-person-circle"></i> {{ $ot->rental->user->name }}</span>
+                                <div>
+                                    <div class="hk-unit-name-link">{{ $ot->rental->equipment->name }}</div>
+                                    <div class="hk-client-name"><i class="bi bi-person me-1"></i> {{ $ot->rental->user->name }}</div>
                                 </div>
                             </div>
                         </td>
 
-                        {{-- TIMER STATUS --}}
-                        <td>
+                        {{-- 2. STATUS & DURASI --}}
+                        <td class="text-center">
                             @if($ot->status === 'pending')
-                                <div class="hk-status pending">MENUNGGU KONFIRMASI</div>
+                                <span class="badge-status pending">Menunggu</span>
                             @elseif($ot->status === 'approved')
-                                <div class="hk-timer-display">
-                                    <div class="hk-timer-label">DURASI BERJALAN</div>
-                                    <div class="hk-timer-val" id="timer-{{ $ot->id }}">00:00:00</div>
+                                <div class="hk-live-timer">
+                                    <span class="dot-pulse"></span>
+                                    <span class="timer-text" id="timer-{{ $ot->id }}">00:00:00</span>
                                 </div>
                             @else
-                                <div class="hk-status completed">LEMBUR SELESAI</div>
+                                <span class="badge-status completed">Selesai</span>
                             @endif
                         </td>
 
-                        {{-- INPUT TARIF --}}
-                        <td>
-                            <div class="hk-pricing-box">
-                                @if($ot->status === 'pending')
-                                    <div class="hk-normal-hint">HARGA SEWA: Rp {{ number_format($ot->rental->equipment->price_per_hour, 0, ',', '.') }}</div>
-                                    <form action="{{ route('admin.overtime.approve', $ot->id) }}" method="POST">
-                                        @csrf
-                                        <div class="hk-input-group">
-                                            <input type="number" name="price_per_hour" placeholder="Input Tarif" required>
-                                            <button type="submit"><i class="bi bi-play-fill"></i></button>
-                                        </div>
-                                    </form>
-                                @else
-                                    <div class="hk-fixed-price">
-                                        <span class="label">TARIF FIXED</span>
-                                        <span class="value">Rp {{ number_format($ot->price_per_hour, 0, ',', '.') }}<span>/Jam</span></span>
+                        {{-- 3. MANAJEMEN TARIF --}}
+                        <td class="text-center">
+                            @if($ot->status === 'pending')
+                                <form action="{{ route('admin.overtime.approve', $ot->id) }}" method="POST" class="hk-inline-form">
+                                    @csrf
+                                    <div class="input-group input-group-sm">
+                                        <span class="input-group-text">Rp</span>
+                                        <input type="number" name="price_per_hour" class="form-control" placeholder="Tarif/Jam" required>
+                                        <button class="btn btn-primary" type="submit"><i class="bi bi-check-lg"></i></button>
                                     </div>
-                                @endif
-                            </div>
+                                    <small class="text-muted mt-1 d-block">Base: Rp {{ number_format($ot->rental->equipment->price_per_hour, 0, ',', '.') }}</small>
+                                </form>
+                            @else
+                                <div class="hk-price-tag">
+                                    <span class="amount">Rp {{ number_format($ot->price_per_hour, 0, ',', '.') }}</span>
+                                    <span class="unit">/ jam</span>
+                                </div>
+                            @endif
                         </td>
 
-                        {{-- BILLING LIVE --}}
-                        <td>
-                            <div class="hk-billing-box">
-                                @if($ot->status === 'approved')
-                                    <div class="hk-billing-val text-danger" id="cost-{{ $ot->id }}">Rp 0</div>
-                                    <div class="hk-billing-sub pulse-danger">TAGIHAN AKTIF</div>
-                                @elseif($ot->status === 'completed')
-                                    <div class="hk-billing-val">Rp {{ number_format($ot->price, 0, ',', '.') }}</div>
-                                    <div class="hk-billing-sub">TOTAL AKHIR</div>
+                        {{-- 4. LIVE BILLING --}}
+                        <td class="text-center">
+                            @if($ot->status === 'approved')
+                                <div class="hk-billing-live">
+                                    <div class="billing-amount text-primary" id="cost-{{ $ot->id }}">Rp 0</div>
+                                    <div class="billing-label">ESTIMASI BERJALAN</div>
+                                </div>
+                            @elseif($ot->status === 'completed')
+                                <div class="hk-billing-final">
+                                    <div class="billing-amount">Rp {{ number_format($ot->price, 0, ',', '.') }}</div>
+                                    <div class="billing-label">TOTAL FINAL</div>
+                                </div>
+                            @else
+                                <span class="text-muted">—</span>
+                            @endif
+                        </td>
+
+                        {{-- 5. STATUS BAYAR (KOLOM BARU) --}}
+                        <td class="text-center">
+                            @if($ot->status === 'completed')
+                                @if($ot->payment_status === 'paid')
+                                    <span class="badge bg-success" style="font-size: 0.7rem;">TERBAYAR</span>
+                                    @if($ot->proof)
+                                        <a href="{{ asset('storage/'.$ot->proof) }}" target="_blank" class="d-block small text-primary mt-1 text-decoration-none">
+                                            <i class="bi bi-image"></i> Bukti Struk
+                                        </a>
+                                    @endif
                                 @else
-                                    <span class="text-muted small">---</span>
+                                    <span class="badge bg-warning text-dark" style="font-size: 0.7rem;">MENUNGGU</span>
                                 @endif
-                            </div>
+                            @else
+                                <span class="text-muted small">—</span>
+                            @endif
                         </td>
 
-                        {{-- TOMBOL AKSI --}}
-                        <td class="pe-4 text-end">
-                            <div class="hk-action-group">
+                        {{-- 6. KONTROL (AKSI) --}}
+                        <td class="text-end pe-4">
+                            <div class="btn-group-custom">
+                                {{-- Tombol Verifikasi Pembayaran (HANYA MUNCUL JIKA STATUS COMPLETED & BELUM PAID) --}}
+                                @if($ot->status === 'completed' && $ot->payment_status !== 'paid')
+                                    <form action="{{ route('admin.overtime.verify_payment', $ot->id) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        <button class="btn-action btn-stop" style="background: var(--success); color: white; border: none;" title="Verifikasi Pembayaran">
+                                            <i class="bi bi-check-all"></i>
+                                        </button>
+                                    </form>
+                                @endif
+
                                 @if($ot->status === 'pending')
                                     <form action="{{ route('admin.overtime.reject', $ot->id) }}" method="POST" class="d-inline">
                                         @csrf
-                                        <button class="hk-btn reject" title="Reject Request"><i class="bi bi-x-lg"></i></button>
+                                        <button class="btn-action btn-reject" title="Tolak"><i class="bi bi-x"></i></button>
                                     </form>
                                 @elseif($ot->status === 'approved')
                                     <form action="{{ route('admin.overtime.stop', $ot->id) }}" method="POST" class="d-inline">
                                         @csrf
-                                        <button class="hk-btn stop" title="Hentikan Paksa"><i class="bi bi-stop-fill"></i></button>
+                                        <button class="btn-action btn-stop" title="Stop Operasi"><i class="bi bi-stop-circle-fill"></i></button>
                                     </form>
                                 @endif
 
                                 @if($ot->status !== 'approved')
-                                    <form action="{{ route('admin.overtime.delete', $ot->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Hapus Log Data?')">
+                                    <form action="{{ route('admin.overtime.delete', $ot->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Hapus permanen log data ini?')">
                                         @csrf @method('DELETE')
-                                        <button class="hk-btn delete" title="Hapus"><i class="bi bi-trash3-fill"></i></button>
+                                        <button class="btn-action btn-delete" title="Hapus"><i class="bi bi-trash3"></i></button>
                                     </form>
                                 @endif
                             </div>
@@ -151,13 +196,13 @@
                     </tr>
                     @endforeach
                 </tbody>
+                
             </table>
         </div>
     </div>
 </div>
 @endsection
 
-{{-- 05. IMPORT JS KHUSUS --}}
 @push('scripts')
     <script src="{{ asset('assets/js/admin/overtime/index.js') }}"></script>
 @endpush

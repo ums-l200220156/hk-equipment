@@ -17,7 +17,8 @@ class Rental extends Model
         'notes',
         'status',
         'total_price',
-        'payment_method', // ✅ TAMBAHKAN
+        'payment_method',
+        'payment_proof',
     ];
 
     /* ==========================

@@ -114,6 +114,11 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/rentals', [RentalAdminController::class, 'index'])->name('admin.rentals.index');
     Route::post('/admin/rentals/{id}/status', [RentalAdminController::class, 'updateStatus'])->name('admin.rentals.status');
+    Route::get('/admin/rentals/create', [RentalAdminController::class, 'create'])->name('admin.rentals.create');
+    Route::post('/admin/rentals/store', [RentalAdminController::class, 'storeAdmin'])->name('admin.rentals.store');
+    Route::get('/admin/rentals/{id}/edit', [RentalAdminController::class, 'edit'])->name('admin.rentals.edit');
+    Route::put('/admin/rentals/{id}/update', [RentalAdminController::class, 'updateAdmin'])->name('admin.rentals.update');
+    Route::delete('/admin/rentals/{id}', [RentalAdminController::class, 'destroy'])->name('admin.rentals.destroy');
 });
 
 
@@ -123,6 +128,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/admin/overtime/{id}/reject', [OvertimeAdminController::class, 'reject'])->name('admin.overtime.reject');
     Route::post('/admin/overtime/{id}/stop', [OvertimeAdminController::class, 'stop'])->name('admin.overtime.stop');
     Route::delete('/admin/overtime/{id}/delete', [OvertimeAdminController::class, 'destroy'])->name('admin.overtime.delete');
+    Route::post('/admin/overtime/{id}/verify', [OvertimeAdminController::class, 'verifyPayment'])->name('admin.overtime.verify_payment');
 });
 
 
@@ -230,28 +236,21 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
 });
 
 
+// OVERTIME
 Route::middleware(['auth', 'role:customer'])->group(function () {
-        Route::post('/rentals/{id}/overtime',
-            [OvertimeController::class, 'store']
-        )->name('customer.overtime.store');
-
+        Route::post('/rentals/{id}/overtime', [OvertimeController::class, 'store'])->name('customer.overtime.store');
         Route::get('/customer/overtime/{id}/status', [OvertimeController::class, 'getStatus'])->name('customer.overtime.status');
-
-        // Customer Stop Overtime
         Route::post('/customer/overtime/{id}/stop', [OvertimeController::class, 'stop'])->name('customer.overtime.stop');
+        Route::delete('/customer/overtime/{id}/cancel', [OvertimeController::class, 'cancel'])->name('customer.overtime.cancel');
+});
 
-        Route::post('/overtime/{id}/transfer',
-            [PaymentController::class, 'transfer']
-        )->name('payment.transfer');
 
-        Route::post('/overtime/{id}/cash',
-            [PaymentController::class, 'cash']
-        )->name('payment.cash');
-
-        Route::delete('/overtime/{id}/cancel',
-            [OvertimeController::class,'cancel']
-        )->name('customer.overtime.cancel');
-
+Route::middleware(['auth', 'role:customer'])->group(function () {
+    // Route Pembayaran Overtime Baru
+    Route::get('/customer/overtime-payment/{id}', [PaymentController::class, 'showOvertime'])->name('payment.overtime.show');
+    Route::post('/customer/overtime-payment/{id}', [PaymentController::class, 'processOvertime'])->name('payment.overtime.process');
+    Route::get('/customer/overtime-payment/{id}/transfer', [PaymentController::class, 'transferOvertime'])->name('payment.overtime.transfer');
+    Route::post('/customer/overtime-payment/{id}/upload', [PaymentController::class, 'uploadProofOvertime'])->name('payment.overtime.upload');
 });
 
 

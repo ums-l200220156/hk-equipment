@@ -6,7 +6,8 @@
  */
 
 function initMasterMonitor() {
-    const runningRows = document.querySelectorAll('.ot-master-row.row-running');
+    // Pastikan selector class ini sama dengan di Blade
+    const runningRows = document.querySelectorAll('.hk-ot-row.status-running');
 
     runningRows.forEach(row => {
         const id = row.dataset.id;

@@ -1,0 +1,183 @@
+/* ==========================================================================
+   01. DASHBOARD VARIABLES & THEME
+========================================================================== */
+:root {
+    --hk-navy: #0f172a;
+    --hk-slate: #1e293b;
+    --hk-warning: #f59e0b;
+    --hk-bg: #f8fafc;
+    --hk-border: #e2e8f0;
+    --hk-white: #ffffff;
+}
+
+body { 
+    background-color: var(--hk-bg); 
+    font-family: 'Plus Jakarta Sans', sans-serif; 
+    color: var(--hk-navy); 
+}
+
+.hk-create-wrapper { 
+    padding: 2rem; 
+    max-width: 1100px; 
+    margin: 0 auto; 
+}
+
+
+/* ==========================================================================
+   02. HEADER INDUSTRIAL BANNER
+========================================================================== */
+.hk-header-card {
+    background: linear-gradient(135deg, var(--hk-navy) 0%, #334155 100%);
+    padding: 2rem 2.5rem; 
+    border-radius: 20px; 
+    color: white;
+    border-bottom: 5px solid var(--hk-warning);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+
+.hk-page-title { 
+    font-weight: 800; 
+    font-size: 1.8rem; 
+    letter-spacing: -0.5px; 
+    margin: 0; 
+}
+
+.hk-subtitle { 
+    font-size: 0.85rem; 
+    color: #94a3b8; 
+}
+
+.btn-hk-back {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50px;
+    padding: 8px 18px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.btn-hk-back:hover { 
+    background: white; 
+    color: var(--hk-navy); 
+}
+
+
+/* ==========================================================================
+   03. FORM CONTAINER STYLING
+========================================================================== */
+.hk-form-card {
+    background: var(--hk-white);
+    border-radius: 25px;
+    padding: 3rem;
+    border: 1px solid var(--hk-border);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.02);
+}
+
+.hk-section-title {
+    font-weight: 800;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #64748b;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.hk-section-title i { color: var(--hk-warning); }
+
+
+/* ==========================================================================
+   04. INPUT DESIGN & PREVIEW
+========================================================================== */
+.hk-input-group { margin-bottom: 1rem; }
+
+.hk-label {
+    display: block;
+    font-weight: 700;
+    font-size: 0.75rem;
+    color: var(--hk-navy);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.hk-input {
+    border-radius: 12px;
+    border: 1.5px solid var(--hk-border);
+    padding: 12px 15px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+.hk-input:focus {
+    border-color: var(--hk-warning);
+    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.1);
+}
+
+.hk-input-warning {
+    border: 2px solid var(--hk-warning);
+    background: #fffdf5;
+    border-radius: 12px;
+    font-weight: 800;
+    padding: 12px;
+}
+
+.hk-price-preview {
+    background: #f0fdf4;
+    border: 2px solid #10b981;
+    border-radius: 12px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    gap: 8px;
+    color: #166534;
+}
+
+.hk-price-preview .currency { font-weight: 700; font-size: 0.8rem; }
+.hk-price-preview #totalPricePreview { font-weight: 800; font-size: 1.2rem; }
+
+
+/* ==========================================================================
+   05. ACTION BUTTONS
+========================================================================== */
+.btn-hk-submit {
+    background: var(--hk-warning);
+    color: #000;
+    font-weight: 800;
+    font-size: 0.85rem;
+    padding: 14px 30px;
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+    transition: 0.3s;
+}
+
+.btn-hk-submit:hover {
+    background: var(--hk-navy);
+    color: white;
+    transform: translateY(-3px);
+}
+
+.btn-hk-reset {
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 14px 30px;
+    border-radius: 12px;
+    color: #64748b;
+}
+
+
+/* ==========================================================================
+   06. RESPONSIVE OPTIMIZATION
+========================================================================== */
+@media (max-width: 768px) {
+    .hk-create-wrapper { padding: 1rem; }
+    .hk-form-card { padding: 1.5rem; border-radius: 15px; }
+    .hk-header-card { padding: 1.5rem; }
+}

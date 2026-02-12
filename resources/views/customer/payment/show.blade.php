@@ -25,31 +25,39 @@
         <!-- Detail Sewa -->
             <div class="rental-info-modern">
 
-                <!-- Nama Alat -->
                 <div class="equipment-name">
                     {{ $rental->equipment->name }}
                 </div>
 
-                <!-- Grid Info -->
                 <div class="rental-grid">
                     <div class="rental-item">
                         <span class="label">📅 Tanggal Sewa</span>
                         <span class="value">
-                    {{ \Carbon\Carbon::parse($rental->rent_date)->translatedFormat('d F Y') }}
+                            {{ \Carbon\Carbon::parse($rental->rent_date)->translatedFormat('d F Y') }}
                         </span>
                     </div>
 
                     <div class="rental-item">
-                        <span class="label">⏱ Durasi</span>
-                        <span class="value">{{ $rental->duration_hours }} Jam</span>
+                        <span class="label">⏱ Durasi & Jam Mulai</span>
+                        <span class="value">
+                            {{-- Menampilkan Jam Mulai (format 24 jam) dan Durasi --}}
+                            {{ $rental->duration_hours }} Jam (Mulai {{ date('H:i', strtotime($rental->start_time)) }})
+                        </span>
                     </div>
 
                     <div class="rental-item full">
-                        <span class="label">📍 Lokasi</span>
+                        <span class="label">📍 Lokasi Pengerjaan</span>
                         <span class="value">{{ $rental->location }}</span>
                     </div>
-                </div>
 
+                    {{-- Menampilkan Catatan hanya jika customer mengisinya --}}
+                    @if($rental->notes)
+                        <div class="rental-item full mt-2">
+                            <span class="label">📝 Catatan Khusus</span>
+                            <span class="value" style="font-style: italic; color: #666;">"{{ $rental->notes }}"</span>
+                        </div>
+                    @endif
+                </div>
             </div>
 
         <!-- Total Harga -->

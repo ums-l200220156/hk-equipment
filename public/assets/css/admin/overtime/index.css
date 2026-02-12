@@ -1,91 +1,286 @@
 /* ==========================================================================
-   01. PENGATURAN TATA LETAK & TIPOGRAFI (LAYOUTING)
-   ========================================================================== */
-.hk-dashboard { background: #f4f6f9; min-height: 100vh; font-family: 'Plus Jakarta Sans', sans-serif; }
-.text-yellow { color: #fcc419 !important; }
-
-/* ==========================================================================
-   02. HEADER BANNER INDUSTRIAL (HK PREMIUM IDENTITY)
-   ========================================================================== */
-.hk-header-banner {
-    background: #1a1b1e;
-    background-image: linear-gradient(rgba(26, 27, 30, 0.9), rgba(26, 27, 30, 0.9)), 
-                      url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
-    border-radius: 20px; padding: 45px; border-bottom: 6px solid #fcc419;
+    A. RESET & VARIABLE DEFINITION
+    ========================================================================== 
+*/
+:root {
+    --primary: #0d6efd;
+    --dark-navy: #1e293b;
+    --soft-bg: #f8fafc;
+    --border-color: #e2e8f0;
+    --text-main: #334155;
+    --text-muted: #64748b;
+    --success: #10b981;
+    --danger: #ef4444;
 }
-.hk-badge { background: #fcc419; color: #000; padding: 4px 12px; border-radius: 4px; font-weight: 900; font-size: 0.65rem; display: inline-block; margin-bottom: 15px; }
-.hk-main-title { font-weight: 900; letter-spacing: -1.5px; font-size: 2.5rem; margin: 0; color: white; }
-.hk-subtitle { color: #909296; font-size: 0.95rem; max-width: 650px; }
+
+.hk-overtime-wrapper {
+    background-color: var(--soft-bg);
+    min-height: 100vh;
+    padding: 1.5rem;
+    font-family: 'Inter', sans-serif;
+    color: var(--text-main);
+}
 
 /* ==========================================================================
-   03. STATISTIK MINI (Symmetrical Stats)
-   ========================================================================== */
-.hk-stat-box { border-left: 3px solid #343a40; padding-left: 30px; }
-.hk-stat-label { display: block; color: #5c5f66; font-size: 0.75rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; }
-.hk-stat-value { font-size: 2.5rem; font-weight: 900; line-height: 1; }
+    B. HEADER & GLASS CARD EFFECT
+    ========================================================================== 
+*/
+.hk-glass-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 1.5rem 2rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.hk-page-title {
+    font-weight: 800;
+    color: var(--dark-navy);
+    letter-spacing: -0.5px;
+    margin-bottom: 0.25rem;
+}
+
+.hk-header-stats .stat-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: #f1f5f9;
+    padding: 0.75rem 1.25rem;
+    border-radius: 12px;
+}
+
+.stat-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    font-size: 1.2rem;
+}
+
+.stat-content .label {
+    display: block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--text-muted);
+}
+
+.stat-content .value {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--dark-navy);
+}
 
 /* ==========================================================================
-   04. BAR FILTER MODERN (PERIOD SYSTEM)
-   ========================================================================== */
-.hk-filter-container { background: white; padding: 15px 30px; border-radius: 15px; display: flex; align-items: center; gap: 25px; }
-.hk-filter-label { font-weight: 900; font-size: 0.8rem; color: #1a1b1e; }
-.hk-tab { text-decoration: none; padding: 10px 25px; font-weight: 800; font-size: 0.8rem; color: #495057; border-radius: 8px; transition: 0.3s; border: 1px solid transparent; }
-.hk-tab:hover { background: #f8f9fa; color: #000; }
-.hk-tab.active { background: #1a1b1e; color: #fcc419; border-color: #1a1b1e; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    C. FILTER NAVIGATION
+    ========================================================================== 
+*/
+.nav-scroll-wrapper {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding-bottom: 5px;
+}
+
+.nav-link-custom {
+    text-decoration: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 10px;
+    background: #fff;
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.85rem;
+    border: 1px solid var(--border-color);
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.nav-link-custom:hover {
+    background: #f1f5f9;
+    color: var(--primary);
+}
+
+.nav-link-custom.active {
+    background: var(--dark-navy);
+    color: #fff;
+    border-color: var(--dark-navy);
+}
 
 /* ==========================================================================
-   05. TABLE CARD SYSTEM (CARD SEPARATOR STYLE)
-   ========================================================================== */
-.hk-table-wrapper { background: #fff; border-radius: 24px; overflow: hidden; }
-.hk-main-table thead th { background: #1a1b1e; color: #ced4da; padding: 25px 15px; font-size: 0.75rem; font-weight: 900; letter-spacing: 1.5px; }
-.hk-row { border-bottom: 1px solid #f1f3f5; transition: 0.3s; height: 115px; }
-.row-running { background: #fffdf2 !important; border-left: 8px solid #fcc419 !important; }
+    D. MAIN DATA TABLE 
+    ========================================================================== 
+*/
+.hk-main-card {
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.04);
+    overflow: hidden;
+}
+
+.table thead th {
+    background: #f8fafc;
+    padding: 1.2rem 1rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    border-bottom: 2px solid var(--border-color);
+}
+
+.hk-ot-row {
+    transition: all 0.2s;
+}
+
+.hk-ot-row:hover {
+    background-color: #f8fafc;
+}
+
+.status-running {
+    background-color: #f0f7ff !important;
+}
+
+/* Unit Thumbnail */
+.hk-unit-thumbnail {
+    position: relative;
+    width: 80px;
+    height: 55px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.hk-unit-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.unit-badge {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: rgba(30, 41, 59, 0.8);
+    color: #fff;
+    font-size: 0.6rem;
+    padding: 1px 5px;
+    border-bottom-right-radius: 6px;
+}
+
+.hk-unit-name-link {
+    font-weight: 700;
+    color: var(--dark-navy);
+    font-size: 0.95rem;
+}
+
+.hk-client-name {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
 
 /* ==========================================================================
-   06. IDENTITAS UNIT & OPERATOR
-   ========================================================================== */
-.hk-unit-box { display: flex; align-items: center; gap: 20px; }
-.hk-unit-img { width: 110px; height: 75px; border-radius: 14px; overflow: hidden; position: relative; border: 3px solid #f1f3f5; }
-.hk-unit-img img { width: 100%; height: 100%; object-fit: cover; }
-.hk-unit-id { position: absolute; bottom: 0; right: 0; background: #1a1b1e; color: #fcc419; padding: 2px 8px; font-size: 0.6rem; font-weight: 900; border-top-left-radius: 10px; }
-.hk-unit-name { font-weight: 900; color: #1a1b1e; font-size: 1.1rem; margin-bottom: 4px; }
-.hk-user-name { font-size: 0.85rem; color: #868e96; font-weight: 600; }
+    E. STATUS & LIVE TIMER
+    ========================================================================== 
+*/
+.badge-status {
+    padding: 0.4rem 0.8rem;
+    border-radius: 50px;
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
+.badge-status.pending { background: #fff7ed; color: #c2410c; }
+.badge-status.completed { background: #f0fdf4; color: #15803d; }
+
+.hk-live-timer {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--dark-navy);
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+}
+
+.timer-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.dot-pulse {
+    width: 8px;
+    height: 8px;
+    background: #22c55e;
+    border-radius: 50%;
+    animation: pulse-green 1.5s infinite;
+}
+
+@keyframes pulse-green {
+    0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+    70% { box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+}
 
 /* ==========================================================================
-   07. TIMER MONITORING (INDUSTRIAL LOOK)
-   ========================================================================== */
-.hk-timer-display { background: #1a1b1e; padding: 12px; border-radius: 15px; width: 160px; margin: auto; border: 2px solid #343a40; }
-.hk-timer-label { font-size: 0.55rem; color: #fcc419; font-weight: 900; letter-spacing: 2px; margin-bottom: 3px; }
-.hk-timer-val { font-family: 'JetBrains Mono', monospace; color: white; font-size: 1.4rem; font-weight: 800; }
-.hk-status { padding: 10px 20px; border-radius: 50px; font-size: 0.7rem; font-weight: 900; display: inline-block; letter-spacing: 1px; }
-.hk-status.pending { background: #fff4e6; color: #d9480f; border: 1px solid #ffe8cc; }
-.hk-status.completed { background: #ebfbee; color: #2b8a3e; border: 1px solid #d3f9d8; }
+    F. BILLING & PRICING
+    ========================================================================== 
+*/
+.hk-price-tag .amount {
+    font-weight: 800;
+    font-size: 1rem;
+    color: var(--dark-navy);
+}
+
+.hk-price-tag .unit {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.billing-amount {
+    font-weight: 800;
+    font-size: 1.2rem;
+    letter-spacing: -0.5px;
+}
+
+.billing-label {
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
 
 /* ==========================================================================
-   08. PRICING & MANAJEMEN HARGA
-   ========================================================================== */
-.hk-normal-hint { font-size: 0.65rem; font-weight: 800; color: #adb5bd; margin-bottom: 8px; }
-.hk-input-group { display: flex; background: #fff; border-radius: 10px; overflow: hidden; width: 190px; margin: auto; border: 2px solid #e9ecef; }
-.hk-input-group input { border: none; background: transparent; width: 100%; padding: 10px; font-weight: 900; font-size: 0.9rem; text-align: center; outline: none; }
-.hk-input-group button { background: #1a1b1e; color: #fcc419; border: none; padding: 0 15px; font-size: 1.1rem; }
-.hk-fixed-price .label { display: block; font-size: 0.6rem; color: #adb5bd; font-weight: 900; letter-spacing: 1px; }
-.hk-fixed-price .value { font-size: 1.15rem; font-weight: 900; color: #1a1b1e; }
-.hk-fixed-price .value span { font-size: 0.75rem; color: #adb5bd; }
+    G. ACTION BUTTONS
+    ========================================================================== 
+*/
+.btn-group-custom {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
 
-/* ==========================================================================
-   09. LIVE BILLING ANIMATION
-   ========================================================================== */
-.hk-billing-val { font-size: 1.6rem; font-weight: 900; color: #1a1b1e; line-height: 1; letter-spacing: -1px; }
-.hk-billing-sub { font-size: 0.6rem; font-weight: 900; letter-spacing: 1.5px; color: #adb5bd; margin-top: 8px; }
-.pulse-danger { color: #e03131 !important; animation: pulse-hk 1.5s infinite; }
-@keyframes pulse-hk { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+.btn-action {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    font-size: 1.1rem;
+}
 
-/* ==========================================================================
-   10. SYSTEM COMMAND BUTTONS
-   ========================================================================== */
-.hk-action-group { display: flex; gap: 12px; justify-content: flex-end; }
-.hk-btn { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; border: none; transition: 0.3s; }
-.hk-btn.reject { background: #fff5f5; color: #fa5252; }
-.hk-btn.stop { background: #1a1b1e; color: #fcc419; }
-.hk-btn.delete { background: #f8f9fa; color: #ced4da; border: 1px solid #e9ecef; }
-.hk-btn:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+.btn-reject { color: var(--danger); }
+.btn-reject:hover { background: var(--danger); color: #fff; }
+
+.btn-stop { background: var(--dark-navy); color: #fbbf24; border-color: var(--dark-navy); }
+.btn-stop:hover { transform: scale(1.1); }
+
+.btn-delete { color: var(--text-muted); }
+.btn-delete:hover { background: #fee2e2; color: var(--danger); border-color: #fecaca; }

@@ -151,14 +151,26 @@
                                             </div>
                                         </div>
 
-                                        @if($ot->status === 'approved')
-                                            <form action="{{ route('customer.overtime.stop', $ot->id) }}" method="POST">
-                                                @csrf
-                                                <button type="submit" class="btn btn-dark w-100 fw-bold py-2 rounded-3">HENTIKAN LEMBUR</button>
-                                            </form>
+                                    
+                                    @if($ot->status === 'approved')
+                                        <form action="{{ route('customer.overtime.stop', $ot->id) }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="btn btn-dark w-100 fw-bold py-2 rounded-3">HENTIKAN LEMBUR</button>
+                                        </form>
+                                    @else
+                                        {{-- LOGIKA PEMBAYARAN DISINI --}}
+                                        @if($ot->payment_status === 'paid')
+                                            <div class="badge bg-success w-100 py-2 rounded-3"><i class="bi bi-check-circle"></i> PEMBAYARAN SELESAI</div>
+                                        @elseif($ot->payment_method === 'cash')
+                                            <div class="badge bg-warning text-dark w-100 py-2 rounded-3">MENUNGGU PEMBAYARAN CASH</div>
                                         @else
-                                            <div class="badge bg-success w-100 py-2 rounded-3">OVERTIME SELESAI</div>
+                                            <a href="{{ route('payment.overtime.show', $ot->id) }}" class="btn btn-danger w-100 fw-bold py-2 rounded-3 shadow-pulse">
+                                                <i class="bi bi-wallet2"></i> BAYAR OVERTIME
+                                            </a>
                                         @endif
+                                    @endif
+
+                                    
                                     </div>
                                 @endif
                             </div>

@@ -287,6 +287,17 @@
 
 .btn-cancel-ot-modern:hover { background: #dc3545; color: white; }
 
+
+.shadow-pulse {
+    animation: shadow-pulse 2s infinite;
+}
+
+@keyframes shadow-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(220, 53, 69, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
+}
+
 /* 10. Pengaturan Responsif (Mobile)
    Grid berubah menjadi satu kolom untuk menjaga keterbacaan di layar kecil.
 */

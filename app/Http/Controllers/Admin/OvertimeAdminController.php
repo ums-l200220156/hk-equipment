@@ -13,7 +13,7 @@ class OvertimeAdminController extends Controller
         $query = Overtime::with('rental.user', 'rental.equipment')
             ->whereIn('status', ['pending', 'approved', 'completed']);
 
-        // LOGIKA FILTER PERIODE (UNTUK MONITORING SKRIPSI)
+        // LOGIKA FILTER PERIODE
         if ($request->has('period') && $request->period !== 'all') {
             if ($request->period == 'weekly') {
                 $query->where('created_at', '>=', now()->subDays(7));
@@ -100,4 +100,13 @@ class OvertimeAdminController extends Controller
 
         return back()->with('success', 'Data overtime berhasil dihapus secara permanen.');
     }
+
+
+    public function verifyPayment($id)
+{
+    $ot = Overtime::findOrFail($id);
+    $ot->update(['payment_status' => 'paid']);
+
+    return back()->with('success', 'Pembayaran overtime berhasil diverifikasi.');
+}
 }

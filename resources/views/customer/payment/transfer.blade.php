@@ -50,12 +50,14 @@
             <div class="form-side">
                 <div class="upload-box-container">
                     <h3>Konfirmasi Bukti</h3>
-                    <form method="POST" action="{{ route('payment.upload',$rental->id) }}" enctype="multipart/form-data">
+                    {{-- Menambahkan ID form untuk validasi JS --}}
+                    <form method="POST" action="{{ route('payment.upload',$rental->id) }}" enctype="multipart/form-data" id="formTransferSewa">
                         @csrf
                         <div class="upload-area" id="uploadArea">
                             <i class="bi bi-cloud-arrow-up-fill"></i>
                             <p>Klik atau drop file bukti transfer di sini</p>
-                            <input type="file" name="payment_proof" id="fileInput" required hidden>
+                            {{-- Atribut required dilepas agar ditangani oleh SweetAlert --}}
+                            <input type="file" name="payment_proof" id="fileInput" hidden>
                             <div id="fileName" class="file-name-display"></div>
                         </div>
 
@@ -78,5 +80,7 @@
 @endsection
 
 @push('scripts')
+{{-- SweetAlert2 CDN harus sudah ada di layout utama atau dipanggil di sini --}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{{ asset('assets/js/customer/payment/transfer.js') }}"></script>
 @endpush
