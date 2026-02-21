@@ -1,50 +1,67 @@
-// 1. Digital Clock Header
-function updateClock() {
-    const now = new Date();
-    const clock = document.getElementById('digitalClock');
-    if(clock) {
-        clock.innerText = now.toLocaleTimeString('id-ID');
+/**
+ * HK EQUIPMENT DASHBOARD CORE ENGINE
+ */
+
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // 1. LIVE CLOCK UPDATE
+    function updateClock() {
+        const now = new Date();
+        const clockEl = document.getElementById('liveClock');
+        if (clockEl) {
+            clockEl.innerText = now.toLocaleTimeString('id-ID', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+        }
     }
-}
-setInterval(updateClock, 1000);
+    setInterval(updateClock, 1000);
+    updateClock();
 
-// 2. Chart Inisialisasi
-function initV3Chart(labels, data) {
-    const ctx = document.getElementById('mainChart').getContext('2d');
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Transaksi Sewa',
-                data: data,
-                backgroundColor: '#dc3545',
-                borderRadius: 5,
-                barThickness: 20
-            }]
-        },
-        options: {
-            maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: {
-                y: { beginAtZero: true, grid: { drawBorder: false } },
-                x: { grid: { display: false } }
+    // 2. RENTAL TREND CHART (Chart.js)
+    const ctx = document.getElementById('rentalChart');
+    if (ctx) {
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: chartData.labels,
+                datasets: [{
+                    label: 'Unit Tersewa',
+                    data: chartData.values,
+                    fill: true,
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.05)',
+                    tension: 0.4,
+                    pointRadius: 6,
+                    pointBackgroundColor: '#3b82f6',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: '#f1f5f9' },
+                        ticks: { stepSize: 1, font: { weight: '600' } }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { font: { weight: '600' } }
+                    }
+                }
             }
-        }
-    });
-}
+        });
+    }
 
-// 3. SweetAlert Action Baru
-function launchModal() {
-    Swal.fire({
-        title: 'Input Transaksi Baru',
-        text: 'Sistem akan membuka form penyewaan kilat.',
-        icon: 'question',
-        confirmButtonColor: '#dc3545',
-        showCancelButton: true
-    }).then((result) => {
-        if (result.isConfirmed) {
-            window.location.href = "/admin/rentals/create";
-        }
-    });
-}
+    // 3. AUTO REFRESH STATS (Optional - Setiap 5 Menit)
+    setTimeout(() => {
+        // window.location.reload();
+    }, 300000);
+});

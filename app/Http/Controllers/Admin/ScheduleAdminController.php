@@ -28,8 +28,8 @@ class ScheduleAdminController extends Controller
         }
 
         return $query->get()->map(function ($r) {
-
-            $start = Carbon::parse($r->rent_date.' '.$r->start_time);
+            // PERBAIKAN: Kunci zona waktu ke Asia/Jakarta agar jam tidak melompat
+            $start = Carbon::parse($r->rent_date.' '.$r->start_time, 'Asia/Jakarta');
             $end   = $start->copy()->addHours($r->duration_hours);
 
             return [
@@ -56,8 +56,9 @@ class ScheduleAdminController extends Controller
     {
         $rental = Rental::findOrFail($request->id);
 
-        $start = Carbon::parse($request->start);
-        $end   = Carbon::parse($request->end);
+        // PERBAIKAN: Gunakan zona waktu yang sama saat update koordinat baru
+        $start = Carbon::parse($request->start, 'Asia/Jakarta');
+        $end   = Carbon::parse($request->end, 'Asia/Jakarta');
         $hours = max(1, $start->diffInHours($end));
 
         // ⚠️ DETEKSI BENTROK
@@ -86,13 +87,38 @@ class ScheduleAdminController extends Controller
         return response()->json(['success' => true]);
     }
 
-    // 📊 HEATMAP PEMAKAIAN
-    public function heatmap()
+    // 📊 HEATMAP PEMAKAIAN 
+    public function heatmap(Request $request)
     {
-        return Equipment::withCount('rentals')->get()->map(function ($e) {
+        $period = $request->query('period', 'all'); // Default: Semua Waktu
+        $now = now();
+
+        // 1. Definisikan closure untuk filter status & waktu
+        $queryFilter = function ($query) use ($period, $now) {
+            $query->whereIn('status', ['on_progress', 'completed']);
+
+            if ($period == 'week') {
+                $query->whereBetween('rent_date', [
+                    $now->startOfWeek()->toDateString(), 
+                    $now->endOfWeek()->toDateString()
+                ]);
+            } elseif ($period == 'month') {
+                $query->whereMonth('rent_date', $now->month)
+                    ->whereYear('rent_date', $now->year);
+            } elseif ($period == 'year') {
+                $query->whereYear('rent_date', $now->year);
+            }
+        };
+
+        // 2. Hitung total penyewaan dalam periode tersebut sebagai pembagi (Total All)
+        $totalAllRentals = Rental::where($queryFilter)->count();
+
+        // 3. Ambil data per alat dengan filter yang sama
+        return Equipment::withCount(['rentals' => $queryFilter])->get()->map(function ($e) use ($totalAllRentals) {
             return [
                 'name' => $e->name,
-                'total' => $e->rentals_count
+                'total' => $e->rentals_count,
+                'total_all' => $totalAllRentals 
             ];
         });
     }

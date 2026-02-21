@@ -43,7 +43,7 @@ class RentalAdminController extends Controller
         if ($request->status === 'cancelled') {
             $rental->update(['status' => 'cancelled']);
             $rental->equipment->update(['status' => 'available']);
-            return back()->with('success', 'Penyewaan berhasil dibatalkan');
+            return back()->with('swal_success', 'Penyewaan berhasil dibatalkan');
         }
 
         $rental->update(['status' => $request->status]);
@@ -56,7 +56,7 @@ class RentalAdminController extends Controller
             $rental->equipment->update(['status' => 'available']);
         }
 
-        return back()->with('success', 'Status berhasil diperbarui');
+        return back()->with('swal_success', 'Status transaksi berhasil diperbarui');
     }
 
     public function create()
@@ -75,7 +75,7 @@ class RentalAdminController extends Controller
             'start_time' => 'required',
             'duration_hours' => 'required|integer|min:1',
             'location' => 'required|string',
-            'notes' => 'nullable|string|min:5|max:200', // Batasan Karakter
+            'notes' => 'nullable|string|min:5|max:200',
         ]);
 
         $equipment = Equipment::findOrFail($request->equipment_id);
@@ -93,7 +93,7 @@ class RentalAdminController extends Controller
         ]);
 
         $equipment->update(['status' => 'rented']);
-        return redirect()->route('admin.rentals.index')->with('success', 'Penyewaan manual berhasil ditambahkan.');
+        return redirect()->route('admin.rentals.index')->with('swal_success', 'Penyewaan manual berhasil ditambahkan.');
     }
 
     public function edit($id)
@@ -111,7 +111,7 @@ class RentalAdminController extends Controller
             'start_time' => 'required',
             'duration_hours' => 'required|integer|min:1',
             'location' => 'required|string',
-            'notes' => 'nullable|string|min:5|max:200' // Batasan Karakter
+            'notes' => 'nullable|string|min:5|max:200'
         ]);
 
         $rental = Rental::findOrFail($id);
@@ -128,7 +128,7 @@ class RentalAdminController extends Controller
             'total_price' => $total
         ]);
 
-        return redirect()->route('admin.rentals.index')->with('success', 'Perubahan transaksi berhasil disimpan.');
+        return redirect()->route('admin.rentals.index')->with('swal_success', 'Perubahan transaksi berhasil disimpan.');
     }
 
     public function destroy($id)
@@ -138,7 +138,7 @@ class RentalAdminController extends Controller
             $rental->equipment->update(['status' => 'available']);
         }
         $rental->delete();
-        return back()->with('success', 'Data transaksi berhasil dihapus.');
+        return back()->with('swal_success', 'Data transaksi berhasil dihapus.');
     }
 
     public function updateOvertime(Request $request, $id)
@@ -150,6 +150,6 @@ class RentalAdminController extends Controller
         if ($request->status === 'approved') {
             $overtime->rental->update(['status' => 'on_progress']);
         }
-        return back()->with('swal_success', true);
+        return back()->with('swal_success', 'Status overtime berhasil dikonfirmasi.');
     }
 }

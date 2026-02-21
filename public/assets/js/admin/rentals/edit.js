@@ -8,18 +8,15 @@ document.addEventListener('DOMContentLoaded', function() {
      * 01. FUNGSI KALKULASI HARGA OTOMATIS
      */
     function calculateTotal() {
-        // Ambil harga dari atribut data-price pada option yang dipilih
         const selectedOption = equipmentSelect.options[equipmentSelect.selectedIndex];
         const pricePerHour = parseFloat(selectedOption.getAttribute('data-price')) || 0;
         const duration = parseInt(durationInput.value) || 0;
-
         const total = pricePerHour * duration;
 
         // Update tampilan harga dengan format ribuan Indonesia
         priceDisplay.innerText = total.toLocaleString('id-ID');
     }
 
-    // Jalankan kalkulasi saat durasi diubah atau alat diganti
     durationInput.addEventListener('input', calculateTotal);
     equipmentSelect.addEventListener('change', calculateTotal);
 
@@ -38,12 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
             cancelButtonColor: '#64748b',
             confirmButtonText: 'YA, UPDATE SEKARANG',
             cancelButtonText: 'CEK KEMBALI',
-            background: '#ffffff',
-            customClass: {
-                title: 'fw-bold',
-                confirmButton: 'rounded-pill px-4 py-2',
-                cancelButton: 'rounded-pill px-4 py-2'
-            }
+            background: '#ffffff'
         }).then((result) => {
             if (result.isConfirmed) {
                 Swal.fire({
@@ -62,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
     durationInput.addEventListener('change', function() {
         if (this.value < 1) {
             this.value = 1;
-            calculateTotal(); // Update harga kembali ke 1 jam
+            calculateTotal();
             Swal.fire({
                 toast: true,
                 position: 'top-end',
@@ -72,17 +64,5 @@ document.addEventListener('DOMContentLoaded', function() {
                 timer: 3000
             });
         }
-    });
-
-    /**
-     * 04. ANIMASI INPUT FOKUS
-     */
-    document.querySelectorAll('.hk-input, .hk-input-warning').forEach(input => {
-        input.addEventListener('focus', function() {
-            this.parentElement.classList.add('is-focused');
-        });
-        input.addEventListener('blur', function() {
-            this.parentElement.classList.remove('is-focused');
-        });
     });
 });

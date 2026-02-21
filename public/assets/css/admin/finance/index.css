@@ -1,0 +1,82 @@
+/* ==========================================================================
+   HK FINANCE MASTER STYLE - INDUSTRIAL MODERN
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+
+:root {
+    --hk-navy: #0f172a;
+    --hk-dark: #1e293b;
+    --hk-danger: #ef4444;
+    --hk-success: #10b981;
+    --hk-warning: #f59e0b;
+}
+
+body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
+
+.hk-finance-wrapper { padding: 2rem; max-width: 1400px; margin: 0 auto; }
+
+/* Badge & Header */
+.hk-badge-finance {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--hk-warning);
+    letter-spacing: 1.5px;
+    background: rgba(245, 158, 11, 0.1);
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 50px;
+}
+
+.hk-page-title { font-weight: 800; color: var(--hk-navy); letter-spacing: -1px; }
+
+/* Cards Styling */
+.finance-card {
+    border-radius: 30px;
+    padding: 2rem;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: none;
+    transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.finance-card:hover { transform: translateY(-10px); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.2); }
+
+.finance-card.income { background: linear-gradient(135deg, #065f46 0%, #10b981 100%); }
+.finance-card.expense { background: linear-gradient(135deg, #991b1b 0%, #ef4444 100%); }
+.finance-card.balance { background: linear-gradient(135deg, #0f172a 0%, #334155 100%); }
+
+.finance-card .card-icon { position: absolute; right: -15px; top: -15px; font-size: 6rem; opacity: 0.15; transform: rotate(15deg); }
+.finance-card .amount { font-size: 2rem; font-weight: 800; margin-top: 5px; }
+.finance-card .label { font-weight: 700; opacity: 0.8; letter-spacing: 1px; }
+
+/* Filter Nav */
+.hk-filter-nav { background: white; padding: 6px; border-radius: 100px; display: inline-flex; border: 1px solid #e2e8f0; }
+.nav-link-custom { padding: 10px 25px; border-radius: 100px; color: #64748b; font-weight: 700; font-size: 0.85rem; text-decoration: none; transition: 0.3s; }
+.nav-link-custom.active { background: var(--hk-navy); color: white; }
+
+/* Main Table Card */
+.hk-main-card { background: white; border-radius: 35px; border: none; }
+.card-header-modern { padding: 1.8rem 2.5rem; border-bottom: 1px solid #f1f5f9; }
+.hk-table-modern thead th { background: #f8fafc; padding: 1.2rem; font-size: 0.75rem; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 1px; border: none; }
+.hk-table-modern tbody td { padding: 1.5rem 1.2rem; border-bottom: 1px solid #f8fafc; }
+
+/* Buttons & Inputs */
+.btn-navy-modern { background: var(--hk-navy); color: white; border-radius: 15px; font-weight: 700; padding: 10px 25px; transition: 0.3s; }
+.btn-navy-modern:hover { background: #1e293b; color: white; transform: scale(1.05); }
+
+.badge-cat-modern { background: #f1f5f9; color: var(--hk-navy); font-weight: 800; font-size: 0.65rem; padding: 6px 15px; border-radius: 8px; border: 1px solid #e2e8f0; }
+
+.btn-delete-luxury { width: 40px; height: 40px; border-radius: 12px; border: none; background: #fff1f2; color: var(--hk-danger); transition: 0.3s; }
+.btn-delete-luxury:hover { background: var(--hk-danger); color: white; }
+
+/* Modal Custom */
+.hk-modal-style { border-radius: 35px; border: none; }
+.form-label-custom { font-size: 0.7rem; font-weight: 800; color: var(--hk-navy); margin-bottom: 8px; display: block; }
+.form-control-custom { border-radius: 15px; border: 2px solid #f1f5f9; padding: 12px 18px; font-weight: 600; font-size: 0.9rem; }
+.form-control-custom:focus { border-color: var(--hk-navy); box-shadow: none; }

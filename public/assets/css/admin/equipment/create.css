@@ -1,0 +1,93 @@
+/* Custom Palette */
+:root {
+    --deep-blue: #1e3a8a;
+    --accent-color: #3b82f6;
+    --gold: #f59e0b;
+    --soft-gray: #f1f5f9;
+}
+
+/* Header Banner */
+.header-banner {
+    background: linear-gradient(135deg, var(--deep-blue) 0%, var(--accent-color) 100%);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.btn-back {
+    color: var(--deep-blue) !important;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+/* Card Styling */
+.card-colorful {
+    border-radius: 20px;
+    border-top: 5px solid var(--accent-color) !important;
+}
+
+.card-sidebar {
+    border-radius: 20px;
+    border-top: 5px solid var(--gold) !important;
+}
+
+.bg-primary-dark {
+    background-color: var(--deep-blue);
+    border-radius: 20px;
+}
+
+/* Input Customization */
+.form-label-custom {
+    font-weight: 700;
+    color: #475569;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.custom-input, .custom-select-colorful {
+    background-color: var(--soft-gray);
+    border: 2px solid transparent;
+    border-radius: 12px;
+    padding: 12px 15px;
+    transition: all 0.3s ease;
+}
+
+.custom-input:focus {
+    background-color: #fff;
+    border-color: var(--accent-color);
+    box-shadow: none;
+}
+
+/* Upload Area */
+.upload-area {
+    border: 3px dashed #cbd5e1;
+    border-radius: 20px;
+    padding: 40px 20px;
+    cursor: pointer;
+    transition: 0.3s;
+    background: #fafafa;
+}
+
+.upload-area:hover {
+    border-color: var(--accent-color);
+    background: #eff6ff;
+}
+
+.icon-circle {
+    width: 70px;
+    height: 70px;
+    background: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+/* Button Save */
+.btn-save {
+    border-radius: 12px;
+    font-size: 1rem;
+    letter-spacing: 1px;
+}

@@ -1,0 +1,131 @@
+/* ==========================================================================
+   01. VARIABEL GLOBAL & DASAR
+========================================================================== */
+:root {
+    --hk-navy: #0f172a;
+    --hk-warning: #f59e0b;
+    --hk-bg: #f8fafc;
+    --hk-border: #e2e8f0;
+    --hk-white: #ffffff;
+    --hk-success: #10b981;
+    --hk-danger: #ef4444;
+}
+
+body { background-color: var(--hk-bg); font-family: 'Plus Jakarta Sans', sans-serif; }
+.hk-main-wrapper { padding: 1.5rem; max-width: 1400px; margin: 0 auto; }
+
+/* ==========================================================================
+   02. HEADER & TOOLBAR
+========================================================================== */
+.hk-header-banner {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    padding: 1.5rem 2rem; border-radius: 15px; color: white;
+    border-bottom: 4px solid var(--hk-warning);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+.hk-main-title { font-weight: 800; font-size: 1.6rem; margin: 0; }
+.btn-hk-action { background: var(--hk-warning); color: #000; padding: 10px 20px; border-radius: 10px; font-weight: 800; text-decoration: none; font-size: 0.75rem; transition: 0.3s; display: inline-flex; align-items: center; gap: 8px; }
+
+.hk-toolbar { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
+.hk-search-wrapper { width: 100%; max-width: 350px; background: white; border: 2px solid var(--hk-warning); border-radius: 10px; display: flex; align-items: center; padding: 0 12px; }
+.hk-search-wrapper input { border: none; padding: 10px 0; width: 100%; outline: none; font-weight: 600; font-size: 0.85rem; }
+.hk-select-pill { padding: 10px 15px; border-radius: 10px; border: 1px solid var(--hk-border); font-weight: 700; font-size: 0.75rem; background: white; }
+
+/* ==========================================================================
+   03. MASTER DATA TABLE (DESKTOP)
+========================================================================== */
+.hk-grid-table { border-collapse: separate; border-spacing: 0 8px; width: 100%; }
+.hk-grid-table thead th { background: #f1f5f9; color: #64748b; font-weight: 800; font-size: 0.7rem; text-transform: uppercase; padding: 15px; border: none; }
+.hk-tr-item { background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.02); transition: 0.2s; }
+.hk-tr-item td { padding: 15px; border-top: 1px solid var(--hk-border); border-bottom: 1px solid var(--hk-border); }
+
+/* Identity Styling */
+.hk-no-circle { width: 30px; height: 30px; background: var(--hk-navy); color: white; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.75rem; margin: auto; }
+.hk-name-text { font-weight: 800; color: #000; background: var(--hk-warning); padding: 2px 10px; border-radius: 6px; display: inline-block; font-size: 0.85rem; }
+.badge-id { font-size: 0.65rem; color: #64748b; font-weight: 700; }
+.badge-cat { font-size: 0.65rem; color: #fff; background: var(--hk-navy); padding: 1px 6px; border-radius: 4px; font-weight: 700; }
+
+.val-amber { color: var(--hk-warning); font-weight: 700; font-size: 0.8rem; }
+.val-black { color: #000; font-weight: 700; font-size: 0.8rem; }
+.text-blue-soft { color: #3b82f6; font-style: italic; font-size: 0.7rem; }
+.clickable-desc { cursor: pointer; border-bottom: 1px dashed #3b82f6; display: inline-block; }
+
+.hk-price-badge { background: rgba(16, 185, 129, 0.1); padding: 6px 12px; border-radius: 10px; border: 1px solid rgba(16, 185, 129, 0.2); display: inline-block; }
+.hk-price-badge .amount { color: #10b981; font-weight: 800; font-size: 1rem; }
+
+.hk-status-dropdown { background: var(--hk-navy); color: white; border: none; font-size: 0.7rem; padding: 6px 12px; border-radius: 8px; font-weight: 700; cursor: pointer; width: 100%; }
+.st-available { background: #064e3b; color: #6ee7b7; }
+.st-rented { background: #451a03; color: #fbbf24; }
+.st-maintenance { background: #bb0e0e; color: #fca5a5; }
+
+/* Control Icons Desktop */
+@media (min-width: 993px) {
+    .btn-text { display: none; }
+    .hk-btn-action-mobile { 
+        width: 34px; height: 34px; display: inline-flex; 
+        align-items: center; justify-content: center; 
+        border-radius: 8px; border: 1px solid var(--hk-border); 
+        text-decoration: none; transition: 0.2s;
+    }
+    .btn-edit { color: var(--hk-navy); background: var(--hk-white); }
+    .btn-edit:hover { background: var(--hk-navy); color: white; }
+    .btn-del { background: #fff1f2; color: var(--hk-danger); border-color: #fecaca; }
+    .btn-del:hover { background: var(--hk-danger); color: white; }
+}
+
+/* Media Container */
+.hk-media-container { width: 85px; height: 60px; border-radius: 10px; overflow: hidden; position: relative; cursor: pointer; border: 1px solid var(--hk-border); }
+.hk-img-fit { width: 100%; height: 100%; object-fit: cover; }
+.hk-zoom-overlay { position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; color: white; }
+
+/* ==========================================================================
+   05. RESPONSIVE DESIGN (MOBILE CARD SYSTEM)
+========================================================================== */
+@media (max-width: 992px) {
+    .hk-toolbar { flex-direction: column; align-items: stretch; }
+    .hk-search-wrapper { max-width: none; }
+    
+    .hk-grid-table thead { display: none; }
+    .hk-grid-table, .hk-grid-table tbody, .hk-tr-item, .hk-tr-item td { display: block; width: 100%; }
+    
+    .hk-tr-item { 
+        margin-bottom: 20px; border-radius: 15px !important; 
+        border: 1px solid var(--hk-border) !important; padding: 15px; 
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05); background: white;
+    }
+    
+    .hk-tr-item td { 
+        text-align: left !important; border: none !important; 
+        padding: 12px 15px !important; display: flex; 
+        justify-content: space-between; align-items: center;
+        border-bottom: 1px solid rgba(0,0,0,0.05) !important;
+    }
+    
+    .hk-tr-item td:last-child { border-bottom: none !important; }
+    
+    .hk-tr-item td::before { 
+        content: attr(data-label); font-weight: 800; font-size: 0.65rem; 
+        color: #64748b; text-transform: uppercase; flex: 1; text-align: left;
+    }
+    
+    .hk-tr-item td > div, .hk-tr-item td > form, .hk-tr-item td > span {
+        flex: 1.5; display: flex; justify-content: flex-end; align-items: center; text-align: right;
+    }
+
+    .hk-unit-main-info { align-items: flex-end; text-align: right; }
+    .hk-spec-stack { align-items: flex-end; text-align: right; }
+    .hk-no-circle { margin: 0; }
+
+    /* BUTTON AKSI MOBILE DENGAN TEKS */
+    .hk-ctrl-group { justify-content: flex-end; width: 100%; gap: 10px; }
+    .hk-btn-action-mobile {
+        display: flex !important; align-items: center; gap: 6px;
+        padding: 8px 15px !important; border-radius: 10px;
+        font-size: 0.75rem; font-weight: 800; text-decoration: none;
+    }
+    .btn-edit { background: rgba(59, 130, 246, 0.1); color: #3b82f6; border: 1px solid #3b82f6; }
+    .btn-del { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid #ef4444; }
+    
+    .hk-col-preview { justify-content: center !important; border-bottom: 1.5px solid var(--hk-warning) !important; padding-bottom: 15px !important; }
+    .hk-media-container { width: 120px; height: 80px; }
+}

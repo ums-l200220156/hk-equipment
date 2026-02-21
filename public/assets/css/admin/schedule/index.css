@@ -1,0 +1,256 @@
+/* ==========================================================================
+   HK SCHEDULE MASTER STYLE - MODERN INDUSTRIAL
+   ========================================================================== */
+:root {
+    --hk-navy: #0f172a;
+    --hk-dark: #1e293b;
+    --hk-warning: #f59e0b;
+    --hk-bg: #f1f5f9;
+}
+
+.hk-schedule-wrapper { padding: 1.5rem; }
+
+/* Banner & Branding */
+.hk-banner {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    padding: 2.5rem;
+    border-radius: 24px;
+    color: white;
+    border-bottom: 6px solid var(--hk-warning);
+}
+
+.hk-badge {
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    color: var(--hk-warning);
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.hk-title { font-weight: 800; letter-spacing: -1px; }
+
+.btn-hk-heatmap {
+    background: rgba(245, 158, 11, 0.1);
+    border: 2px solid var(--hk-warning);
+    color: var(--hk-warning);
+    padding: 12px 24px;
+    border-radius: 14px;
+    font-weight: 700;
+    transition: 0.3s;
+}
+
+.btn-hk-heatmap:hover {
+    background: var(--hk-warning);
+    color: white;
+}
+
+/* ==========================================================================
+   MODERN UNIT FILTER STYLING
+   ========================================================================== */
+.hk-filter-card {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 24px;
+    box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.05);
+    border: 1px solid rgba(226, 232, 240, 0.6);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.hk-label-sm {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--hk-navy);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.75rem;
+    display: block;
+}
+
+.hk-filter-card .input-group {
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 16px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+.hk-filter-card .input-group:focus-within {
+    border-color: var(--hk-warning);
+    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.1);
+    background: #ffffff;
+    transform: translateY(-2px);
+}
+
+.hk-filter-card .input-group-text {
+    background: transparent;
+    border: none;
+    color: var(--hk-warning);
+    padding-left: 1.25rem;
+    font-size: 1.1rem;
+}
+
+.hk-filter-card .form-select {
+    background-color: transparent;
+    border: none;
+    padding: 0.75rem 1rem;
+    font-weight: 700;
+    color: var(--hk-navy);
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.hk-filter-card .form-select:focus {
+    box-shadow: none;
+}
+
+.bg-primary.px-3.py-2 {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.75rem;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Container Kalender Modern */
+.hk-calendar-container {
+    background: #ffffff;
+    padding: 2.5rem;
+    border-radius: 30px;
+    border: 1px solid rgba(0,0,0,0.05);
+    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+}
+
+/* Override FullCalendar */
+.fc-col-header-cell {
+    background: #f8fafc;
+    padding: 15px 0 !important;
+}
+
+.fc-col-header-cell-cushion {
+    color: var(--hk-navy);
+    font-weight: 800;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    text-decoration: none !important;
+}
+
+/* --- PERBAIKAN WARNA EVENT --- */
+.fc-v-event {
+    border: none !important;
+    border-radius: 12px !important;
+    padding: 8px !important;
+    box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.2) !important;
+}
+
+/* Indikator Border Berdasarkan Status */
+.hk-event-pending { border-left: 6px solid #856404 !important; }
+.hk-event-approved { border-left: 6px solid #004085 !important; }
+.hk-event-on_progress { border-left: 6px solid #ea580c !important; }
+
+.fc-event-main {
+    font-weight: 700 !important;
+    color: white !important;
+}
+
+/* Modern Heatmap Card */
+.hk-heatmap-card {
+    background: #ffffff;
+    padding: 2.5rem;
+    border-radius: 30px;
+    box-shadow: 0 20px 40px rgba(239, 68, 68, 0.05);
+    border: 1px solid rgba(239, 68, 68, 0.1);
+}
+
+.hk-heatmap-item {
+    background: #f8fafc;
+    padding: 20px;
+    border-radius: 20px;
+    margin-bottom: 15px;
+    transition: 0.3s;
+}
+
+.hk-heatmap-item:hover {
+    background: #ffffff;
+    border-color: #ef4444;
+    transform: translateX(10px);
+}
+
+/* Progress Bar Shine Animation */
+.progress-wrapper {
+    height: 12px;
+    background: #e2e8f0;
+    border-radius: 100px;
+    overflow: hidden;
+    margin-top: 10px;
+    position: relative;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ef4444, #f87171);
+    border-radius: 100px;
+    transition: width 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+}
+
+.progress-fill::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    animation: shine 2s infinite;
+}
+
+@keyframes shine {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+/* ==========================================================================
+   PERBAIKAN RESPONSIF HEADER TABEL (MINIMIZE/MOBILE)
+   ========================================================================== */
+@media (max-width: 768px) {
+    .fc .fc-toolbar {
+        flex-direction: column !important;
+        gap: 1.5rem !important;
+        align-items: center !important;
+    }
+
+    .fc .fc-toolbar-title {
+        font-size: 1.2rem !important;
+        text-align: center;
+        order: -1; 
+    }
+
+    .fc .fc-toolbar-chunk:nth-child(1) {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .fc .fc-button-group {
+        display: flex !important;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .fc .fc-button {
+        padding: 0.5rem 0.8rem !important;
+        font-size: 0.75rem !important;
+    }
+
+    .hk-schedule-wrapper { padding: 0.75rem; }
+
+    .hk-calendar-container {
+        padding: 1rem;
+        border-radius: 20px;
+    }
+}

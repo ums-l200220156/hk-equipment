@@ -7,21 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     {{-- SELECT2 CSS --}}
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <style>
-        .select2-container--default .select2-selection--single {
-            border-radius: 12px !important;
-            border: 1.5px solid var(--hk-border) !important;
-            height: 50px !important;
-            display: flex;
-            align-items: center;
-        }
-        .select2-container--default .select2-selection--single .select2-selection__arrow { height: 48px !important; }
-        .select2-container--default .select2-selection--single .select2-selection__rendered {
-            font-weight: 500;
-            color: var(--hk-navy);
-            padding-left: 15px;
-        }
-    </style>
 @endpush
 
 @section('content')
@@ -36,7 +21,7 @@
                     </ol>
                 </nav>
                 <h2 class="hk-page-title">ENTRY <span class="text-warning">NEW TRANSACTION</span></h2>
-                <p class="hk-subtitle text-muted">Input data penyewaan manual untuk pelanggan offline.</p>
+                <p class="hk-subtitle">Input data penyewaan manual untuk pelanggan offline.</p>
             </div>
             <div class="hk-header-action">
                 <a href="{{ route('admin.rentals.index') }}" class="btn-hk-back">

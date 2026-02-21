@@ -1,0 +1,228 @@
+/* ==========================================================================
+   HK LOGIN THEME - INDUSTRIAL CYBER
+   ========================================================================== */
+
+:root {
+    --hk-navy: #0f172a;
+    --hk-dark: #1e293b;
+    --hk-warning: #f59e0b;
+    --hk-white: #ffffff;
+    --hk-border: rgba(255,255,255,0.1);
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.hk-login-page {
+    background-color: var(--hk-navy);
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efek Background */
+.hk-grid-overlay {
+    position: absolute;
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%;
+    background-image: radial-gradient(rgba(245, 158, 11, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: 1;
+}
+
+.hk-glow-sphere {
+    position: absolute;
+    width: 500px; 
+    height: 500px;
+    background: radial-gradient(circle, rgba(245, 158, 11, 0.1) 0%, transparent 70%);
+    top: -200px; 
+    right: -100px;
+    z-index: 2;
+}
+
+/* Card Styling */
+.hk-login-card {
+    background: rgba(30, 41, 59, 0.7);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--hk-border);
+    padding: 3rem;
+    border-radius: 30px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    z-index: 10;
+    position: relative;
+}
+
+.hk-logo-icon {
+    font-size: 3.5rem;
+    color: var(--hk-warning);
+    margin-bottom: 10px;
+}
+
+.hk-title {
+    color: white;
+    font-weight: 900;
+    letter-spacing: -1px;
+    margin: 0;
+}
+
+.hk-subtitle {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    margin-top: 10px;
+}
+
+/* --- PERBAIKAN TOTAL AGAR ICON MATA SIMETRIS --- */
+.hk-input-group {
+    position: relative;
+    width: 100%;
+    /* Gunakan display flex agar elemen internal punya tinggi yang sama */
+    display: flex;
+    align-items: stretch; 
+}
+
+.hk-input-group i:first-child {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%); /* Center Vertikal Icon Kiri */
+    color: #64748b;
+    font-size: 1.1rem;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.hk-input {
+    width: 100%;
+    padding: 14px 55px 14px 50px; /* Padding kanan dilebihkan untuk icon mata */
+    background: rgba(15, 23, 42, 0.5);
+    border: 2px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    color: white;
+    font-weight: 600;
+    transition: 0.3s;
+    z-index: 5;
+    line-height: 1.5;
+}
+
+/* Tombol Mata Presisi Di Dalam Kolom */
+.hk-toggle-btn {
+    position: absolute;
+    right: 15px; /* Jarak dari sisi kanan */
+    top: 50%;
+    transform: translateY(-50%); /* KUNCI SIMETRIS VERTIKAL */
+    background: none;
+    border: none;
+    color: #64748b;
+    cursor: pointer;
+    z-index: 10;
+    padding: 18px; /* Area klik yang nyaman */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+}
+
+.hk-toggle-btn:hover {
+    color: var(--hk-warning);
+}
+
+.hk-toggle-btn i {
+    font-size: 1.2rem;
+    line-height: 0; /* Menghilangkan spasi teks dalam icon */
+}
+
+/* --- PERBAIKAN TEKS DAFTAR SEKARANG (CENTER SIMETRIS) --- */
+.hk-register-footer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1.5rem;
+}
+
+.hk-register-footer p {
+    margin: 0;
+    color: #94a3b8;
+    font-size: 0.85rem;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.hk-link-warning {
+    color: var(--hk-warning);
+    text-decoration: none;
+    font-weight: 800;
+    transition: 0.3s;
+}
+
+.hk-link-warning:hover {
+    color: white;
+    text-shadow: 0 0 8px rgba(245, 158, 11, 0.6);
+}
+
+/* --- ELEMEN LAINNYA --- */
+.hk-label {
+    color: var(--hk-warning);
+    font-weight: 800;
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.hk-forgot-link {
+    color: var(--hk-warning);
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.hk-remember {
+    color: #94a3b8;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.hk-btn-login {
+    background: var(--hk-warning);
+    color: var(--hk-navy);
+    border: none;
+    padding: 16px;
+    border-radius: 16px;
+    font-weight: 800;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    transition: 0.3s;
+}
+
+.hk-btn-login:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(245, 158, 11, 0.3);
+    background: white;
+}
+
+.swal2-popup {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    border-radius: 24px !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.swal2-title {
+    font-weight: 800 !important;
+}
+
+.swal2-styled.swal2-confirm {
+    border-radius: 12px !important;
+    font-weight: 700 !important;
+    padding: 10px 25px !important;
+}

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title ?? 'HK Equipment' }} | Admin Panel</title>
 
-    {{-- 1. FIX FLICKER: Script ini diletakkan di HEAD agar berjalan SEBELUM elemen digambar --}}
+    {{-- 1. FIX FLICKER --}}
     <script>
         (function() {
             const savedState = localStorage.getItem('hk_sidebar_state');
@@ -18,7 +18,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    
     <link rel="stylesheet" href="{{ asset('assets/css/admin/admin-style.css') }}">
 
     @stack('styles')
@@ -49,17 +48,38 @@
     <script src="{{ asset('assets/js/admin/admin-script.js') }}"></script>
 
     {{-- SweetAlert Global Handler --}}
-    @if(session('swal_success'))
     <script>
-        Swal.fire({ icon: 'success', title: 'Berhasil', text: "{{ session('swal_success') }}", timer: 2000, showConfirmButton: false, borderRadius: '15px' });
-    </script>
-    @endif
+        document.addEventListener('DOMContentLoaded', function() {
+            @if(session('swal_success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'BERHASIL',
+                    text: "{{ session('swal_success') }}",
+                    timer: 2500,
+                    showConfirmButton: false,
+                    background: '#ffffff',
+                    customClass: {
+                        popup: 'rounded-4 shadow',
+                        title: 'fw-bold text-dark'
+                    }
+                });
+            @endif
 
-    @if(session('swal_error'))
-    <script>
-        Swal.fire({ icon: 'error', title: 'Gagal', text: "{{ session('swal_error') }}", confirmButtonColor: '#dc3545' });
+            @if(session('swal_error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: 'GAGAL',
+                    text: "{{ session('swal_error') }}",
+                    confirmButtonColor: '#0f172a',
+                    background: '#ffffff',
+                    customClass: {
+                        popup: 'rounded-4 shadow',
+                        title: 'fw-bold text-danger'
+                    }
+                });
+            @endif
+        });
     </script>
-    @endif
 
     @stack('scripts')
 </body>

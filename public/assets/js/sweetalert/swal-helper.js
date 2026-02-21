@@ -30,25 +30,38 @@ function confirmFormSubmit(formId, options = {}) {
 }
 
 /* ===============================
-   Alert sukses
+   Alert sukses 
 ================================ */
 function swalSuccess(message) {
+    // Decode HTML entities agar &quot; menjadi "
+    const doc = new DOMParser().parseFromString(message, 'text/html');
+    const decodedMessage = doc.documentElement.textContent;
+
     Swal.fire({
         icon: 'success',
-        title: 'Berhasil',
-        text: message,
-        confirmButtonColor: '#16a34a'
+        title: 'Berhasil!',
+        text: decodedMessage,
+        background: '#111827', 
+        color: '#fff',
+        confirmButtonColor: '#f59e0b',
+        timer: 3000,             
+        timerProgressBar: true,  // Bar waktu berjalan di bawah alert
+        showConfirmButton: true
     });
 }
 
 /* ===============================
-   Alert error
+   Alert error 
 ================================ */
 function swalError(message) {
     Swal.fire({
         icon: 'error',
         title: 'Gagal',
         text: message,
-        confirmButtonColor: '#dc2626'
+        background: '#111827',
+        color: '#fff',
+        confirmButtonColor: '#ef4444',
+        timer: 4000,             
+        timerProgressBar: true
     });
 }
