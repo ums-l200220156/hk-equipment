@@ -26,10 +26,18 @@
                     <span class="label">⏱ Total Durasi Lembur</span>
                     <span class="value">
                         @php
-                            $h = floor($overtime->extra_hours);
-                            $m = round(($overtime->extra_hours - $h) * 60);
+                            if ($overtime->started_at && $overtime->ended_at) {
+                                $diff = $overtime->started_at->diffInSeconds($overtime->ended_at);
+
+                                $h = floor($diff / 3600);
+                                $m = floor(($diff % 3600) / 60);
+                                $s = $diff % 60;
+                            } else {
+                                $h = $m = $s = 0;
+                            }
                         @endphp
-                        {{ $h }} Jam {{ $m }} Menit
+
+                        {{ sprintf('%02d Jam %02d Menit %02d Detik', $h, $m, $s) }}
                     </span>
                 </div>
 

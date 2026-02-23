@@ -145,32 +145,150 @@
 /* 6. PENGATURAN RESPONSIF (MOBILE)
 */
 @media (max-width: 768px) {
-    .admin-welcome-header {
-        padding: 20px;
-        text-align: center;
+    .container-fluid {
+        padding: 1rem !important;
     }
 
-    .header-content {
-        flex-direction: column;
-        gap: 20px;
+    /* Transform Table ke Stacked Cards */
+    #testimoniTable, 
+    #testimoniTable thead, 
+    #testimoniTable tbody, 
+    #testimoniTable tr, 
+    #testimoniTable td { 
+        display: block !important; 
+        width: 100% !important;
     }
 
-    .header-actions-wrapper {
-        flex-direction: column;
-        width: 100%;
+    #testimoniTable thead {
+        display: none !important;
     }
 
-    .filter-box, .total-testimoni-badge {
-        width: 100%;
-        min-width: unset;
+    .testimoni-row {
+        background: #ffffff;
+        border: 1px solid #f1f5f9;
+        border-radius: 20px;
+        margin-bottom: 15px;
+        padding: 12px;
+        box-shadow: 0 6px 14px rgba(0,0,0,0.04);
+        
+        /* 🔥 VISUAL ACCENT - SAMA DENGAN FINANCE */
+        border-left: 4px solid var(--hk-danger);
+        position: relative;
+        transition: 0.2s;
     }
 
-    .admin-welcome-header h2 {
-        font-size: 1.4rem;
+    .testimoni-row:active {
+        transform: scale(0.98);
+        background: #f8fafc;
     }
 
-    /* Memastikan tabel bisa di-scroll dengan indikator */
-    .table-responsive {
-        border-radius: 0 0 15px 15px;
+    /* Setiap baris data di dalam card */
+    #testimoniTable td {
+        display: grid !important;
+        /* KUNCI SIMETRIS FINANCE: 110px lurus ke bawah */
+        grid-template-columns: 110px 1fr !important;
+        align-items: center;
+        padding: 15px 0 !important;
+        margin: 0 !important;
+        border: none !important;
+        line-height: 1.2 !important;
+        
+        /* 🔥 Divider antar field */
+        border-bottom: 1px dashed #e2e8f0 !important;
+    }
+
+    #testimoniTable td:last-child {
+        border-bottom: none !important;
+    }
+
+    /* Reset Bootstrap Alignment */
+    #testimoniTable td.text-end,
+    #testimoniTable td.text-center {
+        text-align: unset !important;
+    }
+
+    /* Label (Sisi Kiri) */
+    #testimoniTable td::before {
+        content: attr(data-label);
+        width: 110px;
+        min-width: 110px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start !important;
+        font-size: 0.65rem;
+        font-weight: 800;
+        color: #475569;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* Value (Sisi Kanan) */
+    #testimoniTable td > * {
+        justify-self: end;
+        text-align: right;
+        margin: 0 !important;
+    }
+
+    /* =========================
+       PENYESUAIAN KHUSUS KONTEN
+    ========================== */
+    
+    /* Baris Profil (Informasi Klien) */
+    .testimoni-row td:first-child {
+        background: rgba(248, 250, 252, 0.5);
+        margin: -12px -12px 5px -12px !important;
+        padding: 15px 12px !important;
+        border-radius: 20px 20px 0 0;
+        border-bottom: 1px solid #e2e8f0 !important;
+    }
+
+    .testimoni-row td:first-child .d-flex {
+        flex-direction: row; /* Tetap horizontal agar compact */
+        justify-content: flex-end;
+    }
+
+    .testimoni-row td:first-child img {
+        width: 35px;
+        height: 35px;
+    }
+
+    /* Bintang Rating */
+    .star-rating {
+        font-size: 0.8rem;
+    }
+
+    /* Isi Ulasan */
+    .testimoni-text {
+        font-size: 0.8rem;
+        color: #334155;
+        max-width: 180px;
+        word-break: break-word;
+    }
+
+    .testimoni-text i {
+        display: none; /* Sembunyikan icon quote di mobile */
+    }
+
+    /* Tombol Media */
+    .media-preview-container {
+        justify-content: flex-end;
+    }
+
+    .btn-preview {
+        width: 50px;
+        height: 50px;
+    }
+
+    /* Baris Aksi */
+    #testimoniTable td[data-label="Aksi"] {
+        border-top: 1px solid #e2e8f0 !important;
+        margin-top: 5px;
+        padding-top: 10px !important;
+    }
+
+    .btn-delete-testi {
+        width: 35px;
+        height: 35px;
+        border-radius: 10px;
     }
 }

@@ -80,3 +80,159 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; 
 .form-label-custom { font-size: 0.7rem; font-weight: 800; color: var(--hk-navy); margin-bottom: 8px; display: block; }
 .form-control-custom { border-radius: 15px; border: 2px solid #f1f5f9; padding: 12px 18px; font-weight: 600; font-size: 0.9rem; }
 .form-control-custom:focus { border-color: var(--hk-navy); box-shadow: none; }
+
+/* ======================================================================
+   MOBILE CARD TRANSFORM – FINANCE TABLE (FINAL CLEAN)
+====================================================================== */
+@media (max-width: 768px) {
+
+    /* wrapper lebih rapat */
+    .hk-finance-wrapper {
+        padding: 1rem;
+    }
+
+    /* table → card */
+    .hk-table-modern thead {
+        display: none;
+    }
+
+    .hk-table-modern tbody tr {
+        display: block;
+        background: #fff;
+        border-radius: 20px;
+        padding: 12px;
+        margin-bottom: 12px;
+        box-shadow: 0 6px 14px rgba(0,0,0,0.04);
+        border: 1px solid #f1f5f9;
+
+        /* 🔥 VISUAL ACCENT */
+        border-left: 4px solid var(--hk-danger);
+        position: relative;
+        transition: 0.2s;
+    }
+
+    .hk-table-modern tbody tr:active {
+        transform: scale(0.98);
+        background: #f8fafc;
+    }
+
+    /* setiap cell jadi row */
+    .hk-table-modern tbody td {
+        display: grid !important;
+        grid-template-columns: 110px 1fr !important;
+        align-items: center;
+        padding: 18px 0 !important;
+        margin: 0 !important;
+        line-height: 1.2 !important;
+
+        /* 🔥 divider antar field */
+        border-bottom: 1px dashed #e2e8f0;
+    }
+
+    .hk-table-modern tbody td:last-child {
+        border-bottom: none;
+    }
+
+    /* reset bootstrap alignment */
+    .hk-table-modern td.text-end,
+    .hk-table-modern td.text-center {
+        text-align: unset !important;
+    }
+
+    /* label */
+    .hk-table-modern tbody td::before {
+        content: attr(data-label);
+        width: 110px;
+        min-width: 110px;
+
+        display: flex;
+        align-items: center;
+        justify-content: flex-start !important;
+
+        font-size: 0.65rem;
+        font-weight: 800;
+        color: #475569;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* value kanan */
+    .hk-table-modern tbody td > * {
+        justify-self: end;
+        text-align: right;
+        margin: 0 !important;
+    }
+
+    /* =========================
+       KHUSUS NOMINAL (HIGHLIGHT)
+    ========================== */
+    .hk-table-modern td[data-label="Nominal"] {
+        text-align: right !important;
+        background: rgba(239, 68, 68, 0.05);
+        border-radius: 8px;
+        padding: 6px 10px !important;
+    }
+
+    .hk-table-modern td[data-label="Nominal"] > * {
+        justify-self: end !important;
+        text-align: right !important;
+        width: 100%;
+    }
+
+    /* =========================
+       KHUSUS AKSI
+    ========================== */
+    .hk-table-modern td[data-label="Aksi"] {
+        display: grid !important;
+        grid-template-columns: 110px 1fr !important;
+        border-top: 1px solid #e2e8f0;
+        margin-top: 6px;
+        padding-top: 8px !important;
+    }
+
+    .hk-table-modern td[data-label="Aksi"] > form {
+        justify-self: end;
+    }
+
+    /* tanggal */
+    .hk-table-modern tbody td:first-child > div {
+        font-size: 0.8rem;
+        font-weight: 800;
+    }
+
+    /* kategori */
+    .badge-cat-modern {
+        font-size: 0.6rem;
+        padding: 4px 8px;
+        background: #e2e8f0;
+        color: var(--hk-navy);
+    }
+
+    /* deskripsi */
+    .hk-table-modern td:nth-child(3) p {
+        font-size: 0.75rem;
+        line-height: 1.2 !important;
+        max-width: 180px;
+        margin: 0 !important;
+    }
+
+    /* nominal */
+    .hk-table-modern td:nth-child(4) {
+        font-size: 0.9rem;
+        font-weight: 800;
+    }
+
+    /* aksi */
+    .hk-table-modern td:last-child {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 4px;
+    }
+
+    .btn-delete-luxury {
+        width: 32px;
+        height: 32px;
+        font-size: 0.8rem;
+    }
+
+}

@@ -131,12 +131,18 @@
                                                 <div class="col-6 border-end">
                                                     <small class="text-muted d-block">⏱ DURASI LEMBUR</small>
                                                     <h4 class="fw-bold" id="displayTimer">
-                                                        @if($ot->status === 'completed')
+                                                        @if($ot->status === 'completed' && $ot->started_at && $ot->ended_at)
+                                                        
                                                             @php
-                                                                $h = floor($ot->extra_hours);
-                                                                $m = round(($ot->extra_hours - $h) * 60);
+                                                                $diff = $ot->started_at->diffInSeconds($ot->ended_at);
+
+                                                                $h = floor($diff / 3600);
+                                                                $m = floor(($diff % 3600) / 60);
+                                                                $s = $diff % 60;
                                                             @endphp
-                                                            {{ $h }}j {{ $m }}m
+
+                                                            {{ sprintf('%02d:%02d:%02d', $h, $m, $s) }}
+
                                                         @else
                                                             00:00:00
                                                         @endif

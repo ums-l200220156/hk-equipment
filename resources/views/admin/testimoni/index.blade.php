@@ -51,27 +51,38 @@
                     <tr class="testimoni-row" data-rating="{{ $t->rating }}">
                         <td class="ps-4">
                             <div class="d-flex align-items-center" style="min-width: 180px;">
-                                <img src="https://ui-avatars.com/api/?name={{ urlencode($t->user->name) }}&background=dc3545&color=fff" class="rounded-circle me-3 border shadow-sm" width="45">
+                                {{-- Logika Foto Profil --}}
+                                @if($t->user->image)
+                                    <img src="{{ asset('uploads/users/'.$t->user->image) }}" 
+                                        class="rounded-circle me-3 border shadow-sm" 
+                                        width="45" height="45" 
+                                        style="object-fit: cover;">
+                                @else
+                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($t->user->name) }}&background=dc3545&color=fff&bold=true" 
+                                        class="rounded-circle me-3 border shadow-sm" 
+                                        width="45">
+                                @endif
+                                
                                 <div>
                                     <div class="fw-bold text-dark">{{ $t->user->name }}</div>
                                     <small class="text-muted">{{ $t->created_at->format('d/m/Y') }}</small>
                                 </div>
                             </div>
                         </td>
-                        <td>
+                        <td data-label="Penilaian">
                             <div class="star-rating text-warning" style="white-space: nowrap;">
                                 @for($i=1; $i<=5; $i++)
                                     <i class="bi {{ $i <= $t->rating ? 'bi-star-fill' : 'bi-star' }}"></i>
                                 @endfor
                             </div>
                         </td>
-                        <td>
+                        <td  data-label="Isi Ulasan">
                             <div class="testimoni-text">
                                 <i class="bi bi-quote text-danger opacity-25 fs-4"></i>
                                 <span>{{ $t->content }}</span>
                             </div>
                         </td>
-                        <td>
+                        <td  data-label="Media">
                             <div class="media-preview-container">
                                 @if($t->photo)
                                     <button type="button" class="btn-preview img-trigger" onclick="viewMedia('{{ asset('storage/'.$t->photo) }}', 'image')">
@@ -94,7 +105,7 @@
                                 @endif
                             </div>
                         </td>
-                        <td class="text-end pe-4">
+                        <td class="text-end pe-4" data-label="Aksi">
                             <button onclick="confirmDelete({{ $t->id }})" class="btn-delete-testi">
                                 <i class="bi bi-trash3-fill"></i>
                             </button>

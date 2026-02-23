@@ -30,4 +30,5 @@ public function rental()
     return $this->belongsTo(Rental::class);
 }
 
+
 }

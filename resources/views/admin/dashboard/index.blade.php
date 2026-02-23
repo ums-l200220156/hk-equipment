@@ -1,167 +1,185 @@
 @extends('layouts.admin')
-@section('title', 'Executive Dashboard - HK Equipment')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('assets/css/admin/admin-dashboard.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+<link rel="stylesheet" href="{{ asset('assets/css/admin/admin-dashboard.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 @endpush
 
 @section('content')
-<div class="hk-dashboard-container">
-    
-    {{-- 01. HEADER: BRANDING & PRINT --}}
-    <div class="hk-glass-header mb-4 animate__animated animate__fadeIn">
-        <div class="row align-items-center">
-            <div class="col-md-6">
-                <span class="hk-label text-danger fw-bold">DASHBOARD EKSEKUTIF</span>
-                <h2 class="fw-800 text-navy mb-0">HK <span class="text-danger">EQUIPMENT</span> MONITOR</h2>
-            </div>
-            <div class="col-md-6 text-md-end mt-3 mt-md-0">
-                <button onclick="window.print()" class="btn-hk-print me-2">
-                    <i class="bi bi-printer"></i> CETAK LAPORAN RAPAT
+<div class="hk-dashboard-wrapper container-fluid">
+
+    {{-- HEADER SECTION: ANIMATED WELCOME & LARGE CLOCK --}}
+    <div class="hk-hero-banner animate__animated animate__fadeInDown">
+        <div class="hk-hero-content">
+            <h1 class="animate__animated animate__lightSpeedInLeft">Welcome back, <span class="text-danger">HK Admin</span></h1>
+            <p>Sistem sedang berjalan optimal. Memantau <span class="fw-bold text-order">{{ $totalEquipment }} armada</span> secara real-time.</p>
+            {{-- Tombol Cetak Laporan --}}
+            <a href="{{ route('admin.report.export') }}" class="btn btn-danger btn-sm mt-2 rounded-pill px-4 shadow-sm">
+                <i class="bi bi-file-earmark-pdf-fill me-2"></i>CETAK LAPORAN
+            </a>
+        </div>
+        
+        {{-- JAM & TANGGAL BESAR DI KANAN --}}
+        <div class="hk-time-large-container text-end animate__animated animate__fadeInRight">
+            {{-- TOMBOL MUTE/UNMUTE --}}
+            <div class="mb-2">
+                <button id="btnToggleMute" onclick="toggleMute()" title="Atur Notifikasi">
+                    <i class="bi bi-bell-fill"></i>
                 </button>
-                <div class="digital-clock d-inline-block shadow-sm">
-                    <span id="liveClock">00:00:00</span>
-                </div>
             </div>
+            <div id="liveClock" class="hk-clock-big">00:00:00</div>
+            <div class="hk-date-big">{{ now()->translatedFormat('l, d F Y') }}</div>
         </div>
     </div>
 
-    {{-- 02. TOP PERFORMANCE CARDS --}}
-    <div class="row g-4 mb-4">
-        {{-- Total Profit --}}
-        <div class="col-lg-4">
-            <div class="card-luxury card-profit animate__animated animate__zoomIn">
-                <div class="card-inner">
-                    <small>SALDO BERSIH BULAN INI</small>
-                    <h3>Rp {{ number_format($netProfit, 0, ',', '.') }}</h3>
-                    <div class="mini-breakdown mt-3">
-                        <span>Pemasukan: Rp {{ number_format($rentalIncome + $overtimeIncome, 0, ',', '.') }}</span>
-                        <div class="progress mt-2" style="height: 4px; background: rgba(255,255,255,0.2);">
-                            <div class="progress-bar bg-white" style="width: 75%"></div>
-                        </div>
-                    </div>
-                </div>
-                <i class="bi bi-wallet2 icon-bg"></i>
-            </div>
-        </div>
-        {{-- Fleet Status --}}
-        <div class="col-lg-4">
-            <div class="card-luxury card-fleet animate__animated animate__zoomIn" style="animation-delay: 0.1s">
-                <div class="card-inner">
-                    <small>UTILITAS ARMADA</small>
-                    <h3>{{ $rented }} <span class="fs-6 fw-normal">Unit Tersewa</span></h3>
-                    <div class="d-flex gap-2 mt-3">
-                        <span class="badge bg-success rounded-pill">Ready: {{ $available }}</span>
-                        <span class="badge bg-warning text-dark rounded-pill">Service: {{ $underMaintenance }}</span>
-                    </div>
-                </div>
-                <i class="bi bi-truck-front icon-bg"></i>
-            </div>
-        </div>
-        {{-- Critical Alerts --}}
-        <div class="col-lg-4">
-            <div class="card-luxury card-alert animate__animated animate__zoomIn" style="animation-delay: 0.2s">
-                <div class="card-inner">
-                    <small>PERHATIAN SISTEM</small>
-                    <h3>{{ $overdueRentals }} <span class="fs-6 fw-normal">Kasus Overdue</span></h3>
-                    <p class="mb-0 mt-3 small text-white-50">Segera hubungi penyewa yang melewati batas waktu pengembalian.</p>
-                </div>
-                <i class="bi bi-exclamation-octagon icon-bg"></i>
-            </div>
-        </div>
+    {{-- QUICK ACCESS GRID --}}
+    <div class="hk-quick-access-grid mb-4">
+        <a href="{{ route('admin.rentals.create') }}" class="qa-item item-primary animate__animated animate__fadeInUp" style="animation-delay: 0.1s">
+            <i class="bi bi-plus-circle-fill"></i>
+            <span>Entry Rental</span>
+        </a>
+        <a href="{{ route('admin.schedule.index') }}" class="qa-item item-danger animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
+            <i class="bi bi-calendar3"></i>
+            <span>Monitor Jadwal</span>
+        </a>
+        <a href="{{ route('admin.finance.index') }}" class="qa-item item-warning animate__animated animate__fadeInUp" style="animation-delay: 0.3s">
+            <i class="bi bi-bank"></i>
+            <span>Cek Keuangan</span>
+        </a>
+        <a href="{{ route('admin.equipment.index') }}" class="qa-item item-success animate__animated animate__fadeInUp" style="animation-delay: 0.4s">
+            <i class="bi bi-truck-front"></i>
+            <span>Kelola Armada</span>
+        </a>
     </div>
 
-    {{-- 03. ANALYTICS GRID --}}
+    {{-- MAIN ROW: ANALYTICS & MONITORING --}}
     <div class="row g-4">
-        {{-- Finansial Chart --}}
-        <div class="col-lg-8">
-            <div class="hk-card shadow-sm p-4 h-100">
+        
+        {{-- LEFT COLUMN: THE CHART & COMPARISON --}}
+        <div class="col-xl-8">
+            <div class="hk-card-glass p-4 h-100">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h5 class="fw-800 m-0"><i class="bi bi-bar-chart-line text-danger me-2"></i>TREN PENDAPATAN</h5>
-                    <div class="dropdown">
-                        <button class="btn btn-sm btn-light border" type="button">6 Bulan Terakhir</button>
+                    <h5 class="fw-800 m-0"><i class="bi bi-bar-chart-line text-danger me-2"></i>REVENUE & GROWTH</h5>
+                    <div class="hk-growth-badge {{ $growth >= 0 ? 'up' : 'down' }}">
+                        <i class="bi bi-graph-{{ $growth >= 0 ? 'up' : 'down' }}"></i>
+                        {{ abs(round($growth)) }}% vs Last Month
                     </div>
                 </div>
-                <div class="chart-wrapper">
-                    <canvas id="financeChart" height="300"></canvas>
+                <div class="chart-container" style="height: 350px;">
+                    <canvas id="revenueChartHK"></canvas>
+                </div>
+                <div class="row mt-4 text-center">
+                    <div class="col-6 border-end border-secondary">
+                        <small class="text-muted d-block text-uppercase">Total Profit (Month)</small>
+                        <h4 class="fw-bold text-profit">IDR {{ number_format($netProfit, 0, ',', '.') }}</h4>
+                    </div>
+                    <div class="col-6">
+                        <small class="text-muted d-block text-uppercase">Total Transactions</small>
+                        <h4 class="fw-bold text-order">{{ $thisMonthCount }} Orders</h4>
+                    </div>
                 </div>
             </div>
         </div>
 
-        {{-- Quick Transaction Table --}}
-        <div class="col-lg-4">
-            <div class="hk-card shadow-sm h-100">
-                <div class="card-header-v4 p-4 border-0">
-                    <h5 class="fw-800 m-0">TRANSAKSI TERBARU</h5>
-                </div>
-                <div class="p-4 pt-0">
-                    <div class="hk-recent-list">
-                        @foreach($recentRentals as $r)
-                        <div class="recent-item d-flex align-items-center gap-3 mb-3 p-3 rounded-4 bg-light shadow-sm">
-                            <div class="recent-icon {{ $r->status }}"><i class="bi bi-dot"></i></div>
-                            <div class="recent-info flex-grow-1">
-                                <h6 class="m-0 fw-bold">{{ Str::limit($r->user->name, 15) }}</h6>
-                                <small class="text-muted">{{ $r->equipment->name }}</small>
-                            </div>
-                            <div class="recent-val text-end">
-                                <div class="fw-bold text-navy">Rp {{ number_format($r->total_price, 0, ',', '.') }}</div>
-                                <span class="badge-status-mini {{ $r->status }}">{{ $r->status }}</span>
-                            </div>
-                        </div>
-                        @endforeach
+        {{-- RIGHT COLUMN: UNIT STATUS BENTO --}}
+        <div class="col-xl-4">
+            <div class="hk-card-glass p-4 h-100">
+                <h5 class="fw-800 mb-4"><i class="bi bi-broadcast text-danger me-2"></i>UNIT MONITOR</h5>
+                <div class="hk-bento-grid">
+                    <div class="bento-box ready">
+                        <div class="bento-icon"><i class="bi bi-check2-circle"></i></div>
+                        <div class="bento-val">{{ $available }}</div>
+                        <div class="bento-label">READY</div>
                     </div>
-                    <a href="{{ route('admin.rentals.index') }}" class="btn btn-navy w-100 py-2 mt-2 rounded-pill">Lihat Semua Transaksi</a>
+                    <div class="bento-box rented">
+                        <div class="bento-icon"><i class="bi bi-key"></i></div>
+                        <div class="bento-val">{{ $rented }}</div>
+                        <div class="bento-label">RENTED</div>
+                    </div>
+                    <div class="bento-box maint">
+                        <div class="bento-icon"><i class="bi bi-tools"></i></div>
+                        <div class="bento-val">{{ $underMaintenance }}</div>
+                        <div class="bento-label">SERVICE</div>
+                    </div>
+                    <div class="bento-box total">
+                        <div class="bento-icon"><i class="bi bi-boxes"></i></div>
+                        <div class="bento-val">{{ $totalEquipment }}</div>
+                        <div class="bento-label">TOTAL</div>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <label class="small text-muted fw-bold">TINGKAT PEMAKAIAN ARMADA ({{ $utilizationRate }}%)</label>
+                    <div class="progress" style="height: 10px; border-radius: 20px;">
+                        <div class="progress-bar bg-danger progress-bar-striped progress-bar-animated" style="width: {{ $utilizationRate }}%"></div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    {{-- RECENT TRANSACTIONS TABLE --}}
+    <div class="mt-4 animate__animated animate__fadeInUp">
+        <div class="hk-card-glass p-4">
+            <h5 class="fw-800 mb-4 text-uppercase">Latest Rental Activities</h5>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle hk-table-dark">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Equipment</th>
+                            <th>Rent Date</th>
+                            <th class="text-end">Total Price</th>
+                            <th class="text-center">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($recentRentals as $r)
+                        <tr>
+                            <td data-label="User">
+                                <div class="d-flex align-items-center gap-3">
+                                    @if($r->user->image)
+                                        <img src="{{ asset('uploads/users/'.$r->user->image) }}" class="hk-avatar-mini" style="object-fit: cover;">
+                                    @else
+                                        <div class="hk-avatar-mini">{{ strtoupper(substr($r->user->name, 0, 1)) }}</div>
+                                    @endif
+                                    <div class="fw-bold">{{ $r->user->name }}</div>
+                                </div>
+                            </td>
+                            <td data-label="Equipment">
+                                <div class="equipment-wrapper">
+                                    <span class="hk-id-number">#{{ $r->equipment->id }}</span>
+                                    <span class="hk-equipment-name">{{ $r->equipment->name }}</span>
+                                </div>
+                            </td>
+                            <td data-label="Rent Date">
+                                <span>{{ date('d M Y', strtotime($r->rent_date)) }}</span>
+                            </td>
+                            <td class="text-end fw-bold harga" data-label="Total Price">Rp {{ number_format($r->total_price, 0, ',', '.') }}</td>
+                            <td class="text-center" data-label="Status">
+                                <span class="badge hk-badge-cyber {{ $r->status }}">
+                                    {{ strtoupper(str_replace('_',' ', $r->status)) }}
+                                </span>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
 </div>
 @endsection
 
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    // 1. Live Clock
-    function updateClock() {
-        const now = new Date();
-        document.getElementById('liveClock').innerText = now.toLocaleTimeString('id-ID');
-    }
-    setInterval(updateClock, 1000); updateClock();
-
-    // 2. Finance Chart
-    const ctx = document.getElementById('financeChart').getContext('2d');
-    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-    gradient.addColorStop(0, 'rgba(220, 53, 69, 0.4)');
-    gradient.addColorStop(1, 'rgba(220, 53, 69, 0)');
-
-    new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: {!! json_encode($months) !!},
-            datasets: [{
-                label: 'Pendapatan (Rental + Overtime)',
-                data: {!! json_encode($incomeData) !!},
-                borderColor: '#dc3545',
-                borderWidth: 4,
-                backgroundColor: gradient,
-                fill: true,
-                tension: 0.4,
-                pointBackgroundColor: '#fff',
-                pointBorderColor: '#dc3545',
-                pointBorderWidth: 2,
-                pointRadius: 6
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: {
-                y: { beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { callback: value => 'Rp ' + value.toLocaleString('id-ID') } },
-                x: { grid: { display: false } }
-            }
-        }
-    });
+    window.hkData = {
+        months: {!! json_encode($months) !!},
+        income: {!! json_encode($incomeData) !!},
+        alerts: {!! json_encode($alerts) !!}
+    };
 </script>
+<script src="{{ asset('assets/js/admin/admin-dashboard.js') }}"></script>
 @endpush

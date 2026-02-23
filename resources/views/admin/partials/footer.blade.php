@@ -5,19 +5,21 @@
                 <p class="mb-0 copyright-text">
                     &copy; {{ date('Y') }} 
                     <span class="brand-footer">HK EQUIPMENT</span> 
-                    <span class="separator">|</span> 
-                    <span class="system-name">Admin Dashboard</span>
+                    <span class="mx-2 text-muted">|</span> 
+                    <span class="system-name">Command Center v1.0</span>
                 </p>
             </div>
 
             <div class="footer-right">
                 <div class="footer-info-group">
-                    <div class="system-version">
-                        <i class="bi bi-code-slash"></i> <span>v1.0.5-Stable</span>
+                    <div class="system-version" title="Versi Build Sistem">
+                        <i class="bi bi-cpu-fill"></i>
+                        <span>ENG-1.0</span>
                     </div>
-                    <div class="status-indicator">
+
+                    <div class="status-pill-wrapper" title="Status Server Saat Ini">
                         <span class="pulse-dot"></span>
-                        <span class="status-text">System Active</span>
+                        <span class="status-text">Operational System</span>
                     </div>
                 </div>
             </div>

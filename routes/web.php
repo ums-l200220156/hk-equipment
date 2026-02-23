@@ -53,6 +53,10 @@ Route::middleware(['auth', 'verified', 'role:customer'])->group(function () {
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])
          ->name('admin.dashboard.index');
+
+    Route::get('/admin/dashboard/alerts', [AdminDashboardController::class, 'getAlerts']);
+    Route::get('/admin/report/export', [AdminDashboardController::class, 'exportPDF'])
+        ->name('admin.report.export');
 });
 
 

@@ -262,27 +262,107 @@ html.sidebar-closed .toggle-btn {
 }
 
 /* ==========================================================================
-   10. FOOTER
+   10. FOOTER - PROFESSIONAL & INTERACTIVE
    ========================================================================== */
-.admin-footer{
-    padding:25px 0;
-    background:#fff;
-    border-top:1px solid #edf2f7;
-    margin-top:auto;
+.admin-footer {
+    padding: 20px 0;
+    background: #ffffff;
+    border-top: 1px solid #e5e7eb;
+    margin-top: auto;
+    transition: var(--transition-snappy);
 }
 
-.footer-content-wrapper{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    flex-wrap:wrap;
-    gap:15px;
+.footer-content-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
-@media(max-width:768px){
-    .footer-content-wrapper{
-        flex-direction:column;
-        text-align:center;
+/* Footer Left: Copyright */
+.copyright-text {
+    font-size: 0.85rem;
+    color: var(--hk-gray);
+    font-weight: 500;
+}
+
+.brand-footer {
+    color: var(--hk-dark);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* Footer Right: Info Groups */
+.footer-info-group {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+/* System Version Pill */
+.system-version {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    background: #f3f4f6;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #4b5563;
+    border: 1px solid #e5e7eb;
+    transition: all 0.3s ease;
+    cursor: default;
+}
+
+.system-version:hover {
+    background: var(--hk-dark);
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+.system-version i {
+    color: var(--hk-red);
+}
+
+/* Status Indicator Pill */
+.status-pill-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 12px;
+    background: #ecfdf5;
+    border: 1px solid #10b981;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.status-pill-wrapper:hover {
+    background: #10b981;
+}
+
+.status-pill-wrapper:hover .status-text {
+    color: #ffffff;
+}
+
+.status-text {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: #065f46;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Responsivitas Footer */
+@media (max-width: 768px) {
+    .footer-content-wrapper {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .footer-info-group {
+        justify-content: center;
     }
 }
 

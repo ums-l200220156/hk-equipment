@@ -106,14 +106,13 @@
                 <tbody>
                     @forelse($records as $row)
                     <tr>
-                        <td class="ps-4">
+                        <td class="ps-4" data-label="Tanggal">
                             <div class="fw-bold text-navy">{{ $row->transaction_date->format('d/m/Y') }}</div>
-                            <small class="text-muted">{{ $row->transaction_date->diffForHumans() }}</small>
                         </td>
-                        <td><span class="badge-cat-modern">{{ strtoupper($row->category) }}</span></td>
-                        <td><p class="mb-0 text-muted small" style="max-width: 300px;">{{ $row->description ?? 'Tanpa deskripsi' }}</p></td>
-                        <td class="text-end fw-extrabold text-danger">Rp {{ number_format($row->amount, 0, ',', '.') }}</td>
-                        <td class="text-center">
+                        <td data-label="Kategori"><span class="badge-cat-modern">{{ strtoupper($row->category) }}</span></td>
+                        <td data-label="Deskripsi"><p class="mb-0 text-muted small" style="max-width: 300px;">{{ $row->description ?? 'Tanpa deskripsi' }}</p></td>
+                        <td class="text-end fw-extrabold text-danger" data-label="Nominal">Rp {{ number_format($row->amount, 0, ',', '.') }}</td>
+                        <td class="text-center" data-label="Aksi">
                             <form action="{{ route('admin.finance.destroy', $row->id) }}" method="POST" class="d-inline">
                                 @csrf @method('DELETE')
                                 <button type="button" class="btn-delete-luxury" onclick="confirmDelete(this.form)">
