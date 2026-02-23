@@ -196,7 +196,7 @@
                                            accept="image/*,video/*">
                                 </div>
 
-                                <button class="btn btn-danger w-100 fw-bold py-2">
+                                <button type="submit" class="btn btn-danger w-100 fw-bold py-2">
                                     Kirim Testimoni
                                 </button>
                             </form>

@@ -26,7 +26,7 @@
         </div>
     </div>
 
-    {{-- 02. ANALYTICS CARDS (Symmetrical Grid) --}}
+    {{-- 02. ANALYTICS CARDS --}}
     <div class="row g-4 mb-4">
         <div class="col-lg-4 animate__animated animate__fadeInLeft">
             <div class="finance-card income">
@@ -113,12 +113,24 @@
                         <td data-label="Deskripsi"><p class="mb-0 text-muted small" style="max-width: 300px;">{{ $row->description ?? 'Tanpa deskripsi' }}</p></td>
                         <td class="text-end fw-extrabold text-danger" data-label="Nominal">Rp {{ number_format($row->amount, 0, ',', '.') }}</td>
                         <td class="text-center" data-label="Aksi">
-                            <form action="{{ route('admin.finance.destroy', $row->id) }}" method="POST" class="d-inline">
-                                @csrf @method('DELETE')
-                                <button type="button" class="btn-delete-luxury" onclick="confirmDelete(this.form)">
-                                    <i class="bi bi-trash3-fill"></i>
-                                </button>
-                            </form>
+                            
+                                <div class="action-wrapper">
+                                    {{-- TOMBOL EDIT --}}
+                                    <button type="button" class="btn-delete-luxury text-primary" 
+                                        style="background: #eef2ff;"
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#modalEditExpense{{ $row->id }}">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>
+                            
+                                    {{-- TOMBOL HAPUS --}}
+                                    <form action="{{ route('admin.finance.destroy', $row->id) }}" method="POST" class="d-inline">
+                                        @csrf @method('DELETE')
+                                        <button type="button" class="btn-delete-luxury" onclick="confirmDelete(this.form)">
+                                            <i class="bi bi-trash3-fill"></i>
+                                        </button>
+                                    </form>
+                                </div>
                         </td>
                     </tr>
                     @empty
@@ -130,7 +142,7 @@
     </div>
 </div>
 
-{{-- MODAL INPUT (MANUAL CATEGORY) --}}
+{{-- MODAL INPUT --}}
 <div class="modal fade" id="modalExpense" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content hk-modal-style">
@@ -143,7 +155,7 @@
                 <div class="modal-body p-4">
                     <div class="mb-3">
                         <label class="form-label-custom">KATEGORI PENGELUARAN</label>
-                        <input type="text" name="category" class="form-control-custom" placeholder="Misal: Perbaikan Mesin, BBM, Gaji" required>
+                        <input type="text" name="category" class="form-control-custom" placeholder="Misal: BBM, Gaji" required>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-7">
@@ -157,7 +169,7 @@
                     </div>
                     <div class="mb-0">
                         <label class="form-label-custom">DESKRIPSI LENGKAP</label>
-                        <textarea name="description" class="form-control-custom" rows="3" placeholder="Tulis rincian pengeluaran di sini..."></textarea>
+                        <textarea name="description" class="form-control-custom" rows="3" placeholder="Rincian..."></textarea>
                     </div>
                 </div>
                 <div class="modal-footer border-0 p-4">
@@ -167,6 +179,47 @@
         </div>
     </div>
 </div>
+
+{{-- MODAL EDIT --}}
+@foreach($records as $row)
+<div class="modal fade" id="modalEditExpense{{ $row->id }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content hk-modal-style">
+            <form action="{{ route('admin.finance.update', $row->id) }}" method="POST">
+                @csrf @method('PUT')
+                <div class="modal-header border-0">
+                    <h5 class="fw-bold m-0 text-navy">EDIT PENGELUARAN</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="mb-3">
+                        <label class="form-label-custom">KATEGORI PENGELUARAN</label>
+                        <input type="text" name="category" class="form-control-custom" value="{{ $row->category }}" required>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-7">
+                            <label class="form-label-custom">NOMINAL (RP)</label>
+                            <input type="number" name="amount" class="form-control-custom" value="{{ $row->amount }}" required>
+                        </div>
+                        <div class="col-md-5">
+                            <label class="form-label-custom">TANGGAL</label>
+                            <input type="date" name="transaction_date" class="form-control-custom" value="{{ $row->transaction_date->format('Y-m-d') }}" required>
+                        </div>
+                    </div>
+                    <div class="mb-0">
+                        <label class="form-label-custom">DESKRIPSI LENGKAP</label>
+                        <textarea name="description" class="form-control-custom" rows="3">{{ $row->description }}</textarea>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 p-4">
+                    <button type="submit" class="btn btn-navy-modern w-100 py-3">SIMPAN PERUBAHAN</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endforeach
+
 @endsection
 
 @push('scripts')

@@ -187,7 +187,16 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; 
         grid-template-columns: 110px 1fr !important;
         border-top: 1px solid #e2e8f0;
         margin-top: 6px;
-        padding-top: 8px !important;
+        padding-top: 12px !important;
+        padding-bottom: 12px !important;
+    }
+
+    .hk-table-modern td[data-label="Aksi"] .action-wrapper {
+        display: flex;
+        justify-content: flex-end; /* Paksa ke kanan */
+        gap: 8px; /* Jarak antar tombol */
+        width: 100%;
+        justify-self: end;
     }
 
     .hk-table-modern td[data-label="Aksi"] > form {
@@ -230,9 +239,12 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; 
     }
 
     .btn-delete-luxury {
-        width: 32px;
-        height: 32px;
-        font-size: 0.8rem;
+        width: 38px; /* Sedikit lebih besar agar mudah di-tap jari */
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 !important; /* Reset margin */
     }
 
 }

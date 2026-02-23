@@ -15,7 +15,7 @@
                 <p class="opacity-75 mb-0 d-none d-sm-block"><i class="bi bi-chat-quote me-1"></i> Kelola ulasan pelanggan HK Equipment</p>
             </div>
             
-            <div class="header-actions-wrapper d-flex align-items-center gap-2 gap-md-3 mt-3 mt-md-0">
+            <div class="header-actions-wrapper">
                 <div class="filter-box bg-white p-2 rounded-3 shadow-sm">
                     <select id="filterRating" class="form-select form-select-sm border-0 fw-bold text-dark" onchange="filterTestimonis()">
                         <option value="all">⭐ Semua Rating</option>
@@ -65,7 +65,7 @@
                                 
                                 <div>
                                     <div class="fw-bold text-dark">{{ $t->user->name }}</div>
-                                    <small class="text-muted">{{ $t->created_at->format('d/m/Y') }}</small>
+                                    <small class="text-muted">{{ $t->updated_at->format('d/m/Y') }}</small>
                                 </div>
                             </div>
                         </td>

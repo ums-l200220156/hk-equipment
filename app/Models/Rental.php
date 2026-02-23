@@ -21,6 +21,17 @@ class Rental extends Model
         'payment_proof',
     ];
 
+    protected static function booted()
+{
+    static::updated(function ($rental) {
+        // Jika status berubah menjadi cancelled
+        if ($rental->isDirty('status') && $rental->status === 'cancelled') {
+            // Maka alat terkait otomatis jadi available
+            $rental->equipment()->update(['status' => 'available']);
+        }
+    });
+}
+
     /* ==========================
      | RELATIONS
      ========================== */

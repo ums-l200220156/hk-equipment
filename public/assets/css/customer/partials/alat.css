@@ -1,0 +1,112 @@
+/* =====================================================
+   ARMADA SECTION - HK EQUIPMENT
+===================================================== */
+#alat {
+    background-color: #f8fafc;
+}
+
+.section-label {
+    color: var(--primary-color);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.85rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.alat-premium-card {
+    background: #ffffff;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    height: 100%;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.alat-premium-card:hover {
+    transform: translateY(-12px);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--primary-color);
+}
+
+.alat-premium-image {
+    height: 250px;
+    background: #e2e8f0; /* Warna dasar konstruksi */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 2rem;
+    overflow: hidden;
+}
+
+.alat-premium-image img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    transition: transform 0.5s ease;
+}
+
+.alat-premium-card:hover .alat-premium-image img {
+    transform: scale(1.1) rotate(-2deg);
+}
+
+.alat-premium-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(220, 53, 69, 0.9);
+    color: #fff;
+    padding: 6px 15px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    border-radius: 50px;
+    backdrop-filter: blur(5px);
+    z-index: 2;
+}
+
+.alat-premium-body {
+    padding: 2rem;
+}
+
+.alat-premium-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 1.2rem;
+    color: var(--dark-bg);
+}
+
+.alat-premium-spec {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1.5rem;
+}
+
+.alat-premium-spec li {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.alat-premium-spec li i {
+    color: #10b981;
+}
+
+.alat-premium-footer {
+    border-top: 1px solid #f1f5f9;
+    padding-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.alat-premium-price {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--primary-color);
+}

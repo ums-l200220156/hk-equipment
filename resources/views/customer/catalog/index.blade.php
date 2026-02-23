@@ -1,180 +1,152 @@
+@extends('layouts.base')
+
+@section('title', 'Katalog Armada Premium - HK Equipment')
+
+@push('styles')
+    <link href="{{ asset('assets/css/customer/catalog/index.css') }}" rel="stylesheet">
+@endpush
+
+@section('content')
 @php
     $selectedCategory = request('category');
     $lockCategory = request('lock') == 1;
 @endphp
 
-<!DOCTYPE html>
-<html lang="id">
-<head>
-<meta charset="UTF-8">
-<title>Katalog Alat Berat</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<!-- Bootstrap -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-
-<!-- PREMIUM STYLE -->
-<link href="{{ asset('assets/css/customer/catalog.css') }}" rel="stylesheet">
-</head>
-
-<body>
-
-<!-- ===== PAGE HEADER ===== -->
-<section class="catalog-hero">
-    <div class="container">
-
-        <div class="hero-top d-flex justify-content-between align-items-start">
-
-            <!-- LEFT -->
-            <div class="hero-left">
-
-                <button type="button"
-                        class="btn btn-back"
+<section class="catalog-hero-premium">
+    <div class="hero-overlay"></div>
+    <div class="container position-relative">
+        <div class="row align-items-center">
+            <div class="col-lg-7 text-start">
+                <button type="button" class="btn btn-back-glass mb-4" 
                         onclick="if (history.length > 1) { history.back(); } else { window.location.href='{{ route('customer.home') }}'; }">
-                    <i class="bi bi-arrow-left"></i> Beranda
+                    <i class="bi bi-arrow-left-circle me-2"></i> Beranda
                 </button>
-
                 @php
-                    $titleCategory = 'Alat Berat';
-                    if($selectedCategory){
-                        $titleCategory = ucwords(str_replace('-', ' ', $selectedCategory));
-                    }
+                    $titleCategory = $selectedCategory ? ucwords(str_replace('-', ' ', $selectedCategory)) : 'SEMUA ARMADA';
                 @endphp
-
-                <h1 class="hero-title mt-5">
-                    Katalog Armada {{ $titleCategory }}
+                <h1 class="catalog-title-main fw-black">
+                    <span class="text-warning">KATALOG</span> 
+                    <span class="text-white">{{ $titleCategory }}</span>
                 </h1>
-
-                <p class="hero-subtitle">
-                    Menampilkan unit {{ strtolower($titleCategory) }} yang tersedia
-                    untuk mendukung kebutuhan proyek Anda
-                </p>
-
             </div>
-
-            <!-- RIGHT -->
-            <div class="hero-right text-center">
-
-                <div class="hero-anim hero-anim-lg mb-3">
-                    <i class="bi bi-gear-fill gear gear-xl"></i>
-                    <i class="bi bi-gear-fill gear gear-lg"></i>
-                    <span class="pulse-line"></span>
+            <div class="col-lg-5 text-center text-lg-end mt-4 mt-lg-0">
+                <div class="compare-badge-box shadow-lg">
+                    <i class="bi bi-gear-wide-connected gear-spin"></i>
+                    <h6 class="text-white mb-2">Ingin membandingkan spesifikasi?</h6>
+                    <a href="{{ route('customer.compare.select') }}" class="btn btn-danger rounded-pill px-4 fw-bold">
+                        <i class="bi bi-shuffle me-2"></i> Bandingkan Alat
+                    </a>
                 </div>
-
-                {{-- HERO COMPARE ENTRY POINT --}}
-                <a href="{{ route('customer.compare.select') }}"
-                   class="btn btn-outline-primary btn-compare-hero mt-2">
-                    <i class="bi bi-bar-chart-steps"></i>
-                    Bandingkan Alat Berat
-                </a>
-
-                <div class="small text-muted mt-2">
-                    Pilih 2–4 alat untuk melihat perbandingan
-                </div>
-
             </div>
-
         </div>
-
     </div>
 </section>
 
-<!-- ===== CONTENT ===== -->
-<div class="container catalog-wrapper">
-
-    <!-- FILTER PANEL -->
-    <div class="filter-panel">
-        <div class="row g-3 align-items-center">
-
+<div class="container catalog-content-wrapper">
+    <div class="filter-panel-premium shadow-lg mb-5">
+        <div class="row g-3">
             <div class="col-lg-4">
-                <div class="filter-input filter-search">
-                    <i class="bi bi-search search-icon"></i>
-                    <input type="text" id="searchInput" class="form-control"
-                           placeholder="Cari alat berat...">
+                <div class="filter-group">
+                    <label class="small fw-bold text-muted mb-2 text-uppercase">Pencarian Alat</label>
+                    <div class="filter-input-wrapper">
+                        <i class="bi bi-search"></i>
+                        <input type="text" id="searchInput" class="form-control-custom" placeholder="Cari nama unit...">
+                    </div>
                 </div>
             </div>
-
             <div class="col-lg-4">
-                <div class="filter-input">
-                    <i class="bi bi-grid-3x3-gap"></i>
-                    <select id="categorySelect" class="form-select"
-                            {{ $lockCategory ? 'disabled' : '' }}>
-                        <option value="">Semua Kategori</option>
-                        @foreach($categories as $cat)
-                            <option value="{{ strtolower($cat->category) }}"
-                                {{ strtolower($cat->category) == $selectedCategory ? 'selected' : '' }}>
-                                {{ ucfirst($cat->category) }}
-                            </option>
-                        @endforeach
-                    </select>
+                <div class="filter-group">
+                    <label class="small fw-bold text-muted mb-2 text-uppercase">Kategori Unit</label>
+                    <div class="filter-input-wrapper">
+                        <i class="bi bi-tags"></i>
+                        <select id="categorySelect" class="form-select-custom" {{ $lockCategory ? 'disabled' : '' }}>
+                            <option value="">Semua Kategori</option>
+                            @foreach($categories as $cat)
+                                <option value="{{ strtolower($cat->category) }}" {{ strtolower($cat->category) == $selectedCategory ? 'selected' : '' }}>
+                                    {{ ucfirst($cat->category) }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
                 @if($lockCategory)
                     <input type="hidden" id="lockedCategory" value="{{ $selectedCategory }}">
                 @endif
             </div>
-
             <div class="col-lg-4">
-                <div class="filter-input">
-                    <i class="bi bi-activity"></i>
-                    <select id="statusFilter" class="form-select">
-                        <option value="">Semua Status</option>
-                        <option value="available">Tersedia</option>
-                        <option value="rented">Disewa</option>
-                        <option value="maintenance">Maintenance</option>
-                    </select>
+                <div class="filter-group">
+                    <label class="small fw-bold text-muted mb-2 text-uppercase">Filter Status</label>
+                    <div class="filter-input-wrapper">
+                        <i class="bi bi-activity"></i>
+                        <select id="statusFilter" class="form-select-custom">
+                            <option value="">Semua Status</option>
+                            <option value="available">Unit Tersedia</option>
+                            <option value="rented">Sedang Disewa</option>
+                            <option value="maintenance">Dalam Perawatan</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-
         </div>
     </div>
 
-    <!-- GRID -->
-    <div class="catalog-grid mb-5">
-        @foreach($equipment as $item)
-        <div class="catalog-item"
-             data-name="{{ strtolower($item->name) }}"
-             data-category="{{ strtolower($item->category) }}"
+    <div class="catalog-grid mb-5" id="equipment-container">
+        @forelse($equipment as $item)
+        <div class="catalog-item" 
+             data-id="{{ $item->id }}"
+             data-name="{{ strtolower($item->name) }}" 
+             data-category="{{ strtolower($item->category) }}" 
              data-status="{{ $item->status }}">
-
-            <div class="equipment-card">
-
-                <div class="status-bar {{ $item->status }}"></div>
-
-                <span class="status-label {{ $item->status }}">
-                    {{ $item->status === 'available' ? 'Tersedia' : ($item->status === 'rented' ? 'Disewa' : 'Maintenance') }}
-                </span>
-
-                <div class="equipment-image">
-                    <img src="{{ asset('uploads/equipment/'.$item->image) }}">
+            
+            <div class="equipment-card-premium h-100 shadow-sm">
+                {{-- Dynamic Status Label --}}
+                <div class="status-badge-container" id="status-badge-{{ $item->id }}">
+                    <span class="status-pill {{ $item->status }}">
+                        <i class="bi bi-circle-fill pulse-dot me-1"></i>
+                        {{ $item->status === 'available' ? 'Tersedia' : ($item->status === 'rented' ? 'Disewa' : 'Maintenance') }}
+                    </span>
                 </div>
 
-                <div class="equipment-body">
-                    <span class="equipment-category">
-                        {{ ucfirst($item->category) }}
-                    </span>
+                <div class="equipment-image-box">
+                    <img src="{{ asset('uploads/equipment/'.$item->image) }}" class="img-fluid" alt="{{ $item->name }}">
+                </div>
 
-                    <h5>{{ $item->name }}</h5>
-
-                    <div class="price">
-                        Rp {{ number_format($item->price_per_hour) }} <span>/ jam</span>
+                <div class="equipment-details-box">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="category-tag">{{ strtoupper($item->category) }}</span>
+                        <div class="year-label">{{ $item->year ?? '-' }}</div>
+                    </div>
+                    <h5 class="equipment-name text-dark fw-bold mb-3">{{ $item->name }}</h5>
+                    
+                    <div class="price-section-mini mb-3">
+                        <span class="text-muted small d-block">Harga Sewa</span>
+                        <div class="d-flex align-items-baseline">
+                            <h4 class="text-danger fw-black mb-0">Rp {{ number_format($item->price_per_hour) }}</h4>
+                            <span class="ms-1 text-muted small">/ jam</span>
+                        </div>
                     </div>
 
-                    <a href="{{ route('customer.catalog.show',$item->id) }}"
-                       class="btn btn-outline-primary w-100 mt-3">
-                        <i class="bi bi-eye"></i> Detail Alat
-                    </a>
+                    <div class="d-grid">
+                        <a href="{{ route('customer.catalog.show', $item->id) }}" class="btn btn-premium-action py-2">
+                            Lihat Detail <i class="bi bi-arrow-right-short ms-1"></i>
+                        </a>
+                    </div>
                 </div>
-
             </div>
         </div>
-        @endforeach
+        @empty
+            <div class="col-12 text-center py-5">
+                <div class="empty-state">
+                    <i class="bi bi-search display-1 text-muted opacity-25"></i>
+                    <p class="mt-4 lead text-muted">Maaf, unit yang Anda cari belum tersedia.</p>
+                    <button class="btn btn-outline-danger btn-sm" onclick="location.reload()">Reset Filter</button>
+                </div>
+            </div>
+        @endforelse
     </div>
-
 </div>
+@endsection
 
-@include('partials.footer')
-
-<script src="{{ asset('assets/js/customer/catalog.js') }}"></script>
-</body>
-</html>
+@push('scripts')
+    <script src="{{ asset('assets/js/customer/catalog/index.js') }}"></script>
+@endpush

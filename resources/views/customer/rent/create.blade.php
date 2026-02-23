@@ -48,9 +48,18 @@
                 <hr>
                 
                 <ul class="equipment-features">
-                    <li><i class="fas fa-shield-alt"></i> Asuransi Alat Terjamin</li>
-                    <li><i class="fas fa-tools"></i> Termasuk Truck Pengangkut</li>
-                    <li><i class="fas fa-user-check"></i> Termasuk Operator</li>
+                    <li>
+                        <i class="fas fa-tools"></i> 
+                        <span><strong>Maintenance Support</strong> — Backup teknisi standby jika ada kendala unit.</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-file-contract"></i> 
+                        <span><strong>Sewa Tanpa Ribet</strong> — Proses administrasi cepat, transparan, dan legal.</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check-double"></i> 
+                        <span><strong>Inspeksi Berkala</strong> — Unit dipastikan dalam kondisi prima sebelum dikirim.</span>
+                    </li>
                 </ul>
             </div>
         </aside>

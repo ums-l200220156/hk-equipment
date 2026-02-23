@@ -1,0 +1,146 @@
+/* =====================================================
+   04. HERO CAROUSEL - HK EQUIPMENT
+===================================================== */
+#heroCarousel {
+    background: #0f172a;
+    overflow: hidden;
+    position: relative;
+}
+
+.hero-img {
+    height: 92vh;
+    object-fit: cover;
+    filter: brightness(0.65); /* Sedikit lebih terang agar gambar alat tetap gagah */
+}
+
+/* Caption Center System */
+#heroCarousel .carousel-caption {
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    padding: 0 10%;
+    /* Animasi transisi antar slide */
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s ease;
+}
+
+#heroCarousel .carousel-item.active .carousel-caption {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.hero-premium {
+    max-width: 850px;
+    text-align: center;
+}
+
+/* Typography - HK Industrial Bold */
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.1;
+    margin-bottom: 1.2rem;
+    text-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    letter-spacing: -1px;
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 2.5rem;
+    font-weight: 400;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Badge Styling - Glassmorphism */
+.hero-badge-wrapper {
+    margin-bottom: 1.5rem;
+}
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 22px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    border-radius: 50px;
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.hero-badge::before {
+    content: "🚧"; /* Aksen konstruksi */
+    font-size: 0.9rem;
+}
+
+/* Button UI - Symmetrical & Bold */
+.hero-cta {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.hero-cta .btn {
+    padding: 14px 35px;
+    border-radius: 50px;
+    font-weight: 700;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+}
+
+.hero-cta .btn-danger {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.hero-cta .btn-danger:hover {
+    transform: scale(1.05) translateY(-3px);
+    box-shadow: 0 10px 25px rgba(220, 53, 69, 0.4);
+    background-color: #b91c1c;
+}
+
+.hero-cta .btn-outline-light:hover {
+    transform: translateY(-3px);
+    background-color: #fff;
+    color: var(--dark-bg);
+}
+
+/* Indicators Styling */
+.carousel-indicators [data-bs-target] {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin: 0 6px;
+    background-color: rgba(255,255,255,0.4);
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.carousel-indicators .active {
+    width: 30px;
+    border-radius: 10px;
+    background-color: var(--primary-color) !important;
+}
+
+/* Responsive Scaling */
+@media (max-width: 768px) {
+    .hero-img { height: 75vh; }
+    .hero-title { font-size: 2.2rem; }
+    .hero-subtitle { font-size: 1rem; margin-bottom: 1.8rem; }
+    .hero-cta { flex-direction: column; width: 100%; max-width: 300px; margin: 0 auto; }
+    .hero-cta .btn { width: 100%; margin-left: 0 !important; }
+}

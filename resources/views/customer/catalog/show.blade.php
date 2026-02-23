@@ -1,158 +1,141 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-<meta charset="UTF-8">
-<title>Detail Alat - {{ $item->name }}</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts.base')
 
-<!-- BOOTSTRAP -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+@section('title', $item->name . ' - HK Equipment')
 
-<!-- PREMIUM STYLE -->
-<link href="{{ asset('assets/css/customer/catalog.css') }}" rel="stylesheet">
-</head>
+@push('styles')
+    <link href="{{ asset('assets/css/customer/catalog/show.css') }}" rel="stylesheet">
+@endpush
 
-<body>
+@section('content')
+<section class="detail-hero-compact">
+    <div class="hero-overlay"></div>
+    <div class="container position-relative">
+        
+        {{-- HEADER BAR --}}
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <button type="button" class="btn btn-back-modern" onclick="if (history.length > 1) { history.back(); } else { window.location.href='{{ route('customer.catalog') }}'; }">
+                <i class="bi bi-arrow-left-short fs-5"></i> <span>Kembali</span>
+            </button>
 
-<!-- ================= HERO ================= -->
-<section class="detail-hero">
-    <div class="container">
-
-        <!-- TOP BAR -->
-        <div class="hero-top d-flex justify-content-between align-items-start">
-
-                 <button type="button"
-                        class="btn btn-back"
-                        onclick="if (history.length > 1) { history.back(); } else { window.location.href='{{ route('customer.catalog') }}'; }">
-                    <i class="bi bi-arrow-left"></i> Kembali
-                </button>
-
-                <div class="hero-right">
-
-                    <!-- LABEL-->
-                    <span class="detail-badge badge-offset">
-                        <i class="bi bi-gear-wide-connected"></i>
-                        {{ ucfirst($item->category) }}
-                    </span>
-
-                    <!-- ANIMASI -->
-                    <div class="hero-anim hero-anim-lg">
-                        <i class="bi bi-gear-fill gear gear-xl"></i>
-                        <i class="bi bi-gear-fill gear gear-lg"></i>
-                        <span class="pulse-line"></span>
-                    </div>
-
-                </div>
+            <div class="header-right d-none d-md-block">
+                <span class="badge-category-small">
+                    <i class="bi bi-tags-fill me-2"></i>{{ ucfirst($item->category) }}
+                </span>
             </div>
+        </div>
 
-
-        <!-- TITLE -->
-        <div class="detail-hero-inner">
-            <h1 class="detail-title">{{ $item->name }}</h1>
-            <p class="detail-subtitle">
-                Informasi lengkap unit alat berat dan status ketersediaan
-            </p>
+        {{-- 🔥 TITLE CENTER --}}
+        <div class="hero-title-center text-center">
+            <h1 class="hero-title-big text-white">{{ $item->name }}</h1>
         </div>
 
     </div>
 </section>
 
-<!-- ================= CONTENT ================= -->
 <div class="container detail-wrapper">
+    <div class="detail-card shadow-sm border-0">
+        <div class="row g-0 align-items-stretch">
+            
+            <div class="col-lg-6 border-end border-light bg-light-subtle">
+                <div class="image-section-wrapper">
+                    <div class="equipment-view-box" data-bs-toggle="modal" data-bs-target="#imgModal">
+                        <img src="{{ asset('uploads/equipment/'.$item->image) }}" class="main-img" alt="{{ $item->name }}">
+                        <div class="zoom-hint">
+                            <i class="bi bi-arrows-fullscreen me-2"></i> Klik untuk Zoom
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    <div class="detail-card">
-
-        <div class="row g-5 align-items-start">
-
-            <!-- IMAGE -->
             <div class="col-lg-6">
-                <div class="detail-image zoomable"
-                     data-bs-toggle="modal"
-                     data-bs-target="#imageZoomModal">
+                <div class="info-section-wrapper p-4 p-lg-5">
+                    
+                    <div id="statusBox" class="mb-4">
+                        {{-- Akan diisi oleh JS --}}
+                    </div>
 
-                    <img src="{{ asset('uploads/equipment/'.$item->image) }}"
-                         alt="{{ $item->name }}">
+                    <div class="content-header mb-4">
+                        <h4 class="fw-bold text-dark mb-1">Spesifikasi Unit</h4>
+                        <p class="text-muted small">Detail teknis armada operasional</p>
+                    </div>
+                    
+                    <div class="detail-meta-grid mb-4">
+                        <div class="meta-item">
+                            <div class="meta-icon"><i class="bi bi-gear"></i></div>
+                            <div><span class="meta-label">Merk</span><span class="meta-value">{{ $item->brand ?? 'HK Standard' }}</span></div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-icon"><i class="bi bi-calendar3"></i></div>
+                            <div><span class="meta-label">Tahun</span><span class="meta-value">{{ $item->year ?? '-' }}</span></div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-icon"><i class="bi bi-tag"></i></div>
+                            <div><span class="meta-label">Kategori</span><span class="meta-value">{{ ucfirst($item->category) }}</span></div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-icon"><i class="bi bi-shield-check"></i></div>
+                                <div>
+                                    <span class="meta-label">Kondisi</span>
 
-                    <div class="zoom-hint">
-                        <i class="bi bi-zoom-in"></i> Klik untuk memperbesar
+                                    @if($item->status === 'maintenance')
+                                        <span class="meta-value text-warning">Dalam Perawatan</span>
+                                    @elseif($item->status === 'rented')
+                                        <span class="meta-value text-secondary">Sedang Digunakan</span>
+                                    @else
+                                        <span class="meta-value text-success">Prima</span>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+
+                    <div class="price-box-premium mb-4 shadow-sm border">
+                        <div class="row align-items-center">
+                            <div class="col-md-6 text-center text-md-start">
+                                <span class="text-muted small fw-bold d-block">HARGA SEWA</span>
+                                <div class="price-wrapper">
+                                    <span class="h3 fw-black text-danger mb-0">Rp {{ number_format($item->price_per_hour) }}</span>
+                                    <span class="text-muted small">/ jam</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mt-3 mt-md-0">
+                                <div id="actionBox">
+                                    {{-- Tombol Sewa Muncul di Sini --}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="description-area p-3 bg-light rounded-4">
+                        <h6 class="fw-bold text-dark mb-2">Deskripsi Alat</h6>
+                        <p class="text-muted small lh-lg mb-0">{{ $item->description }}</p>
                     </div>
                 </div>
             </div>
 
-            <!-- INFO -->
-            <div class="col-lg-6 detail-info">
-
-                <div id="statusBox" class="mb-4"></div>
-
-                <div class="detail-meta-grid mb-4">
-                    <div class="meta-item">
-                        <i class="bi bi-building"></i>
-                        <div>
-                            <span class="meta-label">Merk</span>
-                            <span class="meta-value">{{ $item->brand ?? '-' }}</span>
-                        </div>
-                    </div>
-
-                    <div class="meta-item">
-                        <i class="bi bi-calendar-event"></i>
-                        <div>
-                            <span class="meta-label">Tahun</span>
-                            <span class="meta-value">{{ $item->year ?? '-' }}</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="detail-price">
-                    Rp {{ number_format($item->price_per_hour) }}
-                    <span>/ jam</span>
-                </div>
-
-                <div class="detail-desc mb-4">
-                    {{ $item->description }}
-                </div>
-
-                <div id="actionBox"></div>
-
-            </div>
         </div>
-
     </div>
 </div>
 
-<!-- IMAGE ZOOM MODAL -->
-<div class="modal fade" id="imageZoomModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
+<div class="modal fade" id="imgModal" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content bg-transparent border-0">
-
-            <button type="button"
-                    class="btn-close btn-close-white ms-auto me-3 mt-3"
-                    data-bs-dismiss="modal"></button>
-
-            <img src="{{ asset('uploads/equipment/'.$item->image) }}"
-                 class="img-fluid rounded-4 shadow-lg"
-                 alt="{{ $item->name }}">
+            <div class="modal-body text-center p-0">
+                <img src="{{ asset('uploads/equipment/'.$item->image) }}" class="img-fluid rounded-4 shadow-lg border border-light border-opacity-10">
+                <button type="button" class="btn btn-light rounded-pill mt-4 px-5 fw-bold" data-bs-dismiss="modal">Tutup</button>
+            </div>
         </div>
     </div>
 </div>
+@endsection
 
-@include('partials.footer')
-
-<!-- GLOBAL DATA -->
-<script>
-window.CURRENT_EQUIPMENT_ID = {{ $item->id }};
-window.STATUS_ENDPOINT = "{{ route('customer.catalog.status', $item->id) }}";
-window.INITIAL_STATUS = {
-    status: "{{ $item->status }}",
-    maintenance_end_at: "{{ $item->maintenance_end_at
-        ? $item->maintenance_end_at->translatedFormat('d F Y')
-        : '' }}"
-};
-</script>
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="{{ asset('assets/js/customer/catalog.js') }}"></script>
-
-</body>
-</html>
+@push('scripts')
+    <script>
+        window.CURRENT_EQUIPMENT_ID = {{ $item->id }};
+        window.STATUS_ENDPOINT = "{{ route('customer.catalog.status', $item->id) }}";
+        window.INITIAL_STATUS = {
+            status: "{{ $item->status }}",
+            maintenance_end_at: "{{ $item->maintenance_end_at ? $item->maintenance_end_at->translatedFormat('d F Y') : '' }}"
+        };
+    </script>
+    <script src="{{ asset('assets/js/customer/catalog/show.js') }}"></script>
+@endpush

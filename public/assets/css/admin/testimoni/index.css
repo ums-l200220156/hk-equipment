@@ -19,13 +19,32 @@
     border-radius: 50%;
 }
 
+/* === FLEX HEADER FIX (PENTING) === */
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.header-actions-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* TOTAL BADGE (DITINGKATKAN) */
 .total-testimoni-badge {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
     border-radius: 12px;
-    text-align: center;
+    font-size: 0.9rem;
     white-space: nowrap;
+
+    background: linear-gradient(135deg, rgba(220,53,69,0.15), rgba(220,53,69,0.05));
+    border: 1px solid rgba(220,53,69,0.3);
 }
 
 
@@ -117,6 +136,7 @@
 /* 4. TYPOGRAPHY & ROW ANIMATION
 */
 .fw-800 { font-weight: 800; }
+
 .testimoni-text {
     font-size: 0.9rem;
     color: #4b5563;
@@ -142,14 +162,66 @@
 }
 
 
-/* 6. PENGATURAN RESPONSIF (MOBILE)
+/* ========================================
+   RESPONSIVE HEADER (SIDEBAR MINIMIZE)
+======================================== */
+@media (max-width: 1200px) {
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .header-actions-wrapper {
+        width: 100%;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    .filter-box {
+        flex: 1;
+        min-width: 150px;
+    }
+
+    .total-testimoni-badge {
+        justify-content: center;
+        flex-shrink: 0;
+    }
+}
+
+
+/* ========================================
+   MOBILE HEADER FIX
+======================================== */
+@media (max-width: 576px) {
+    .header-actions-wrapper {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .filter-box {
+        width: 100%;
+    }
+
+    .total-testimoni-badge {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .admin-welcome-header {
+        padding: 20px;
+    }
+}
+
+
+/* 6. PENGATURAN RESPONSIF (TABLE -> CARD)
 */
 @media (max-width: 768px) {
     .container-fluid {
         padding: 1rem !important;
     }
 
-    /* Transform Table ke Stacked Cards */
     #testimoniTable, 
     #testimoniTable thead, 
     #testimoniTable tbody, 
@@ -170,8 +242,6 @@
         margin-bottom: 15px;
         padding: 12px;
         box-shadow: 0 6px 14px rgba(0,0,0,0.04);
-        
-        /* 🔥 VISUAL ACCENT - SAMA DENGAN FINANCE */
         border-left: 4px solid var(--hk-danger);
         position: relative;
         transition: 0.2s;
@@ -182,18 +252,11 @@
         background: #f8fafc;
     }
 
-    /* Setiap baris data di dalam card */
     #testimoniTable td {
         display: grid !important;
-        /* KUNCI SIMETRIS FINANCE: 110px lurus ke bawah */
         grid-template-columns: 110px 1fr !important;
         align-items: center;
         padding: 15px 0 !important;
-        margin: 0 !important;
-        border: none !important;
-        line-height: 1.2 !important;
-        
-        /* 🔥 Divider antar field */
         border-bottom: 1px dashed #e2e8f0 !important;
     }
 
@@ -201,77 +264,22 @@
         border-bottom: none !important;
     }
 
-    /* Reset Bootstrap Alignment */
-    #testimoniTable td.text-end,
-    #testimoniTable td.text-center {
-        text-align: unset !important;
-    }
-
-    /* Label (Sisi Kiri) */
     #testimoniTable td::before {
         content: attr(data-label);
-        width: 110px;
-        min-width: 110px;
-        display: flex;
-        align-items: center;
-        justify-content: flex-start !important;
         font-size: 0.65rem;
         font-weight: 800;
         color: #475569;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
     }
 
-    /* Value (Sisi Kanan) */
     #testimoniTable td > * {
         justify-self: end;
         text-align: right;
-        margin: 0 !important;
     }
 
-    /* =========================
-       PENYESUAIAN KHUSUS KONTEN
-    ========================== */
-    
-    /* Baris Profil (Informasi Klien) */
-    .testimoni-row td:first-child {
-        background: rgba(248, 250, 252, 0.5);
-        margin: -12px -12px 5px -12px !important;
-        padding: 15px 12px !important;
-        border-radius: 20px 20px 0 0;
-        border-bottom: 1px solid #e2e8f0 !important;
-    }
-
-    .testimoni-row td:first-child .d-flex {
-        flex-direction: row; /* Tetap horizontal agar compact */
-        justify-content: flex-end;
-    }
-
-    .testimoni-row td:first-child img {
-        width: 35px;
-        height: 35px;
-    }
-
-    /* Bintang Rating */
-    .star-rating {
-        font-size: 0.8rem;
-    }
-
-    /* Isi Ulasan */
     .testimoni-text {
         font-size: 0.8rem;
-        color: #334155;
         max-width: 180px;
-        word-break: break-word;
-    }
-
-    .testimoni-text i {
-        display: none; /* Sembunyikan icon quote di mobile */
-    }
-
-    /* Tombol Media */
-    .media-preview-container {
-        justify-content: flex-end;
     }
 
     .btn-preview {
@@ -279,16 +287,8 @@
         height: 50px;
     }
 
-    /* Baris Aksi */
-    #testimoniTable td[data-label="Aksi"] {
-        border-top: 1px solid #e2e8f0 !important;
-        margin-top: 5px;
-        padding-top: 10px !important;
-    }
-
     .btn-delete-testi {
         width: 35px;
         height: 35px;
-        border-radius: 10px;
     }
 }

@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Storage;
 class TestimoniController extends Controller
 {
     public function store(Request $request)
-    {
+{
+    try {
         if (Testimoni::where('user_id', auth()->id())->exists()) {
             return response()->json([
                 'success' => false,
@@ -18,7 +19,7 @@ class TestimoniController extends Controller
             ], 422);
         }
 
-        $request->validate([
+        $validated = $request->validate([
             'rating'  => 'required|integer|min:1|max:5',
             'content' => 'required|string|max:1000',
             'media'   => 'nullable|file|mimes:jpg,jpeg,png,mp4,mov,avi|max:20480',
@@ -29,6 +30,7 @@ class TestimoniController extends Controller
 
         if ($request->hasFile('media')) {
             $file = $request->file('media');
+
             if (str_starts_with($file->getMimeType(), 'image/')) {
                 $photo = $file->store('testimoni/photos', 'public');
             } else {
@@ -38,8 +40,8 @@ class TestimoniController extends Controller
 
         Testimoni::create([
             'user_id' => auth()->id(),
-            'rating'  => $request->rating,
-            'content' => $request->content,
+            'rating'  => $validated['rating'],
+            'content' => $validated['content'],
             'photo'   => $photo,
             'video'   => $video,
         ]);
@@ -48,7 +50,14 @@ class TestimoniController extends Controller
             'success' => true,
             'message' => 'Testimoni berhasil dikirim'
         ]);
+
+    } catch (\Throwable $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Terjadi error server'
+        ], 500);
     }
+}
 
     public function update(Request $request, $id)
     {

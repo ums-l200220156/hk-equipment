@@ -15,7 +15,7 @@ class TestimoniAdminController extends Controller
     public function index()
     {
         // Mengambil semua testimoni beserta data usernya, diurutkan dari yang terbaru
-        $testimonis = Testimoni::with('user')->latest()->get();
+        $testimonis = Testimoni::with('user')->latest('updated_at')->get();
         
         return view('admin.testimoni.index', compact('testimonis'));
     }

@@ -1,0 +1,119 @@
+/* 1. PREMIUM HERO */
+.catalog-hero-premium {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    padding: 1rem 0 4rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: radial-gradient(rgba(220, 53, 69, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+}
+
+.btn-back-glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 50px;
+    padding: 8px 22px;
+    transition: 0.3s;
+}
+
+.catalog-title-main { font-size: 2.6rem; letter-spacing: -1.5px; }
+
+.compare-badge-box {
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(15px);
+    padding: 2rem;
+    border-radius: 25px;
+    border: 1px solid rgba(255,255,255,0.1);
+    display: inline-block;
+    transform: translateY(-18px);
+}
+
+.gear-spin {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    display: inline-block;
+    margin-bottom: 1rem;
+    animation: spin 10s linear infinite;
+}
+
+@keyframes spin { from {transform:rotate(0deg)} to {transform:rotate(360deg)} }
+
+/* 2. FILTER PANEL PREMIUM */
+.catalog-content-wrapper { margin-top: -6rem; position: relative; z-index: 10; }
+
+.filter-panel-premium {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 1.5rem;
+    border: 1px solid #edf2f7;
+}
+
+.filter-input-wrapper { position: relative; }
+.filter-input-wrapper i {
+    position: absolute; left: 18px; top: 50%;
+    transform: translateY(-50%); color: #94a3b8; font-size: 1.1rem;
+}
+
+.form-control-custom, .form-select-custom {
+    width: 100%; height: 55px; padding-left: 50px;
+    background: #f8fafc; border: 1px solid #e2e8f0;
+    border-radius: 15px; font-weight: 500; transition: 0.3s;
+}
+
+.form-control-custom:focus { border-color: #dc3545; box-shadow: 0 0 0 4px rgba(220, 53, 69, 0.1); outline: none; }
+
+/* 3. CATALOG GRID & CARDS */
+.catalog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2.5rem;
+}
+
+.equipment-card-premium {
+    background: #fff; border-radius: 22px; border: 1px solid #f1f5f9;
+    overflow: hidden; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    position: relative;
+}
+
+.equipment-card-premium:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.12);
+}
+
+.equipment-image-box {
+    height: 230px; background: #f8fafc;
+    display: flex; align-items: center; justify-content: center; padding: 2rem;
+}
+
+.equipment-image-box img { max-height: 100%; transition: 0.6s ease; }
+.equipment-card-premium:hover .equipment-image-box img { transform: scale(1.1) rotate(-3deg); }
+
+.status-badge-container { position: absolute; top: 15px; right: 15px; z-index: 5; }
+.status-pill {
+    padding: 6px 16px; border-radius: 50px; font-size: 0.75rem; font-weight: 800;
+    display: flex; align-items: center; text-transform: uppercase; letter-spacing: 0.5px;
+}
+
+.status-pill.available { background: #dcfce7; color: #15803d; }
+.status-pill.rented { background: #fee2e2; color: #b91c1c; }
+.status-pill.maintenance { background: #fef3c7; color: #92400e; }
+
+.pulse-dot { font-size: 6px; animation: pulse 1.5s infinite; }
+@keyframes pulse { 0% {opacity:1} 50% {opacity:0.3} 100% {opacity:1} }
+
+.equipment-details-box { padding: 1.8rem; }
+.category-tag { font-size: 0.65rem; color: #dc3545; font-weight: 800; letter-spacing: 1px; }
+.equipment-name { height: 3rem; overflow: hidden; display: -webkit-box;  -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+
+.btn-premium-action {
+    background: #0f172a; color: white; border-radius: 12px; font-weight: 700;
+    transition: 0.3s; border: none;
+}
+.btn-premium-action:hover { background: #dc3545; color: white; }

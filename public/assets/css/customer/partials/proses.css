@@ -1,0 +1,111 @@
+/* =====================================================
+   PROSES SEWA SECTION - HK EQUIPMENT
+===================================================== */
+#proses {
+    background: #e7e6e6; /* Latar belakang abu-abu sangat muda agar kartu putih lebih menonjol */
+    position: relative;
+}
+
+.process-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.step-card {
+    background: #ffffff; /* Putih solid agar kontras */
+    border-radius: var(--radius-lg);
+    padding: 3.5rem 2rem;
+    height: 100%;
+    position: relative;
+    
+    /* KOTAK PEMBUNGKUS TEGAS */
+    border: 1px solid #e2e8f0; 
+    
+    /* BAYANGAN AGAR TIDAK MATI WARNA */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
+    
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    z-index: 2;
+    text-align: center;
+}
+
+.step-card:hover {
+    transform: translateY(-12px);
+    background: #ffffff;
+    border-color: var(--primary-color);
+    
+    /* Bayangan lebih dramatis saat di-hover */
+    box-shadow: 0 200px 400px rgba(220, 53, 69, 0.12);
+}
+
+/* Lingkaran Angka Modern */
+.step-number {
+    width: 70px;
+    height: 70px;
+    background: #fff5f5; /* Warna latar angka lebih fresh */
+    color: var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 900;
+    margin: 0 auto 1.8rem;
+    border: 2px solid #fee2e2;
+    transition: all 0.4s ease;
+}
+
+.step-card:hover .step-number {
+    background: var(--primary-color);
+    color: #fff;
+    border-color: var(--primary-color);
+    transform: scale(1.1) rotate(8deg);
+}
+
+/* Judul & Deskripsi */
+.step-card h5 {
+    font-size: 1.3rem;
+    font-weight: 800;
+    margin-bottom: 1.2rem;
+    color: var(--dark-bg);
+}
+
+.step-card p {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: #475569; /* Warna teks lebih kontras agar mudah dibaca */
+}
+
+/* Garis Penghubung (Hanya Desktop) */
+@media (min-width: 992px) {
+    .step-card::after {
+        content: "\F138"; /* Bootstrap Icon Arrow Right */
+        font-family: "bootstrap-icons";
+        position: absolute;
+        top: 50%;
+        right: -15%;
+        font-size: 2rem;
+        color: #cbd5e1; /* Warna panah lebih tegas */
+        transform: translateY(-50%);
+        z-index: 1;
+        opacity: 0.6;
+    }
+    .col-lg-4:last-child .step-card::after {
+        display: none;
+    }
+}
+
+/* Mobile Adjustments */
+@media (max-width: 991px) {
+    .step-card {
+        padding: 2.5rem 1.5rem;
+        border-radius: 20px;
+    }
+    
+    /* Di mobile, sembunyikan shadow default agar tidak berat, gunakan border saja */
+    .step-card {
+        box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+    }
+}

@@ -62,19 +62,29 @@ class PaymentController extends Controller
         ->with('success', 'Bukti transfer berhasil dikirim.');
 }
 
-    public function cancel(Rental $rental)
-    {
-        abort_if($rental->user_id !== Auth::id(), 403);
 
-        if ($rental->status === 'paid') {
-            return back()->with('error', 'Pesanan yang sudah dibayar tidak dapat dibatalkan.');
-        }
+  public function cancel(Rental $rental)
+{
+    abort_if($rental->user_id !== Auth::id(), 403);
 
+    // Jangan izinkan batal jika sudah bayar atau berstatus selain waiting_payment
+    if ($rental->status !== 'waiting_payment') {
+        return back()->with('error', 'Pesanan ini tidak dapat dibatalkan.');
+    }
+
+    \DB::transaction(function () use ($rental) {
+        // 1. Update status sewa jadi cancelled
         $rental->update(['status' => 'cancelled']);
 
-        return redirect()->route('customer.rentals')
-            ->with('success', 'Pesanan berhasil dibatalkan.');
-    }
+        // 2. Update status alat jadi available (Tersedia kembali)
+        if ($rental->equipment) {
+            $rental->equipment->update(['status' => 'available']);
+        }
+    });
+
+    return redirect()->route('customer.rentals')
+        ->with('success', 'Pesanan berhasil dibatalkan dan alat telah tersedia kembali.');
+}
 
 
 

@@ -8,34 +8,39 @@
 
 @section('content')
 <section class="rental-history-section">
-    <div class="container">
-
-        {{-- 01. HEADER: Identitas Halaman --}}
-        <div class="header-main">
-            <div class="header-text">
-                <h2 class="fw-black text-dark">RIWAYAT <span class="text-danger">SEWA</span></h2>
-                <p class="text-muted">Pantau operasional dan status penyewaan alat berat Anda.</p>
+    {{-- 01. HEADER WRAPPER PREMIUM --}}
+    <div class="header-wrapper-premium mb-4">
+        <div class="container">
+            <div class="header-main">
+                <div class="header-text">
+                    <h2 class="fw-black text-white">RIWAYAT <span class="text-accent">SEWA</span></h2>
+                    <p class="text-white-50">Pantau operasional dan status penyewaan alat berat Anda secara real-time.</p>
+                </div>
+                <div class="header-icon d-none d-md-flex">
+                    <div class="icon-circle shadow-lg truck-animation">
+                        <i class="bi bi-truck-flatbed"></i>
+                    </div>
+                </div>
             </div>
-            <div class="header-icon d-none d-md-flex">
-                <div class="icon-circle shadow-sm truck-animation">
-                    <i class="bi bi-truck-flatbed"></i>
+        </div>
+    </div>
+
+    <div class="container">
+        {{-- 02. FILTER TAB --}}
+        <div class="filter-container-desktop">
+            <div class="filter-wrapper">
+                <div class="filter-scroll">
+                    <button class="filter-btn active" data-status="all">Semua</button>
+                    <button class="filter-btn" data-status="waiting_payment">Menunggu</button>
+                    <button class="filter-btn" data-status="paid">Dibayar</button>
+                    <button class="filter-btn" data-status="on_progress">Berjalan</button>
+                    <button class="filter-btn" data-status="completed">Selesai</button>
+                    <button class="filter-btn" data-status="cancelled">Batal</button>
                 </div>
             </div>
         </div>
 
-        {{-- 02. FILTER TAB: Navigasi Status --}}
-        <div class="filter-wrapper">
-            <div class="filter-scroll">
-                <button class="filter-btn active" onclick="filterStatus('all')">Semua</button>
-                <button class="filter-btn" onclick="filterStatus('waiting_payment')">Menunggu</button>
-                <button class="filter-btn" onclick="filterStatus('paid')">Dibayar</button>
-                <button class="filter-btn" onclick="filterStatus('on_progress')">Berjalan</button>
-                <button class="filter-btn" onclick="filterStatus('completed')">Selesai</button>
-                <button class="filter-btn" onclick="filterStatus('cancelled')">Batal</button>
-            </div>
-        </div>
-
-        {{-- 03. MAIN CONTENT: Daftar Transaksi --}}
+        {{-- 03. MAIN CONTENT --}}
         <div class="main-card">
             @if($rentals->count() === 0)
                 <div class="empty-state text-center py-5">
@@ -47,6 +52,7 @@
                     <table class="table responsive-table mb-0">
                         <thead>
                             <tr>
+                                <th class="text-center">No.</th>
                                 <th>Unit Alat Berat</th>
                                 <th>Jadwal Sewa</th>
                                 <th>Durasi</th>
@@ -58,9 +64,16 @@
                         <tbody>
                             @foreach($rentals as $r)
                             <tr class="rental-row" data-status="{{ $r->status }}">
+                                <td data-label="No." class="text-center fw-bold text-muted">
+                                    {{ $loop->iteration }}
+                                </td>
+
                                 <td data-label="Unit">
                                     <div class="unit-box">
-                                        <div class="unit-icon d-none d-lg-flex"><i class="bi bi-truck-flatbed"></i></div>
+                                        <div class="unit-img-wrapper" onclick="previewImage('{{ asset('uploads/equipment/'.$r->equipment->image) }}', '{{ $r->equipment->name }}')">
+                                            <img src="{{ asset('uploads/equipment/'.$r->equipment->image) }}" alt="Unit">
+                                            <div class="img-overlay"><i class="bi bi-zoom-in"></i></div>
+                                        </div>
                                         <div class="text-data">
                                             <span class="fw-bold text-dark">{{ $r->equipment->name }}</span>
                                         </div>
@@ -70,7 +83,8 @@
                                 <td data-label="Jadwal">
                                     <div class="date-info text-data">
                                         <span class="fw-semibold d-block text-nowrap">{{ \Carbon\Carbon::parse($r->rent_date)->translatedFormat('d M Y') }}</span>
-                                        <small class="text-muted d-block">Pukul: {{ $r->start_time }}</small>
+                                        {{-- FORMAT JAM & MENIT SAJA --}}
+                                        <small class="text-muted d-block">Pukul: {{ date('H:i', strtotime($r->start_time)) }}</small>
                                     </div>
                                 </td>
 
@@ -106,21 +120,15 @@
 
                                 <td data-label="Aksi">
                                     <div class="action-flex">
-                                        {{-- DETAIL BUTTON --}}
-                                        <a href="{{ route('customer.rentals.show', $r->id) }}" 
-                                           class="btn-action-modern btn-view-modern" 
-                                           title="Detail">
-                                            <i class="bi bi-eye"></i>
-                                            <span class="btn-text">Detail</span>
+                                        <a href="{{ route('customer.rentals.show', $r->id) }}" class="btn-action-modern btn-view-modern" title="Detail">
+                                            <i class="bi bi-eye"></i> <span class="btn-text">Detail</span>
                                         </a>
 
-                                        {{-- CANCEL BUTTON --}}
                                         @if($r->status === 'waiting_payment')
                                             <form method="POST" action="{{ route('customer.rentals.cancel', $r->id) }}" class="cancel-form">
                                                 @csrf
                                                 <button type="button" class="btn-action-modern btn-cancel-modern" onclick="confirmCancel(this)" title="Batalkan">
-                                                    <i class="bi bi-trash3"></i>
-                                                    <span class="btn-text">Batal</span>
+                                                    <i class="bi bi-trash3"></i> <span class="btn-text">Batal</span>
                                                 </button>
                                             </form>
                                         @endif
@@ -135,6 +143,21 @@
         </div>
     </div>
 </section>
+
+{{-- MODAL PREVIEW (Tetap sama) --}}
+<div class="modal fade" id="previewModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">
+            <div class="modal-header border-0 pb-0">
+                <h6 class="modal-title fw-bold" id="modalTitle">Unit Alat Berat</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-3 text-center">
+                <img id="imgPreviewSource" src="" class="img-fluid rounded-3 shadow-sm" alt="Preview">
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('scripts')

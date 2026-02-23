@@ -14,6 +14,8 @@ use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\CustomerAdminController;
 use App\Http\Controllers\Admin\ScheduleAdminController;
 use App\Http\Controllers\Admin\OvertimeAdminController;
+use App\Http\Controllers\Admin\TestimoniAdminController;
+use App\Http\Controllers\Admin\FinanceAdminController;
 
 
 
@@ -34,7 +36,7 @@ Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('customer.profile');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
@@ -133,15 +135,16 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
 // Testimoni Admin
-    Route::get('/admin/testimonis', [App\Http\Controllers\Admin\TestimoniAdminController::class, 'index'])->name('admin.testimonis.index');
-    Route::delete('/admin/testimonis/{id}', [App\Http\Controllers\Admin\TestimoniAdminController::class, 'destroy'])->name('admin.testimonis.destroy');
+    Route::get('/admin/testimonis', [TestimoniAdminController::class, 'index'])->name('admin.testimonis.index');
+    Route::delete('/admin/testimonis/{id}', [TestimoniAdminController::class, 'destroy'])->name('admin.testimonis.destroy');
 });
 
 // Finance Admin
 Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin/finance', [App\Http\Controllers\Admin\FinanceAdminController::class, 'index'])->name('admin.finance.index');
-    Route::post('/admin/finance', [App\Http\Controllers\Admin\FinanceAdminController::class, 'store'])->name('admin.finance.store');
-    Route::delete('/admin/finance/{id}', [App\Http\Controllers\Admin\FinanceAdminController::class, 'destroy'])->name('admin.finance.destroy');
+    Route::get('/admin/finance', [FinanceAdminController::class, 'index'])->name('admin.finance.index');
+    Route::post('/admin/finance', [FinanceAdminController::class, 'store'])->name('admin.finance.store');
+    Route::put('/admin/finance/{id}', [FinanceAdminController::class, 'update'])->name('admin.finance.update');
+    Route::delete('/admin/finance/{id}', [FinanceAdminController::class, 'destroy'])->name('admin.finance.destroy');
 });
 
 

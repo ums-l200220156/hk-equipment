@@ -1,31 +1,41 @@
-/**
- * Riwayat Penyewaan JS - Symmetrical Filter & Confirm
- */
-
-function filterStatus(status) {
-    const rows = document.querySelectorAll('.rental-row');
+document.addEventListener('DOMContentLoaded', () => {
     const buttons = document.querySelectorAll('.filter-btn');
+    const rows = document.querySelectorAll('.rental-row');
 
-    // 1. Update Aktif Button
     buttons.forEach(btn => {
-        btn.classList.remove('active');
-        if (btn.getAttribute('onclick').includes(`'${status}'`)) {
-            btn.classList.add('active');
-        }
-    });
+        btn.addEventListener('click', () => {
+            const status = btn.dataset.status;
 
-    // 2. Jalankan Filter Row
-    rows.forEach(row => {
-        const rowStatus = row.getAttribute('data-status');
-        
-        if (status === 'all' || rowStatus === status) {
-            // JANGAN menyetel display: table-row atau block secara manual
-            // Cukup kosongkan style display agar CSS Media Query yang bekerja
-            row.style.display = ""; 
-        } else {
-            row.style.display = 'none';
-        }
+            buttons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            rows.forEach(row => {
+                const rowStatus = row.dataset.status;
+
+                if (status === 'all' || rowStatus === status) {
+                    row.classList.remove('d-none');
+                } else {
+                    row.classList.add('d-none');
+                }
+            });
+        });
     });
+});
+
+
+function previewImage(src, title) {
+    const modalEl = document.getElementById('previewModal');
+
+    if (!modalEl || typeof bootstrap === 'undefined') {
+        console.error('Bootstrap / modal tidak siap');
+        return;
+    }
+
+    document.getElementById('imgPreviewSource').src = src;
+    document.getElementById('modalTitle').innerText = title;
+
+    const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+    modal.show();
 }
 
 function confirmCancel(button) {

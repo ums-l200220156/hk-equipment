@@ -83,6 +83,26 @@ class FinanceAdminController extends Controller
         return back()->with('swal_success', 'Catatan pengeluaran berhasil disimpan.');
     }
 
+    public function update(Request $request, $id)
+{
+    $request->validate([
+        'category' => 'required|string',
+        'amount' => 'required|numeric|min:0',
+        'description' => 'nullable|string',
+        'transaction_date' => 'required|date',
+    ]);
+
+    $finance = Finance::findOrFail($id);
+    $finance->update([
+        'category' => $request->category,
+        'amount' => $request->amount,
+        'description' => $request->description,
+        'transaction_date' => $request->transaction_date,
+    ]);
+
+    return back()->with('swal_success', 'Catatan pengeluaran berhasil diperbarui.');
+}
+
     public function destroy($id)
     {
         $finance = Finance::findOrFail($id);

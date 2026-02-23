@@ -18,6 +18,14 @@
 
     {{-- CUSTOM CSS --}}
     <link rel="stylesheet" href="{{ asset('assets/css/welcome.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/customer/partials/navbar.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/customer/partials/hero.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/customer/partials/keunggulan.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/customer/partials/alat.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/customer/partials/proses.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/customer/partials/testimoni.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/customer/partials/maps.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/customer/partials/footer.css') }}">
 
     @stack('styles')
 </head>
@@ -44,7 +52,14 @@
 <script src="{{ asset('assets/js/welcome.js') }}"></script>
 <script src="{{ asset('assets/js/navbar-active.js') }}" defer></script>
 <script src="{{ asset('assets/js/sweetalert-auth.js') }}"></script>
-<script src="{{ asset('assets/js/customer/testimoni.js') }}"></script>
+<script src="{{ asset('assets/js/customer/partials/navbar.js') }}"></script>
+<script src="{{ asset('assets/js/customer/partials/hero.js') }}"></script>
+<script src="{{ asset('assets/js/customer/partials/keunggulan.js') }}"></script>
+<script src="{{ asset('assets/js/customer/partials/alat.js') }}"></script>
+<script src="{{ asset('assets/js/customer/partials/proses.js') }}"></script>
+<script src="{{ asset('assets/js/customer/partials/testimoni.js') }}"></script>
+<script src="{{ asset('assets/js/customer/partials/maps.js') }}"></script>
+<script src="{{ asset('assets/js/customer/partials/footer.js') }}"></script>
 
 @stack('scripts')
 
