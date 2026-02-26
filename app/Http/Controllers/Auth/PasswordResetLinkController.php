@@ -6,7 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\View\View;
+use App\Models\User;
 
 class PasswordResetLinkController extends Controller
 {
@@ -19,9 +22,7 @@ class PasswordResetLinkController extends Controller
     }
 
     /**
-     * Handle an incoming password reset link request.
-     *
-     * @throws \Illuminate\Validation\ValidationException
+     * Handle an incoming password reset link request (EMAIL).
      */
     public function store(Request $request): RedirectResponse
     {
@@ -29,9 +30,6 @@ class PasswordResetLinkController extends Controller
             'email' => ['required', 'email'],
         ]);
 
-        // We will send the password reset link to this user. Once we have attempted
-        // to send the link, we will examine the response then see the message we
-        // need to show to the user. Finally, we'll send out a proper response.
         $status = Password::sendResetLink(
             $request->only('email')
         );
@@ -40,5 +38,92 @@ class PasswordResetLinkController extends Controller
                     ? back()->with('status', __($status))
                     : back()->withInput($request->only('email'))
                         ->withErrors(['email' => __($status)]);
+    }
+
+    /**
+     * Handle an incoming password reset link request (WHATSAPP).
+     */
+    public function storeWA(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'phone' => ['required', 'string', 'min:10'],
+        ], [
+            'phone.required' => 'Nomor WhatsApp wajib diisi',
+            'phone.min' => 'Nomor WhatsApp minimal 10 digit',
+        ]);
+
+        $user = User::where('phone', $request->phone)->first();
+
+        if (!$user) {
+            return back()->withInput()->withErrors(['phone' => 'Nomor WhatsApp tidak terdaftar.']);
+        }
+
+        // 1. Generate OTP 6 Digit
+        $otpCode = rand(100000, 999999);
+
+        // 2. Simpan/Update OTP ke database (berlaku 5 menit)
+        DB::table('user_otps')->updateOrInsert(
+            ['user_id' => $user->id],
+            [
+                'otp' => $otpCode,
+                'expire_at' => now()->addMinutes(5),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        );
+
+        // 3. Integrasi WA Gateway (Simulasi atau Real API)
+        // Jika pakai Fonnte, un-comment kode di bawah ini:
+        /*
+        Http::withHeaders([
+            'Authorization' => 'YOUR_FONNTE_TOKEN',
+        ])->post('https://api.fonnte.com/send', [
+            'target' => $request->phone,
+            'message' => "KODE OTP HK SYSTEM: *{$otpCode}*. Rahasiakan kode ini. Berlaku 5 menit.",
+        ]);
+        */
+
+        // Log kode ke laravel.log agar Cah Bagus bisa testing tanpa API WA
+        \Log::info("OTP WA HK SYSTEM untuk {$request->phone}: {$otpCode}");
+
+        // 4. Redirect ke halaman verifikasi OTP
+        return redirect()->route('password.otp.view', ['phone' => $request->phone])
+                        ->with('status', 'Kode OTP telah dikirim ke nomor WhatsApp Anda.');
+    }
+
+    /**
+     * Verify the OTP provided by the user.
+     */
+    public function verifyOTP(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'phone' => 'required',
+            'otp' => 'required|numeric',
+        ]);
+
+        $user = User::where('phone', $request->phone)->first();
+
+        if (!$user) {
+            return redirect()->route('password.request')->withErrors(['phone' => 'Terjadi kesalahan sistem.']);
+        }
+
+        // Cek kode OTP di database
+        $otpData = DB::table('user_otps')
+                    ->where('user_id', $user->id)
+                    ->where('otp', $request->otp)
+                    ->where('expire_at', '>', now())
+                    ->first();
+
+        if (!$otpData) {
+            return back()->withErrors(['otp' => 'Kode OTP salah atau sudah kadaluwarsa.']);
+        }
+
+        // Jika benar, hapus OTP agar tidak bisa dipakai lagi
+        DB::table('user_otps')->where('user_id', $user->id)->delete();
+
+        // Redirect ke halaman ganti password baru dengan membawa token/phone
+        // Kita gunakan email sebagai identifier standar Laravel
+        return redirect()->route('password.reset', ['token' => 'wa-verification-success', 'email' => $user->email])
+                        ->with('status', 'Verifikasi berhasil. Silakan atur password baru Anda.');
     }
 }

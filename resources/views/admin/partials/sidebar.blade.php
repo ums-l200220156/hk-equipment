@@ -2,11 +2,10 @@
     <div class="sidebar-header">
         <div class="brand-wrapper">
             <div class="brand-logo">
-                <i class="bi bi-truck-front-fill"></i>
+                <img src="{{ asset('assets/img/logo-hk.png') }}" alt="HK Logo" style="width: 100%; height: 100%; object-fit: contain;">
             </div>
             <div class="brand-text">
                 <span class="brand-name">HK <span class="text-danger">EQUIPMENT</span></span>
-                <small class="brand-sub">Management System</small>
             </div>
         </div>
     </div>

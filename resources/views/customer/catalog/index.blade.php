@@ -1,6 +1,6 @@
 @extends('layouts.base')
 
-@section('title', 'Katalog Armada Premium - HK Equipment')
+@section('title', 'Katalog Armada - HK Equipment')
 
 @push('styles')
     <link href="{{ asset('assets/css/customer/catalog/index.css') }}" rel="stylesheet">

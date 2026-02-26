@@ -1,39 +1,69 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('password.store') }}">
-        @csrf
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ganti Password - HK Equipment</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="{{ asset('assets/css/auth/reset-password.css') }}">
+</head>
+<body>
 
-        <!-- Password Reset Token -->
-        <input type="hidden" name="token" value="{{ $request->route('token') }}">
+<div class="hk-reset-page">
+    <div class="hk-grid-overlay"></div>
+    <div class="hk-glow-sphere"></div>
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $request->email)" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+    <div class="hk-reset-card animate__animated animate__fadeInUp">
+        <div class="text-center mb-4">
+            <div class="hk-logo-icon"><i class="bi bi-shield-lock-fill"></i></div>
+            <h2 class="hk-title">PASSWORD <span class="text-warning">BARU</span></h2>
+            <p class="hk-subtitle">Silakan atur kata sandi baru untuk keamanan akun Anda.</p>
         </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+        <form method="POST" action="{{ route('password.store') }}">
+            @csrf
+            {{-- Hidden context data --}}
+            <input type="hidden" name="token" value="{{ $request->route('token') }}">
+            <input type="hidden" name="email" value="{{ old('email', $request->email) }}">
 
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+            {{-- Password Baru --}}
+            <div class="mb-3">
+                <label class="hk-label">PASSWORD BARU</label>
+                <div class="hk-input-group">
+                    <i class="bi bi-lock-fill"></i>
+                    <input type="password" name="password" id="password" class="hk-input" placeholder="********" required autofocus>
+                    <button type="button" class="hk-toggle-password" onclick="togglePassword('password', 'icon-pass')">
+                        <i class="bi bi-eye-slash" id="icon-pass"></i>
+                    </button>
+                </div>
+                @error('password') <small class="text-danger d-block">{{ $message }}</small> @enderror
+            </div>
 
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                                type="password"
-                                name="password_confirmation" required autocomplete="new-password" />
+            {{-- Konfirmasi Password --}}
+            <div class="mb-4">
+                <label class="hk-label">KONFIRMASI PASSWORD</label>
+                <div class="hk-input-group">
+                    <i class="bi bi-check-circle-fill"></i>
+                    <input type="password" name="password_confirmation" id="password_confirmation" class="hk-input" placeholder="********" required>
+                    <button type="button" class="hk-toggle-password" onclick="togglePassword('password_confirmation', 'icon-conf')">
+                        <i class="bi bi-eye-slash" id="icon-conf"></i>
+                    </button>
+                </div>
+            </div>
 
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
+            <button type="submit" class="hk-btn-submit">
+                <span>UPDATE PASSWORD</span>
+                <i class="bi bi-arrow-right-short"></i>
+            </button>
+        </form>
+    </div>
+</div>
 
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Reset Password') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+<script src="{{ asset('assets/js/auth/reset-password.js') }}"></script>
+</body>
+</html>

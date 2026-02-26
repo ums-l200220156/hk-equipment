@@ -1,8 +1,9 @@
 /**
- * REALTIME ADMIN OVERTIME (FINAL - NO RELOAD)
+ * HK SYSTEM - ADMIN OVERTIME MASTER JS
+ * Features: Realtime Timer, Sync Status, Client-side Filtering, & SweetAlert Actions
  */
 
-window.adminIntervals = {}; // simpan interval per row
+window.adminIntervals = {}; // Simpan interval per row
 
 function initMasterMonitor() {
     const runningRows = document.querySelectorAll('.hk-ot-row.status-running');
@@ -45,112 +46,136 @@ function initMasterMonitor() {
 
     // 🔥 START REALTIME SYNC ADMIN
     startRealtimeAdminSync();
+    
+    // 🔥 INITIALIZE FILTERING
+    initFilteringOT();
 }
 
-/* =========================
-   REALTIME SYNC (AUTO STOP)
-========================= */
+/**
+ * FILTERING TANPA RELOAD (Client-side)
+ */
+function initFilteringOT() {
+    const filterButtons = document.querySelectorAll('.filter-ot-btn');
+    const rows = document.querySelectorAll('.hk-ot-row');
+
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const period = btn.dataset.period;
+
+            // Update UI Tombol
+            filterButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const now = new Date();
+
+            rows.forEach(row => {
+                // Ambil data tanggal dari atribut data-date yang ada di <tr>
+                const rowDate = new Date(row.dataset.date);
+                const diffTime = Math.abs(now - rowDate);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                let isVisible = false;
+
+                if (period === 'all') {
+                    isVisible = true;
+                } else if (period === 'weekly' && diffDays <= 7) {
+                    isVisible = true;
+                } else if (period === 'monthly' && diffDays <= 30) {
+                    isVisible = true;
+                } else if (period === 'yearly' && diffDays <= 365) {
+                    isVisible = true;
+                }
+
+                // Efek Transisi Sederhana
+                if (isVisible) {
+                    row.style.display = ""; 
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        });
+    });
+}
+
+/**
+ * REALTIME SYNC (Cek apakah customer sudah menekan STOP)
+ */
 function startRealtimeAdminSync() {
-
     setInterval(() => {
-
         document.querySelectorAll('.hk-ot-row').forEach(row => {
-
             const id = row.dataset.id;
             const currentStatus = row.dataset.status;
 
-            fetch(`/customer/overtime/${id}/status`)
-                .then(res => res.json())
-                .then(data => {
+            if(currentStatus === 'approved') {
+                fetch(`/customer/overtime/${id}/status`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status === 'completed' && currentStatus !== 'completed') {
+                            row.dataset.status = 'completed';
+                            row.classList.remove('status-running');
 
-                    // 🔥 JIKA CUSTOMER SUDAH STOP
-                    if (data.status === 'completed' && currentStatus !== 'completed') {
+                            if (window.adminIntervals[id]) {
+                                clearInterval(window.adminIntervals[id]);
+                            }
 
-                        row.dataset.status = 'completed';
-                        row.classList.remove('status-running');
+                            const statusCell = row.querySelector('[data-label="Status"]');
+                            if (statusCell) {
+                                statusCell.innerHTML = `<span class="badge-status completed">Selesai</span>`;
+                            }
 
-                        /* =========================
-                           STOP TIMER
-                        ========================= */
-                        if (window.adminIntervals[id]) {
-                            clearInterval(window.adminIntervals[id]);
+                            const billingCell = row.querySelector('[data-label="Billing"]');
+                            const costEl = document.getElementById(`cost-${id}`);
+                            if (billingCell && costEl) {
+                                billingCell.innerHTML = `
+                                    <div class="hk-billing-final">
+                                        <div class="billing-amount text-danger">${costEl.innerText}</div>
+                                        <div class="billing-label">TOTAL FINAL</div>
+                                    </div>`;
+                            }
+
+                            const actionCell = row.querySelector('[data-label="Aksi"]');
+                            if (actionCell) {
+                                actionCell.querySelectorAll('form').forEach(f => {
+                                    if (f.action.includes('stop')) f.remove();
+                                });
+                            }
                         }
-
-                        /* =========================
-                           UPDATE STATUS UI
-                        ========================= */
-                        const statusCell = row.querySelector('[data-label="Status"]');
-                        if (statusCell) {
-                            statusCell.innerHTML =
-                                `<span class="badge-status completed">Selesai</span>`;
-                        }
-
-                        /* =========================
-                           UPDATE BILLING FINAL
-                        ========================= */
-                        const billingCell = row.querySelector('[data-label="Billing"]');
-                        const costEl = document.getElementById(`cost-${id}`);
-
-                        if (billingCell && costEl) {
-                            billingCell.innerHTML = `
-                                <div class="hk-billing-final">
-                                    <div class="billing-amount text-danger">
-                                        ${costEl.innerText}
-                                    </div>
-                                    <div class="billing-label">TOTAL FINAL</div>
-                                </div>
-                            `;
-                        }
-
-                        /* =========================
-                           REMOVE STOP BUTTON
-                        ========================= */
-                        const actionCell = row.querySelector('[data-label="Aksi"]');
-                        if (actionCell) {
-                            actionCell.querySelectorAll('form').forEach(f => {
-                                if (f.action.includes('stop')) {
-                                    f.remove();
-                                }
-                            });
-                        }
-
-                    }
-
-                })
-                .catch(err => console.error(err));
-
+                    })
+                    .catch(err => console.error(err));
+            }
         });
-
-    }, 3000); // tiap 3 detik
+    }, 3000); 
 }
 
-
 /* ===========================
-   GLOBAL FUNCTIONS
+   GLOBAL ACTION FUNCTIONS
 =========================== */
 
-// ✅ PREVIEW STRUK
+// Preview Struk Pembayaran
 function previewProof(url) {
     Swal.fire({
         title: 'BUKTI PEMBAYARAN OVERTIME',
         imageUrl: url,
         imageAlt: 'Struk Overtime',
         showConfirmButton: false,
-        width: '600px'
+        width: '600px',
+        background: '#ffffff',
+        borderRadius: '20px'
     });
 }
 
-// ✅ DELETE CONFIRM
+// Konfirmasi Hapus Data
 function confirmDelete(form) {
     Swal.fire({
         title: 'Hapus Data?',
-        text: "Data ini akan dihapus permanen!",
+        text: "Data ini akan dihapus permanen dari sistem!",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#ef4444',
         cancelButtonColor: '#6b7280',
         confirmButtonText: 'Ya, Hapus',
-        cancelButtonText: 'Batal'
+        cancelButtonText: 'Batal',
+        borderRadius: '15px'
     }).then((result) => {
         if (result.isConfirmed) {
             form.submit();
@@ -158,5 +183,24 @@ function confirmDelete(form) {
     });
 }
 
-// INIT
+// Konfirmasi Penolakan Lembur
+function confirmReject(form) {
+    Swal.fire({
+        title: 'Tolak Lembur?',
+        text: "Anda akan menolak permintaan lembur dari customer ini.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#ef4444',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'Ya, Tolak',
+        cancelButtonText: 'Batal',
+        borderRadius: '15px'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            form.submit();
+        }
+    });
+}
+
+// Jalankan saat halaman siap
 document.addEventListener('DOMContentLoaded', initMasterMonitor);

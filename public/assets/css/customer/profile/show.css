@@ -1,0 +1,238 @@
+:root {
+    --primary-gradient: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+    --dark-surface: #1e1e26;
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --text-muted: #a0a0a0;
+}
+
+/* =========================
+   CONTAINER
+========================= */
+.profile-luxury-container {
+    background: #15151b;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+/* =========================
+   GLASS CARD
+========================= */
+.glass-profile-card {
+    background: var(--dark-surface);
+    border-radius: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.card-inner {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* =========================
+   LEFT SIDE
+========================= */
+.profile-side-brand {
+    background: var(--primary-gradient);
+    flex: 1;
+    min-width: 300px;
+    padding: 60px 40px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    background-size: 120% 120%;
+    transition: background-position 0.2s ease;
+}
+
+.profile-avatar-main {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    margin-bottom: 25px;
+    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.profile-avatar-main:hover {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.profile-avatar-main img,
+.initial-circle-main {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    background: white;
+    color: #ff416c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    font-weight: 800;
+}
+
+/* =========================
+   RIGHT SIDE
+========================= */
+.profile-side-details {
+    flex: 1.5;
+    min-width: 300px;
+    padding: 60px 50px;
+    background: #1e1e26;
+}
+
+/* =========================
+   GRID DATA (ENHANCED)
+========================= */
+.data-row-modern {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-bottom: 35px;
+}
+
+.detail-item {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 20px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+}
+
+.detail-item:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 65, 108, 0.3);
+    transform: translateY(-6px);
+}
+
+.detail-item label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #ff416c;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.detail-item p {
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0;
+    word-break: break-word;
+}
+
+/* =========================
+   ADDRESS BOX
+========================= */
+.address-box-modern {
+    background: linear-gradient(145deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+    border-radius: 20px;
+    padding: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    margin-bottom: 35px;
+}
+
+.address-box-modern label {
+    color: #ff416c;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+.action-group-modern {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-modern {
+    flex: 1;
+    padding: 15px 25px;
+    border-radius: 18px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.btn-primary-modern {
+    background: var(--primary-gradient);
+    color: white;
+    box-shadow: 0 10px 20px rgba(255, 65, 108, 0.3);
+}
+
+.btn-secondary-modern {
+    background: #2d2d3a;
+    color: white;
+}
+
+.btn-modern:hover {
+    transform: translateY(-5px);
+    opacity: 0.9;
+    color: white;
+}
+
+.btn-delete-link {
+    display: block;
+    text-align: center;
+    margin-top: 25px;
+    color: #555;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: color 0.3s;
+    background: none;
+    border: none;
+    width: 100%;
+}
+
+.btn-delete-link:hover {
+    color: #ff4b2b;
+}
+
+/* =========================
+   UID BADGE
+========================= */
+.uid-badge {
+    background: rgba(255,255,255,0.08);
+    color: #ffffff;
+    border: 1px solid rgba(255,255,255,0.15);
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 999px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+    .data-row-modern {
+        grid-template-columns: 1fr;
+    }
+
+    .glass-profile-card {
+        border-radius: 0;
+    }
+}

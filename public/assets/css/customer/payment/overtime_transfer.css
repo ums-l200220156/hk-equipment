@@ -1,0 +1,200 @@
+:root {
+    --primary-gradient: linear-gradient(135deg, #2d3436 0%, #000000 100%);
+    --accent-color: #dc3545;
+}
+
+.transfer-section {
+    padding: 100px 0;
+    background-color: #f8f9fa;
+    background-image: radial-gradient(#dee2e6 0.5px, transparent 0.5px);
+    background-size: 20px 20px;
+    min-height: 100vh;
+}
+
+.transfer-wrapper {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 40px;
+    align-items: start;
+}
+
+/* --- Info Side --- */
+.badge-status-ot {
+    display: inline-block;
+    padding: 6px 16px;
+    background: #fff3cd; /* Warna kuning soft agar senada */
+    color: #856404;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    border: 1px solid #ffeeba;
+}
+
+.ot-price-card {
+    background: white;
+    padding: 25px;
+    border-radius: 24px;
+    border-left: 6px solid var(--accent-color);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    margin-bottom: 25px;
+}
+
+.ot-label {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: #718096;
+    letter-spacing: 1px;
+}
+
+.ot-amount {
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: #1a1a1a;
+}
+
+/* --- Bank Card (Samakan dengan Payment Utama) --- */
+.bank-card-modern {
+    background: var(--primary-gradient);
+    border-radius: 24px;
+    padding: 30px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    margin-bottom: 30px;
+}
+
+.bank-chip {
+    width: 50px;
+    height: 40px;
+    background: linear-gradient(135deg, #f1c40f, #f39c12);
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.account-number {
+    font-size: 2rem;
+    letter-spacing: 4px;
+    font-weight: 700;
+    margin: 15px 0;
+}
+
+.btn-copy-ot {
+    position: absolute;
+    right: 30px;
+    bottom: 30px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    backdrop-filter: blur(5px);
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.btn-copy-ot:hover { background: white; color: black; }
+
+/* --- Form Side (Sama dengan Payment Utama) --- */
+.upload-box-container {
+    background: white;
+    border-radius: 24px;
+    padding: 35px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    border: 1px solid #edf2f7;
+}
+
+.upload-area {
+    border: 2px dashed #dee2e6;
+    border-radius: 16px;
+    padding: 40px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s;
+    margin: 20px 0;
+}
+
+.upload-area.active {
+    border-color: var(--accent-color);
+    background: #fff5f5;
+    border-style: solid;
+    padding: 20px;
+}
+
+.btn-gradient-submit-ot {
+    width: 100%;
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 14px;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    transition: 0.3s;
+    box-shadow: 0 10px 20px rgba(220, 53, 69, 0.2);
+}
+
+/* --- Steps (Perbaikan Sejajar) --- */
+.payment-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.step-item {
+    display: flex;
+    align-items: flex-start; /* Mengubah center ke flex-start */
+    gap: 15px;
+}
+
+.step-num {
+    flex-shrink: 0; /* Menjaga agar lingkaran angka tidak gepeng */
+    width: 28px;
+    height: 28px;
+    background: white;
+    border: 2px solid #dee2e6;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 800;
+    margin-top: 2px; /* Menurunkan sedikit lingkaran agar pas dengan baris pertama teks */
+}
+
+.step-item p {
+    margin: 0;
+    padding-top: 4px; /* Menurunkan teks agar sejajar dengan angka */
+    line-height: 1.4;
+    color: #4a5568;
+}
+
+.img-preview-result {
+    width: 100%;
+    max-height: 250px;
+    object-fit: contain;
+    border-radius: 12px;
+    margin-bottom: 15px;
+}
+
+/* --- Security Info Styling --- */
+.security-info {
+    font-size: 0.8rem;
+    color: #adb5bd; /* Warna abu-abu soft */
+    text-align: center;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* Jarak antara ikon dan teks */
+}
+
+.security-info i {
+    color: #50a728; 
+    font-size: 1rem;
+}

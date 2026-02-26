@@ -38,20 +38,21 @@
     {{-- 03. INTERACTIVE FILTER NAVIGATION --}}
     <div class="hk-filter-nav mb-4 animate__animated animate__fadeIn">
         <div class="nav-scroll-wrapper">
-            <a href="{{ request()->fullUrlWithQuery(['period' => 'all']) }}" class="nav-link-custom {{ request('period') == 'all' || !request('period') ? 'active' : '' }}">
+            <button type="button" class="nav-link-custom filter-ot-btn active" data-period="all">
                 <i class="bi bi-grid-1x2"></i> Semua Data
-            </a>
-            <a href="{{ request()->fullUrlWithQuery(['period' => 'weekly']) }}" class="nav-link-custom {{ request('period') == 'weekly' ? 'active' : '' }}">
+            </button>
+            <button type="button" class="nav-link-custom filter-ot-btn" data-period="weekly">
                 <i class="bi bi-calendar-event"></i> Mingguan
-            </a>
-            <a href="{{ request()->fullUrlWithQuery(['period' => 'monthly']) }}" class="nav-link-custom {{ request('period') == 'monthly' ? 'active' : '' }}">
+            </button>
+            <button type="button" class="nav-link-custom filter-ot-btn" data-period="monthly">
                 <i class="bi bi-calendar-month"></i> Bulanan
-            </a>
-            <a href="{{ request()->fullUrlWithQuery(['period' => 'yearly']) }}" class="nav-link-custom {{ request('period') == 'yearly' ? 'active' : '' }}">
+            </button>
+            <button type="button" class="nav-link-custom filter-ot-btn" data-period="yearly">
                 <i class="bi bi-calendar-check"></i> Tahunan
-            </a>
+            </button>
         </div>
     </div>
+
 
     {{-- 04. MAIN DATA TABLE CARD --}}
     <div class="hk-main-card animate__animated animate__fadeInUp">
@@ -73,6 +74,7 @@
                     <tr class="hk-ot-row @if($ot->status === 'approved') status-running @endif"
                         data-id="{{ $ot->id }}" 
                         data-status="{{ $ot->status }}"
+                        data-date="{{ $ot->created_at->toIso8601String() }}"
                         @if($ot->status === 'approved' && $ot->started_at)
                             data-start="{{ $ot->started_at->toIso8601String() }}"
                             data-price="{{ $ot->price_per_hour }}"
@@ -210,9 +212,11 @@
                                 @endif
 
                                 @if($ot->status === 'pending')
-                                    <form action="{{ route('admin.overtime.reject', $ot->id) }}" method="POST" class="d-inline">
+                                    <form action="{{ route('admin.overtime.reject', $ot->id) }}" method="POST" class="d-inline" onsubmit="event.preventDefault(); confirmReject(this)">
                                         @csrf
-                                        <button class="btn-action btn-reject" title="Tolak"><i class="bi bi-x"></i></button>
+                                        <button type="submit" class="btn-action btn-reject" title="Tolak">
+                                            <i class="bi bi-x"></i>
+                                        </button>
                                     </form>
                                 @elseif($ot->status === 'approved')
                                     <form action="{{ route('admin.overtime.stop', $ot->id) }}" method="POST" class="d-inline">

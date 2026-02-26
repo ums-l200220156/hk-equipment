@@ -127,7 +127,7 @@
                             rows="3" 
                             minlength="5" 
                             maxlength="200" 
-                            placeholder="Contoh: Butuh operator tambahan (5-200 karakter)..."
+                            placeholder="Contoh: Tolong datang tepat waktu (5-200 karakter)..."
                         ></textarea>
                     </div>
 

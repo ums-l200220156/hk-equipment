@@ -11,7 +11,7 @@
                             {{ route('customer.home') }}
                         @endif
                     ">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                        <img src="{{ asset('assets/img/logo-hk.png') }}" class="block h-10 w-auto" alt="HK Logo">
                     </a>
                 </div>
 

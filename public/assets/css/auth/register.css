@@ -173,9 +173,16 @@ body {
     font-size: 1.1rem;
 }
 
+/* icon kiri */
+.hk-input-group i:first-child {
+    position: absolute;
+    left: 15px;
+    z-index: 2;
+}
+
 .hk-input {
     width: 100%;
-    padding: 12px 15px 12px 45px;
+    padding: 12px 45px 12px 45px;
     background: #f8fafc;
     border: 2px solid #f1f5f9;
     border-radius: 14px;
@@ -230,21 +237,15 @@ body {
 }
 
 
-/* --- Tambahkan di bagian bawah file CSS Anda --- */
-
 /* Styling Tombol Mata (Toggle Password) */
 .hk-toggle-password {
     position: absolute;
-    right: 15px;
-    background: none;
-    border: none;
-    color: #94a3b8;
+    right: 45px;
+    top: 28%;
+    transform: translateY(-50%);
     cursor: pointer;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    transition: color 0.3s ease;
-    z-index: 10;
+    color: #94a3b8;
+    z-index: 3;
 }
 
 .hk-toggle-password:hover {

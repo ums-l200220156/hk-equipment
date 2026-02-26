@@ -15,9 +15,9 @@
             $armada = [
                 [
                     'name' => 'Excavator Standard',
-                    'category' => 'excavator',
+                    'category' => 'Excavator',
                     'img' => 'excavator.png',
-                    'price' => 'Rp 500.000 / Jam',
+                    'price' => 'Rp 140.000 / Jam',
                     'tag' => 'Kualitas Prima',
                     'desc' => 'Ideal untuk pengerjaan galian tanah, pemuatan, dan perataan lahan.'
                 ],
@@ -25,7 +25,7 @@
                     'name' => 'Excavator Breaker',
                     'category' => 'excavator breaker',
                     'img' => 'breaker.png',
-                    'price' => 'Rp 350.000 / Jam',
+                    'price' => 'Rp 270.000 / Jam',
                     'tag' => 'Heavy Duty',
                     'desc' => 'Khusus pengerjaan penghancuran beton, aspal, dan material keras lainnya.'
                 ]
@@ -45,7 +45,7 @@
                         <p class="small text-muted mb-3">{{ $alat['desc'] }}</p>
 
                         <ul class="alat-premium-spec">
-                            <li><i class="bi bi-shield-check-fill"></i> Maintenance Rutin Berkala</li>
+                            <li><i class="bi bi-patch-check-fill"></i> Maintenance Rutin Berkala</li>
                             <li><i class="bi bi-fuel-pump-fill"></i> Efisiensi Konsumsi BBM</li>
                             <li><i class="bi bi-gear-fill"></i> Sistem Hidrolik Responsif</li>
                         </ul>

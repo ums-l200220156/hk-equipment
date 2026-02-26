@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Join Fleet - HK Equipment</title>
+    <title>Register - HK Equipment</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet" >
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet" >
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
     <link rel="stylesheet" href="{{ asset('assets/css/auth/register.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet"/>
 </head>
 <body>
 
@@ -130,23 +131,25 @@
                                         {{-- Password dengan Toggle --}}
                                         <div class="col-md-6 mb-3">
                                             <label class="hk-label">Password</label>
-                                            <div class="hk-input-group">
+                                            <div class="hk-input-group position-relative">
                                                 <i class="bi bi-lock"></i>
                                                 <input type="password" name="password" id="password" class="hk-input" placeholder="********" minlength="8" required>
-                                                <button type="button" class="hk-toggle-password" onclick="togglePass('password', 'iconPass')">
-                                                    <i class="bi bi-eye-slash" id="iconPass"></i>
-                                                </button>
+                                                
+                                                <span class="hk-toggle-password" data-target="password">
+                                                    <i class="bi bi-eye-slash"></i>
+                                                </span>
                                             </div>
                                         </div>
                                         {{-- Konfirmasi dengan Toggle --}}
                                         <div class="col-md-6 mb-3">
                                             <label class="hk-label">Konfirmasi</label>
-                                            <div class="hk-input-group">
+                                            <div class="hk-input-group position-relative">
                                                 <i class="bi bi-shield-check"></i>
                                                 <input type="password" name="password_confirmation" id="password_confirm" class="hk-input" placeholder="********" minlength="8" required>
-                                                <button type="button" class="hk-toggle-password" onclick="togglePass('password_confirm', 'iconConfirm')">
-                                                    <i class="bi bi-eye-slash" id="iconConfirm"></i>
-                                                </button>
+                                                
+                                                <span class="hk-toggle-password" data-target="password_confirm">
+                                                    <i class="bi bi-eye-slash"></i>
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -171,6 +174,36 @@
     </div>
 </div>
 
+
+<!-- MODAL CROPPER -->
+<div class="modal fade" id="cropModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius:20px;">
+            
+            <div class="modal-body p-3 text-center">
+                <h6 class="fw-bold mb-3">Sesuaikan Foto Profil</h6>
+
+                <div style="max-height: 400px;">
+                    <img id="cropImage" style="width:100%;">
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 mt-3">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Batal
+                    </button>
+                    <button type="button" id="cropBtn" class="btn btn-warning">
+                        Crop & Gunakan
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="{{ asset('assets/js/auth/register.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 </body>
 </html>

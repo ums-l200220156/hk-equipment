@@ -6,6 +6,7 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <link rel="icon" type="image/png" href="{{ asset('assets/img/logo-hk.png') }}">
     <title>@yield('title', 'HK Equipment')</title>
 
     {{-- FONT & CORE CSS --}}

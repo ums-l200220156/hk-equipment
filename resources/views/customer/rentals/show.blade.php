@@ -118,7 +118,32 @@
                                         </div>
                                     </div>
 
-                                {{-- 3. APPROVED / COMPLETED --}}
+
+                                {{-- 3. JIKA DITOLAK --}}
+                                @elseif($ot->status === 'rejected')
+                                    <div class="text-center py-2 animate__animated animate__shakeX">
+                                        <div class="icon-rejected-bg mb-3">
+                                            <i class="bi bi-exclamation-octagon-fill text-danger fs-1"></i>
+                                        </div>
+                                        <h6 class="fw-bold text-danger">PENGAJUAN LEMBUR DITOLAK</h6>
+                                        <p class="text-muted small">Maaf, permintaan lembur Anda saat ini tidak dapat disetujui oleh Admin.</p>
+                                        
+                                        <div class="d-flex gap-2 mt-3">
+                                            <a href="https://wa.me/6281230054652?text=Halo%20Admin%20HK%20Equipment,%20saya%20ingin%20menanyakan%20terkait%20penolakan%20lembur%20unit%20{{ $rental->equipment->name }}" 
+                                            class="btn btn-dark w-100 fw-bold rounded-3" target="_blank">
+                                                <i class="bi bi-chat-dots-fill me-2"></i> Hubungi Admin
+                                            </a>
+                                            {{-- Tombol untuk hapus status rejected agar customer bisa ajukan lagi jika perlu --}}
+                                            <form action="{{ route('customer.overtime.cancel', $ot->id) }}" method="POST">
+                                                @csrf @method('DELETE')
+                                                <button type="submit" class="btn btn-outline-secondary rounded-3 d-flex align-items-center gap-2" title="Bersihkan">
+                                                    <i class="bi bi-trash"></i> 
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                {{-- 4. APPROVED / COMPLETED --}}
                                 @elseif(in_array($ot->status, ['approved', 'completed']))
                                     <div id="realtimeOtApp" 
                                          data-id="{{ $ot->id }}"
@@ -201,7 +226,8 @@
                             <div class="spec-icon-box"><i class="bi bi-clock"></i></div>
                             <div class="specs-content">
                                 <label>Waktu Mulai</label>
-                                <p>{{ $rental->start_time }} WIB</p>
+                                {{-- Menggunakan date() untuk memotong detik --}}
+                                <p>{{ date('H:i', strtotime($rental->start_time)) }} WIB</p>
                             </div>
                         </div>
                         <div class="specs-item">

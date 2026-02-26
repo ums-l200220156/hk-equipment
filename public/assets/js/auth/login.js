@@ -1,5 +1,5 @@
 /**
- * HK LOGIN SYSTEM - JAVASCRIPT HELPER
+ * HK LOGIN SYSTEM 
  */
 
 // 1. Toggle Lihat Password

@@ -1,0 +1,126 @@
+/* ==========================================================================
+   HK OTP VERIFICATION - INDEPENDENT CSS
+   ========================================================================== */
+
+:root {
+    --hk-navy: #0f172a;
+    --hk-warning: #f59e0b;
+    --hk-wa-green: #25D366;
+    --hk-border: rgba(255,255,255,0.1);
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    margin: 0;
+    background-color: var(--hk-navy);
+}
+
+.hk-recovery-page {
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Background Effects */
+.hk-grid-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: radial-gradient(rgba(245, 158, 11, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+}
+
+.hk-glow-sphere {
+    position: absolute;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(245, 158, 11, 0.1) 0%, transparent 70%);
+    top: -200px; right: -100px;
+}
+
+/* Card Styling */
+.hk-recovery-card {
+    background: rgba(30, 41, 59, 0.7);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--hk-border);
+    padding: 2.5rem;
+    border-radius: 30px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    z-index: 10;
+    width: 100%;
+    max-width: 400px; /* Lebih ramping dari card login */
+}
+
+.hk-logo-icon {
+    font-size: 3rem;
+    color: var(--hk-warning);
+    margin-bottom: 15px;
+}
+
+.hk-title {
+    color: white;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+.hk-subtitle {
+    color: #94a3b8;
+    font-size: 0.85rem;
+}
+
+/* OTP Input Styling - Dibuat Pendek/Ramping */
+.hk-otp-container {
+    max-width: 220px; /* Panjang field diperkecil */
+    margin: 2rem auto;
+    position: relative;
+}
+
+.hk-input-otp {
+    width: 100%;
+    padding: 12px;
+    background: rgba(15, 23, 42, 0.5);
+    border: 2px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    color: white;
+    font-weight: 800;
+    font-size: 1.5rem;
+    letter-spacing: 10px;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.hk-input-otp:focus {
+    outline: none;
+    border-color: var(--hk-wa-green);
+    box-shadow: 0 0 15px rgba(37, 211, 102, 0.2);
+}
+
+/* Tombol */
+.hk-btn-verify {
+    width: 100%;
+    max-width: 220px; /* Disamakan lebarnya dengan field */
+    margin: 0 auto;
+    display: flex;
+    padding: 12px;
+    background: var(--hk-wa-green);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 800;
+    justify-content: center;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.hk-btn-verify:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+.hk-link-warning {
+    color: var(--hk-warning);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.8rem;
+}

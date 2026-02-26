@@ -34,13 +34,6 @@ use App\Http\Controllers\Customer\PaymentController;
 // ROUTE GUEST
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('customer.profile');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
 require __DIR__.'/auth.php';
 
 
@@ -261,3 +254,11 @@ Route::post('/my-rentals/{id}/cancel',
 )->name('customer.rentals.cancel');
 
 
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'show'])->name('customer.profile'); 
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit'); 
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])
+    ->name('profile.password.update');
+});

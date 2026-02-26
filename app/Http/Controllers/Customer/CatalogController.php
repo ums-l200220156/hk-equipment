@@ -18,61 +18,42 @@ class CatalogController extends Controller
         $query = Equipment::query();
 
         /**
-         * =================================================
-         * SEARCH (nama alat)
-         * =================================================
+         * SEARCH (berdasarkan nama alat)
          */
         if ($request->filled('search')) {
             $query->where('name', 'LIKE', '%' . trim($request->search) . '%');
         }
 
         /**
-         * =================================================
-         * FILTER KATEGORI
-         * (dipakai oleh homepage "Cek Ketersediaan")
-         * =================================================
+         * FILTER KATEGORI 
+         * Logic: Jika 'lock' aktif (dari homepage), gunakan pencarian persis (=).
+         * Jika filter manual di katalog, gunakan pencarian kemiripan (LIKE).
          */
         $lockedCategory = null;
 
         if ($request->filled('category')) {
             $category = strtolower(trim($request->category));
 
-            $lockedCategory = null;
-
-            if ($request->filled('category')) {
-                $category = strtolower(trim($request->category));
-
-                $query->whereRaw(
-                    'LOWER(category) LIKE ?',
-                    ["%{$category}%"]
-                );
-
-                if ($request->boolean('lock')) {
-                    $lockedCategory = $category;
-                }
+            if ($request->boolean('lock')) {
+                // Pencarian PERSIS agar Excavator Standard tidak menampilkan Breaker
+                $query->whereRaw('LOWER(category) = ?', [$category]);
+                $lockedCategory = $category;
+            } else {
+                // Pencarian kemiripan untuk filter manual di halaman katalog
+                $query->whereRaw('LOWER(category) LIKE ?', ["%{$category}%"]);
             }
-
-
-                        // Jika datang dari homepage → kunci filter
-                        if ($request->boolean('lock')) {
-                            $lockedCategory = $category;
-                        }
-                    }
+        }
 
         /**
-         * =================================================
-         * FILTER STATUS (opsional, frontend JS)
-         * =================================================
+         * FILTER STATUS (opsional)
          */
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
 
         /**
-         * =================================================
          * URUTAN PROFESIONAL
          * available → rented → maintenance
-         * =================================================
          */
         $equipment = $query
             ->orderByRaw("
@@ -88,9 +69,7 @@ class CatalogController extends Controller
             ->get();
 
         /**
-         * =================================================
          * DROPDOWN KATEGORI (UNTUK FILTER)
-         * =================================================
          */
         $categories = Equipment::select('category')
             ->whereNotNull('category')
@@ -99,34 +78,27 @@ class CatalogController extends Controller
             ->get();
 
         /**
-         * =================================================
          * RETURN VIEW
-         * =================================================
          */
         return view('customer.catalog.index', [
             'equipment'       => $equipment,
             'categories'      => $categories,
-            'lockedCategory'  => $lockedCategory, // ⬅️ PENTING
+            'lockedCategory'  => $lockedCategory, 
         ]);
     }
 
     /**
-     * =====================================================
      * SHOW – DETAIL ALAT
-     * =====================================================
      */
     public function show($id)
     {
         $item = Equipment::findOrFail($id);
-
         return view('customer.catalog.show', compact('item'));
     }
 
     /**
-     * =====================================================
      * STATUS ENDPOINT (JSON)
      * Dipakai auto-refresh tanpa reload
-     * =====================================================
      */
     public function status($id)
     {
