@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File; // Pastikan File Facade diimpor
 
 class CustomerAdminController extends Controller
 {
@@ -100,6 +101,12 @@ class CustomerAdminController extends Controller
     public function destroy($id)
     {
         $customer = User::where('role', 'customer')->findOrFail($id);
+
+        // 🔥 Hapus file foto fisik jika ada
+        if ($customer->image && File::exists(public_path('uploads/users/' . $customer->image))) {
+            File::delete(public_path('uploads/users/' . $customer->image));
+        }
+
         $customer->delete();
 
         return redirect()

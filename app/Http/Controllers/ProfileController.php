@@ -58,7 +58,7 @@ class ProfileController extends Controller
                 'image' => 'image|mimes:jpg,jpeg,png|max:2048'
             ]);
 
-            // HAPUS FILE LAMA
+            // 🔥 HAPUS FILE LAMA DARI STORAGE
             if ($user->image && File::exists(public_path('uploads/users/' . $user->image))) {
                 File::delete(public_path('uploads/users/' . $user->image));
             }
@@ -131,6 +131,11 @@ class ProfileController extends Controller
         ]);
 
         $user = $request->user();
+
+        // 🔥 HAPUS FILE FOTO FISIK SEBELUM AKUN DIHAPUS
+        if ($user->image && File::exists(public_path('uploads/users/' . $user->image))) {
+            File::delete(public_path('uploads/users/' . $user->image));
+        }
 
         Auth::logout();
 
