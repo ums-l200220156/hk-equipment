@@ -42,7 +42,7 @@
                 <div class="footer-contact-card">
                     <p class="small mb-2 text-white-50">Layanan Pelanggan 24/7:</p>
                     <a href="https://wa.me/6281230054652111" class="text-danger fw-bold fs-5 text-decoration-none d-block">
-                        <i class="bi bi-whatsapp me-2"></i> 081230054652111
+                        <i class="bi bi-whatsapp me-2"></i> 081230054652111111
                     </a>
                 </div>
             </div>
