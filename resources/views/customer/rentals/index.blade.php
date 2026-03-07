@@ -74,8 +74,12 @@
                                             <img src="{{ asset('uploads/equipment/'.$r->equipment->image) }}" alt="Unit">
                                             <div class="img-overlay"><i class="bi bi-zoom-in"></i></div>
                                         </div>
+                                        
                                         <div class="text-data">
-                                            <span class="fw-bold text-dark">{{ $r->equipment->name }}</span>
+                                            <span class="unit-name-link fw-bold text-dark" 
+                                                onclick="previewImage('{{ asset('uploads/equipment/'.$r->equipment->image) }}', '{{ $r->equipment->name }}')">
+                                                {{ $r->equipment->name }}
+                                            </span>
                                         </div>
                                     </div>
                                 </td>

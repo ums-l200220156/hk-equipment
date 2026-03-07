@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', function() {
         uploadArea.addEventListener('click', () => fileInput.click());
 
         // 2. DRAG & DROP LOGIC
-        // Mencegah browser membuka file secara otomatis
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
             uploadArea.addEventListener(eventName, (e) => {
                 e.preventDefault();
@@ -18,14 +17,12 @@ document.addEventListener('DOMContentLoaded', function() {
             }, false);
         });
 
-        // Efek visual saat file ditarik di atas area
         ['dragenter', 'dragover'].forEach(eventName => {
             uploadArea.addEventListener(eventName, () => {
                 uploadArea.classList.add('active');
             }, false);
         });
 
-        // Menghilangkan efek visual saat file batal di-drop
         ['dragleave', 'drop'].forEach(eventName => {
             uploadArea.addEventListener(eventName, () => {
                 if (!fileInput.files.length) {
@@ -34,13 +31,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }, false);
         });
 
-        // MENANGKAP FILE SAAT DI-DROP
+        // TANGKAP FILE SAAT DROP
         uploadArea.addEventListener('drop', (e) => {
             const dt = e.dataTransfer;
             const files = dt.files;
 
             if (files.length > 0) {
-                fileInput.files = files; // Memasukkan file ke input
+                fileInput.files = files;
                 handleFileOT(files[0]);    
             }
         });
@@ -93,10 +90,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// 5. FITUR COPY NOMOR REKENING
+/**
+ * 5. FITUR COPY NOMOR REKENING (MOBILE-FRIENDLY)
+ * Fungsi diletakkan di luar agar bisa dipanggil oleh atribut onclick di HTML
+ */
 function copyAccountOT() {
-    const accountNum = "1860846230";
-    navigator.clipboard.writeText(accountNum).then(() => {
+    const accountNum = "1860846230"; // Nomor rekening
+
+    // Fungsi untuk memicu notifikasi sukses
+    const successAlert = () => {
         Swal.fire({
             icon: 'success',
             title: 'Berhasil disalin!',
@@ -105,5 +107,44 @@ function copyAccountOT() {
             toast: true,
             position: 'top-end'
         });
-    });
+    };
+
+    // Metode A: Navigator Clipboard (Modern)
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(accountNum).then(successAlert).catch(() => {
+            // Jika gagal, lari ke Metode B
+            fallbackCopyOT(accountNum, successAlert);
+        });
+    } else {
+        // Metode B: Textarea Fallback (Sangat stabil di Mobile/Minimize)
+        fallbackCopyOT(accountNum, successAlert);
+    }
+}
+
+/**
+ * Fungsi Fallback menggunakan elemen textarea sementara
+ * Ini memastikan copy tetap jalan di browser mobile lama atau koneksi non-HTTPS
+ */
+function fallbackCopyOT(text, callback) {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    
+    // Pastikan textarea tidak terlihat dan tidak merusak scroll
+    textArea.style.position = "fixed";
+    textArea.style.left = "-9999px";
+    textArea.style.top = "0";
+    document.body.appendChild(textArea);
+    
+    textArea.focus();
+    textArea.select();
+    textArea.setSelectionRange(0, 99999); // Spesifik untuk iOS
+
+    try {
+        const successful = document.execCommand('copy');
+        if (successful) callback();
+    } catch (err) {
+        console.error('Gagal menyalin teks fallback', err);
+    }
+
+    document.body.removeChild(textArea);
 }

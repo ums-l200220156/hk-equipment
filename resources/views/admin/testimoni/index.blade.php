@@ -9,7 +9,7 @@
     
     <div class="admin-welcome-header mb-4 shadow-sm">
         <div class="header-overlay"></div>
-        <div class="header-content d-flex justify-content-between align-items-center">
+        <div class="header-content">
             <div class="text-white">
                 <h2 class="fw-800 mb-1 text-uppercase">Manajemen <span class="text-danger">Testimoni</span></h2>
                 <p class="opacity-75 mb-0 d-none d-sm-block"><i class="bi bi-chat-quote me-1"></i> Kelola ulasan pelanggan HK Equipment</p>
@@ -26,7 +26,7 @@
                         <option value="1">⭐ Bintang 1</option>
                     </select>
                 </div>
-                <div class="total-testimoni-badge">
+                <div class="total-testimoni-badge text-white">
                     <span class="small opacity-75">Total:</span>
                     <span class="fw-bold">{{ $testimonis->count() }}</span>
                 </div>
@@ -49,23 +49,22 @@
                 <tbody>
                     @forelse($testimonis as $t)
                     <tr class="testimoni-row" data-rating="{{ $t->rating }}">
-                        <td class="ps-4">
-                            <div class="d-flex align-items-center" style="min-width: 180px;">
-                                {{-- Logika Foto Profil --}}
+                        <td class="ps-4" data-label="Klien">
+                            <div class="d-flex align-items-center">
                                 @if($t->user->image)
                                     <img src="{{ asset('uploads/users/'.$t->user->image) }}" 
-                                        class="rounded-circle me-3 border shadow-sm" 
-                                        width="45" height="45" 
-                                        style="object-fit: cover;">
+                                         class="rounded-circle me-3 border shadow-sm" 
+                                         width="45" height="45" 
+                                         style="object-fit: cover;">
                                 @else
                                     <img src="https://ui-avatars.com/api/?name={{ urlencode($t->user->name) }}&background=dc3545&color=fff&bold=true" 
-                                        class="rounded-circle me-3 border shadow-sm" 
-                                        width="45">
+                                         class="rounded-circle me-3 border shadow-sm" 
+                                         width="45">
                                 @endif
                                 
-                                <div>
-                                    <div class="fw-bold text-dark">{{ $t->user->name }}</div>
-                                    <small class="text-muted">{{ $t->updated_at->format('d/m/Y') }}</small>
+                                <div class="text-start">
+                                    <div class="fw-bold text-dark small">{{ $t->user->name }}</div>
+                                    <small class="text-muted" style="font-size: 0.7rem;">{{ $t->updated_at->format('d/m/Y') }}</small>
                                 </div>
                             </div>
                         </td>
@@ -76,13 +75,13 @@
                                 @endfor
                             </div>
                         </td>
-                        <td  data-label="Isi Ulasan">
+                        <td data-label="Ulasan">
                             <div class="testimoni-text">
                                 <i class="bi bi-quote text-danger opacity-25 fs-4"></i>
                                 <span>{{ $t->content }}</span>
                             </div>
                         </td>
-                        <td  data-label="Media">
+                        <td data-label="Media">
                             <div class="media-preview-container">
                                 @if($t->photo)
                                     <button type="button" class="btn-preview img-trigger" onclick="viewMedia('{{ asset('storage/'.$t->photo) }}', 'image')">

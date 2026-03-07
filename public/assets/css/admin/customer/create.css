@@ -191,4 +191,32 @@ body {
     .hk-card-form {
         padding: 1.5rem;
     }
+
+    /* 🔥 WRAPPER FULL WIDTH */
+    .hk-form-wrapper {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        max-width: 100% !important;
+    }
+
+    /* HEADER FULL */
+    .hk-header-banner {
+        border-radius: 10 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    /* CARD FORM FULL */
+    .hk-card-form {
+        border-radius: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding: 1.2rem !important; /* tetap nyaman */
+    }
+
+    /* ACTION BUTTON RAPAT */
+    .hk-form-actions {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
 }

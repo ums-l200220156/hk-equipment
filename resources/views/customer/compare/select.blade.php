@@ -1,121 +1,80 @@
-@php use Illuminate\Support\Str; @endphp
-<!DOCTYPE html>
-<html lang="id">
-<head>
-<meta charset="UTF-8">
-<title>Pilih Alat untuk Dibandingkan</title>
+@extends('layouts.base')
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+@section('title', 'Pilih Alat untuk Dibandingkan - HK Equipment')
 
-<link rel="stylesheet" href="{{ asset('assets/css/customer/compare/select.css') }}">
-</head>
-<body>
+@push('styles')
+    {{-- Memanggil file CSS eksternal yang baru dibuat --}}
+    <link rel="stylesheet" href="{{ asset('assets/css/customer/compare/select.css') }}">
+@endpush
 
+@section('content')
 {{-- HEADER --}}
 <div class="compare-header">
     <div class="container">
-
         <div class="compare-header-inner">
-
-            {{-- BACK BUTTON (LEFT) --}}
-            <button type="button"
-                    class="btn btn-back-modern"
+            <button type="button" class="btn btn-back-modern" 
                     onclick="if (history.length > 1) { history.back(); } else { window.location.href='{{ route('customer.catalog') }}'; }">
-                <i class="bi bi-arrow-left-short"></i>
-                Kembali ke Katalog
+                <i class="bi bi-arrow-left-short fs-5"></i> <span>Kembali ke Katalog</span>
             </button>
 
-            {{-- TITLE (CENTER) --}}
             <div class="compare-header-text">
-                <h2>
-                    <i class="bi bi-bar-chart-steps"></i>
-                    Bandingkan Alat Berat
-                </h2>
-                <p>Pilih minimal 2 alat untuk melihat perbandingan spesifikasi</p>
+                <h2>Bandingkan Alat Berat</h2>
+                <p>Pilih minimal 2 alat untuk dibandingkan</p>
             </div>
-
+            <div style="width: 140px;" class="d-none d-md-block"></div>
         </div>
-
     </div>
 </div>
 
-
-<div class="container py-4 mb-5">
-
-    {{-- FILTER PANEL (CENTERED & COMPACT) --}}
-    <div class="compare-filter-wrapper d-flex justify-content-center mb-4">
+<div class="container py-4">
+    {{-- FILTER PANEL --}}
+    <div class="compare-filter-wrapper">
         <div class="compare-filter-compact">
-
-            {{-- SEARCH --}}
-            <div class="search-field">
-                <i class="bi bi-search"></i>
-                <input id="searchInput"
-                       type="text"
-                       class="form-control"
-                       placeholder="Cari nama alat…">
+            <div class="position-relative">
+                <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-primary"></i>
+                <input id="searchInput" type="text" class="form-control ps-5 border-0 bg-light" placeholder="Cari nama alat…">
             </div>
 
-            {{-- CATEGORY --}}
-            <select id="categoryFilter" class="form-select">
+            <select id="categoryFilter" class="form-select border-0 bg-light">
                 <option value="">Semua Kategori</option>
                 @foreach($equipment->pluck('category')->unique() as $cat)
-                    <option value="{{ strtolower($cat) }}">
-                        {{ ucfirst($cat) }}
-                    </option>
+                    <option value="{{ strtolower($cat) }}">{{ ucfirst($cat) }}</option>
                 @endforeach
             </select>
 
-            {{-- STATUS --}}
-            <select id="statusFilter" class="form-select">
+            <select id="statusFilter" class="form-select border-0 bg-light">
                 <option value="">Semua Status</option>
                 <option value="available">Tersedia</option>
                 <option value="rented">Tidak Tersedia</option>
             </select>
-
         </div>
     </div>
 
-    {{-- FORM --}}
+    {{-- GRID ALAT --}}
     <form id="compareForm" method="POST" action="{{ route('customer.compare.result') }}">
         @csrf
         <input type="hidden" name="items" id="compareItems">
 
-        <div class="row g-4" id="equipmentGrid">
+        <div class="row g-3 g-md-4" id="equipmentGrid">
             @foreach($equipment as $item)
-            <div class="col-md-4 col-lg-3 eq-item"
-                 data-id="{{ $item->id }}"
-                 data-name="{{ strtolower($item->name) }}"
-                 data-category="{{ strtolower($item->category) }}"
+            <div class="col-6 col-md-4 col-lg-3 eq-item" 
+                 data-id="{{ $item->id }}" 
+                 data-name="{{ strtolower($item->name) }}" 
+                 data-category="{{ strtolower($item->category) }}" 
                  data-status="{{ $item->status }}">
-
+                
                 <div class="compare-card">
-
                     <span class="status-badge {{ $item->status }}">
-                        {{ $item->status === 'available' ? 'Tersedia' : 'Tidak Tersedia' }}
+                        {{ $item->status === 'available' ? 'Tersedia' : 'Rented' }}
                     </span>
-
-                    <span class="check-mark">
-                        <i class="bi bi-check-lg"></i>
-                    </span>
-
+                    <span class="check-mark"><i class="bi bi-check-lg"></i></span>
+                    
                     <img src="{{ asset('uploads/equipment/'.$item->image) }}" alt="{{ $item->name }}">
-
+                    
                     <div class="card-body">
                         <h6>{{ $item->name }}</h6>
-                        <small class="text-muted">
-                            {{ ucfirst($item->category) }}
-                        </small>
-
-                        <div class="price">
-                            Rp {{ number_format($item->price_per_hour) }} / jam
-                        </div>
-
-                        <p>
-                            {{ Str::limit($item->description, 60) }}
-                        </p>
+                        <div class="text-danger fw-bold small">Rp {{ number_format($item->price_per_hour) }} <span class="text-muted fw-normal">/jam</span></div>
                     </div>
-
                 </div>
             </div>
             @endforeach
@@ -123,16 +82,18 @@
     </form>
 </div>
 
-{{-- COMPARE TRAY --}}
-<div class="compare-tray">
+{{-- BOTTOM TRAY --}}
+<div class="compare-tray" id="compareTray">
     <div>
+        <i class="bi bi-layers text-primary me-2"></i>
         <strong><span id="compareCount">0</span></strong> alat dipilih
     </div>
-    <button id="compareBtn" class="btn btn-primary" disabled>
+    <button id="compareBtn" class="btn btn-primary px-5 fw-bold rounded-pill shadow" disabled>
         Bandingkan Sekarang
     </button>
 </div>
+@endsection
 
-<script src="{{ asset('assets/js/customer/compare/select.js') }}"></script>
-</body>
-</html>
+@push('scripts')
+    <script src="{{ asset('assets/js/customer/compare/select.js') }}"></script>
+@endpush

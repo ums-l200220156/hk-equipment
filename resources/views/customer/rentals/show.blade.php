@@ -106,7 +106,7 @@
                                         <div class="spinner-border text-danger mb-2" role="status"></div>
                                         <h6 class="fw-bold">Menunggu Persetujuan Admin</h6>
                                         <div class="d-flex gap-2 mt-3">
-                                            <a href="https://wa.me/6281230054652" class="btn btn-success flex-grow-1 fw-bold rounded-3" target="_blank">
+                                            <a href="https://wa.me/6281230054652111" class="btn btn-success flex-grow-1 fw-bold rounded-3" target="_blank">
                                                 <i class="bi bi-whatsapp"></i> Chat Admin
                                             </a>
                                             <form action="{{ route('customer.overtime.cancel', $ot->id) }}" method="POST" id="cancelOtForm">
@@ -129,7 +129,7 @@
                                         <p class="text-muted small">Maaf, permintaan lembur Anda saat ini tidak dapat disetujui oleh Admin.</p>
                                         
                                         <div class="d-flex gap-2 mt-3">
-                                            <a href="https://wa.me/6281230054652?text=Halo%20Admin%20HK%20Equipment,%20saya%20ingin%20menanyakan%20terkait%20penolakan%20lembur%20unit%20{{ $rental->equipment->name }}" 
+                                            <a href="https://wa.me/6281230054652111?text=Halo%20Admin%20HK%20Equipment,%20saya%20ingin%20menanyakan%20terkait%20penolakan%20lembur%20unit%20{{ $rental->equipment->name }}" 
                                             class="btn btn-dark w-100 fw-bold rounded-3" target="_blank">
                                                 <i class="bi bi-chat-dots-fill me-2"></i> Hubungi Admin
                                             </a>

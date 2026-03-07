@@ -1,6 +1,6 @@
 @extends('layouts.base')
 
-@section('title', 'Sewa Alat Berat Profesional')
+@section('title', 'Sewa Alat Berat | HK Equipment')
 
 @section('content')
     @include('partials.hero')

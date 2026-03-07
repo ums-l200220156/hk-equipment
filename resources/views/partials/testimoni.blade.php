@@ -65,12 +65,21 @@
 
                             {{-- ================= USER INFO ================= --}}
                             <div class="d-flex align-items-center justify-content-center mb-3">
-                                <div class="testimoni-avatar me-3">
-                                    {{-- AVATAR SELALU IDENTITAS USER --}}
-                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($testimoni->user->name) }}&background=dc3545&color=fff&size=128">
+                              <div class="testimoni-avatar mb-3">
+                                    @if($testimoni->user->image)
+                                        <img src="{{ asset('uploads/users/' . $testimoni->user->image) }}" 
+                                            alt="{{ $testimoni->user->name }}"
+                                            style="width: 90px; height: 90px; object-fit: cover; border-radius: 20px;">
+                                    @else
+                                        <img src="https://ui-avatars.com/api/?name={{ urlencode($testimoni->user->name) }}&background=dc3545&color=fff&size=128"
+                                            alt="{{ $testimoni->user->name }}"
+                                            style="width: 90px; height: 90px; border-radius: 20px;">
+                                    @endif
                                 </div>
-                                <div class="text-start">
-                                    <h6 class="fw-bold mb-0">{{ $testimoni->user->name }}</h6>
+                                <div class="testimoni-meta ms-3"> 
+                                    <h5 class="fw-bold mb-1" style="color: #1e293b;">
+                                        {{ $testimoni->user->name }}
+                                    </h5>
                                     <div class="testimoni-rating text-warning">
                                         @for($j=1;$j<=5;$j++)
                                             {{ $j <= $testimoni->rating ? '★' : '☆' }}

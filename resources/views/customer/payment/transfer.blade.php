@@ -1,9 +1,9 @@
 @extends('layouts.base')
 
-@section('title','Konfirmasi Pembayaran')
+@section('title', 'Konfirmasi Pembayaran - HK Equipment')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('assets/css/customer/payment/transfer.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/customer/payment/transfer.css') }}">
 @endpush
 
 @section('content')
@@ -11,6 +11,7 @@
     <div class="container">
         <div class="transfer-wrapper">
             
+            {{-- KIRI: INFO PEMBAYARAN --}}
             <div class="info-side">
                 <div class="badge-status">Menunggu Pembayaran</div>
                 <h2 class="title-display">Satu langkah lagi!</h2>
@@ -26,11 +27,13 @@
                         <div class="account-number" id="accountNum">1860846230</div>
                         <div class="account-holder">a.n Karuniawan Sulistya Nugroho</div>
                     </div>
-                    <button class="btn-copy" onclick="copyToClipboard()">
-                        <i class="bi bi-content-copy"></i> Salin Nomor
+                    {{-- Tombol Salin --}}
+                    <button type="button" class="btn-copy" onclick="copyToClipboard()">
+                        <i class="bi bi-content-copy me-2"></i> Salin Nomor Rekening
                     </button>
                 </div>
 
+                {{-- Langkah Pembayaran --}}
                 <div class="payment-steps">
                     <div class="step-item">
                         <span class="step-num">1</span>
@@ -47,22 +50,21 @@
                 </div>
             </div>
 
+            {{-- KANAN: FORM UPLOAD --}}
             <div class="form-side">
                 <div class="upload-box-container">
-                    <h3>Konfirmasi Bukti</h3>
-                    {{-- Menambahkan ID form untuk validasi JS --}}
-                    <form method="POST" action="{{ route('payment.upload',$rental->id) }}" enctype="multipart/form-data" id="formTransferSewa">
+                    <h3 class="fw-bold mb-3">Konfirmasi Bukti</h3>
+                    <form method="POST" action="{{ route('payment.upload', $rental->id) }}" enctype="multipart/form-data" id="formTransferSewa">
                         @csrf
                         <div class="upload-area" id="uploadArea">
                             <i class="bi bi-cloud-arrow-up-fill"></i>
-                            <p>Klik atau drop file bukti transfer di sini</p>
-                            {{-- Atribut required dilepas agar ditangani oleh SweetAlert --}}
+                            <p class="mt-2">Klik atau drop file bukti transfer di sini</p>
                             <input type="file" name="payment_proof" id="fileInput" hidden>
                             <div id="fileName" class="file-name-display"></div>
                         </div>
 
                         <div class="security-info">
-                            <i class="bi bi-shield-check"></i>
+                            <i class="bi bi-shield-check me-1"></i>
                             Pembayaran Anda aman dan terenkripsi.
                         </div>
 
@@ -80,7 +82,5 @@
 @endsection
 
 @push('scripts')
-{{-- SweetAlert2 CDN harus sudah ada di layout utama atau dipanggil di sini --}}
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="{{ asset('assets/js/customer/payment/transfer.js') }}"></script>
+    <script src="{{ asset('assets/js/customer/payment/transfer.js') }}"></script>
 @endpush

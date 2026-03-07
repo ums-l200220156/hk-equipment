@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'HK System - Fleet Management')
+@section('title', 'HK System - Manajemen Alat')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/admin/equipment/index.css') }}">

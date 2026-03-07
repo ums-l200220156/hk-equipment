@@ -32,7 +32,7 @@
                 <ul class="footer-links">
                     <li><a href="{{ route('customer.home') }}#proses">Sewa Unit</a></li>
                     <li><a href="{{ route('customer.home') }}#alat">Perawatan</a></li>
-                    <li><a href="https://wa.me/628123456789" target="_blank" rel="noopener noreferrer">Konsultasi</a></li>
+                    <li><a href="https://wa.me/6281230054652111" target="_blank" rel="noopener noreferrer">Konsultasi</a></li>
                 </ul>
             </div>
 
@@ -41,8 +41,8 @@
                 <h6 class="footer-title">Hubungi Kami</h6>
                 <div class="footer-contact-card">
                     <p class="small mb-2 text-white-50">Layanan Pelanggan 24/7:</p>
-                    <a href="https://wa.me/628123456789" class="text-danger fw-bold fs-5 text-decoration-none d-block">
-                        <i class="bi bi-whatsapp me-2"></i> 0812-3456-789
+                    <a href="https://wa.me/6281230054652111" class="text-danger fw-bold fs-5 text-decoration-none d-block">
+                        <i class="bi bi-whatsapp me-2"></i> 0812-3005-4652
                     </a>
                 </div>
             </div>

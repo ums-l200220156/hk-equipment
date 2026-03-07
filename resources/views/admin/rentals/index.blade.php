@@ -125,8 +125,10 @@
 
                         {{-- LOKASI & CATATAN --}}
                         <td class="hk-col-loc">
-                            <div class="hk-loc-box"><i class="bi bi-geo-alt-fill text-danger"></i> {{ Str::limit($r->location, 30) }}</div>
-                            <div class="hk-note-box">Catatan: "{{ $r->notes ?? '-' }}"</div>
+                            <div class="hk-loc-box"><i class="bi bi-geo-alt-fill text-danger"></i> {{ Str::limit($r->location, 60) }}</div>
+                            <div class="hk-note-box text-danger">
+                                Catatan: <span class="notes">"{{ $r->notes ?? '-' }}"</span>
+                            </div>
                         </td>
 
                        {{-- STATUS & BUKTI (GABUNGAN) --}}

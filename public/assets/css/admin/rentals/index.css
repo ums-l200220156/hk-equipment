@@ -1,16 +1,14 @@
 /* ==========================================================================
    01. VARIABEL GLOBAL & PENGATURAN DASAR
-   PENGATURAN WARNA UTAMA DAN TIPOGRAFI
-========================================================================== 
-*/
+========================================================================== */
 :root {
-    --hk-navy: #0f172a;      /* NAVY GELAP UNTUK TEKS & ELEMEN PRIMER */
-    --hk-warning: #f59e0b;   /* KUNING INDUSTRI UNTUK AKSEN UTAMA */
-    --hk-bg: #f8fafc;        /* ABU-ABU SANGAT TERANG UNTUK BACKGROUND */
-    --hk-border: #e2e8f0;    /* WARNA PEMBATAS STANDAR */
-    --hk-white: #ffffff;     /* PUTIH BERSIH */
-    --hk-success: #10b981;   /* HIJAU UNTUK STATUS SUKSES */
-    --hk-danger: #ef4444;    /* MERAH UNTUK AKSI HAPUS */
+    --hk-navy: #0f172a;      
+    --hk-warning: #f59e0b;   
+    --hk-bg: #f8fafc;        
+    --hk-border: #e2e8f0;    
+    --hk-white: #ffffff;     
+    --hk-success: #10b981;   
+    --hk-danger: #ef4444;    
 }
 
 body { 
@@ -27,12 +25,9 @@ body {
     margin: 0 auto;
 }
 
-
 /* ==========================================================================
    02. HEADER INDUSTRIAL (BANNER ATAS)
-   BAGIAN IDENTITAS DASHBOARD DAN TOMBOL ENTRI
-========================================================================== 
-*/
+========================================================================== */
 .hk-header-banner {
     background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
     padding: 1.5rem 2rem; 
@@ -87,12 +82,9 @@ body {
     color: #000;
 }
 
-
 /* ==========================================================================
    03. TOOLBAR SISTEM (SEARCH & FILTER)
-   PENGATURAN AREA PENCARIAN YANG MENCOLOK
-========================================================================== 
-*/
+========================================================================== */
 .hk-toolbar { 
     display: flex; 
     gap: 15px; 
@@ -102,14 +94,13 @@ body {
 
 .hk-search-wrapper {
     width: 100%;
-    max-width: 300px; /* PENDEK DAN TERFOKUS */
+    max-width: 300px; 
     background: white; 
     border: 2px solid var(--hk-warning); 
     border-radius: 10px;
     display: flex; 
     align-items: center; 
     padding: 0 12px; 
-    box-shadow: 0 4px 10px rgba(245, 158, 11, 0.1);
 }
 
 .hk-search-wrapper input { 
@@ -124,7 +115,6 @@ body {
 .hk-search-wrapper i { 
     color: var(--hk-warning); 
     margin-right: 8px; 
-    font-size: 1rem; 
 }
 
 .hk-select-pill { 
@@ -134,25 +124,14 @@ body {
     font-weight: 700; 
     font-size: 0.75rem; 
     background-color: white;
-    cursor: pointer;
 }
-
 
 /* ==========================================================================
-   04. DATA TABLE (TAMPILAN DESKTOP)
-   STRUKTUR TABEL DENGAN PEMBATAS BARIS TEGAS
-========================================================================== 
-*/
-.hk-table-card { 
-    background: transparent; 
-    border-radius: 15px; 
-    overflow: hidden; 
-}
+   04. DATA TABLE (DESKTOP)
+========================================================================== */
+.hk-table-card { background: transparent; overflow: hidden; }
 
-.hk-grid-table {
-    border-collapse: separate;
-    border-spacing: 0 8px; /* MEMBERIKAN JARAK ANTAR BARIS */
-}
+.hk-grid-table { border-collapse: separate; border-spacing: 0 8px; }
 
 .hk-grid-table thead th { 
     background: #f1f5f9; 
@@ -164,72 +143,47 @@ body {
     border: none;
 }
 
-.hk-tr-item { 
-    background: white; 
-    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-    transition: all 0.2s ease;
-}
+.hk-tr-item { background: white; transition: all 0.2s ease; }
 
-.hk-tr-item td {
-    padding: 15px;
-    border-top: 1px solid var(--hk-border);
-    border-bottom: 1px solid var(--hk-border);
-}
+.hk-tr-item td { padding: 15px; border-top: 1px solid var(--hk-border); border-bottom: 1px solid var(--hk-border); }
 
 .hk-tr-item td:first-child { border-left: 1px solid var(--hk-border); border-top-left-radius: 12px; border-bottom-left-radius: 12px; }
 .hk-tr-item td:last-child { border-right: 1px solid var(--hk-border); border-top-right-radius: 12px; border-bottom-right-radius: 12px; }
 
-.hk-tr-item:hover { 
-    background: #fffdf5; 
-    transform: scale(1.002);
-    border-color: var(--hk-warning);
-}
-
-/* NOMOR URUT */
 .hk-no-circle {
-    width: 30px; 
-    height: 30px; 
-    background: var(--hk-navy); 
-    color: white;
-    border-radius: 8px; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center;
-    font-weight: 800; 
-    margin: auto; 
-    font-size: 0.75rem;
+    width: 30px; height: 30px; background: var(--hk-navy); color: white;
+    border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    font-weight: 800; margin: auto; font-size: 0.75rem;
 }
-
 
 /* ==========================================================================
-   05. DETAIL KONTEN DALAM TABEL
-   PENGATURAN TEKS PELANGGAN, UNIT, DAN LOKASI
-========================================================================== 
-*/
+   05. DETAIL KONTEN
+========================================================================== */
 .hk-user-name { font-weight: 800; color: var(--hk-navy); font-size: 0.9rem; }
 .hk-user-phone { text-decoration: none; color: #16a34a; font-weight: 700; font-size: 0.75rem; }
-
-.hk-unit-link { cursor: pointer; color: var(--hk-navy); display: flex; align-items: center; gap: 5px; }
-.hk-unit-link:hover { color: var(--hk-warning); text-decoration: underline; }
-.hk-unit-total { color: var(--hk-danger); font-weight: 800; font-size: 0.75rem; margin-top: 2px; }
-
-.hk-loc-box { font-weight: 700; color: #334155; margin-bottom: 3px; }
-.hk-note-box { font-size: 0.7rem; color: #0069fd; font-style: italic; }
-
-
-/* ==========================================================================
-   06. STATUS & BUKTI BAYAR (GABUNGAN)
-   PILL STATUS DAN TOMBOL PREVIEW STRUK
-========================================================================== 
-*/
-.hk-pill { 
-    padding: 5px 12px; 
-    border-radius: 6px; 
-    font-size: 0.65rem; 
-    font-weight: 800; 
-    display: inline-block; 
+.hk-unit-link { 
+    cursor: pointer; 
+    color: var(--hk-navy); 
+    display: flex; 
+    align-items: center; 
+    gap: 5px;
+    transition: all 0.2s ease-in-out; /* Transisi halus */
 }
 
+.hk-unit-link:hover { 
+    color: var(--hk-warning) !important; /* Berubah jadi kuning saat kursor di atasnya */
+}
+
+.hk-unit-link:hover i {
+    transform: scale(1.2); /* Icon sedikit membesar saat hover */
+}
+
+.hk-unit-total { color: var(--hk-danger); font-weight: 800; font-size: 0.75rem; }
+
+/* ==========================================================================
+   06. STATUS & BUKTI
+========================================================================== */
+.hk-pill { padding: 5px 12px; border-radius: 6px; font-size: 0.65rem; font-weight: 800; display: inline-block; }
 .status-on_progress { background: #dcfce7; color: #166534; }
 .status-waiting_payment { background: #fef3c7; color: #92400e; }
 .status-paid { background: #e0f2fe; color: #0369a1; }
@@ -237,113 +191,135 @@ body {
 .status-cancelled { background: #fee2e2; color: #b91c1c; }
 
 .hk-proof-mini { 
-    margin-top: 8px; 
-    font-size: 0.65rem; 
-    font-weight: 800; 
-    color: var(--hk-warning); 
-    cursor: pointer; 
-    border: 1.5px solid var(--hk-warning); 
-    border-radius: 6px; 
-    padding: 4px 8px;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    transition: all 0.2s ease;
+    margin-top: 8px; font-size: 0.65rem; font-weight: 800; color: var(--hk-warning); 
+    cursor: pointer; border: 1.5px solid var(--hk-warning); border-radius: 6px; padding: 4px 8px;
+    display: inline-flex; align-items: center; gap: 5px;
 }
-
-.hk-proof-mini:hover { 
-    background: var(--hk-warning); 
-    color: #000; 
-}
-
 
 /* ==========================================================================
-   07. SISTEM KONTROL (AKSI ADMIN)
-   DROPDOWN STATUS DAN TOMBOL EDIT/HAPUS
-========================================================================== 
-*/
+   07. SISTEM KONTROL (AKSI)
+========================================================================== */
 .hk-ctrl-group { display: flex; align-items: center; gap: 8px; justify-content: flex-end; }
-
-.hk-status-dropdown {
-    background: var(--hk-navy); 
-    color: white; 
-    border: none; 
-    font-size: 0.7rem;
-    padding: 6px 12px; 
-    border-radius: 8px; 
-    font-weight: 700; 
-    cursor: pointer;
-    outline: none;
-}
-
-.hk-icon-btn {
-    width: 34px; 
-    height: 34px; 
-    border-radius: 8px; 
-    border: 1px solid var(--hk-border);
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    font-size: 0.9rem; 
-    transition: all 0.2s ease;
-    background: var(--hk-white);
-}
-
+.hk-status-dropdown { background: var(--hk-navy); color: white; border: none; font-size: 0.7rem; padding: 6px 10px; border-radius: 8px; font-weight: 700; }
+.hk-icon-btn { width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--hk-border); display: flex; align-items: center; justify-content: center; background: white; }
 .btn-edit { color: var(--hk-navy); }
-.btn-edit:hover { background: var(--hk-navy); color: white; border-color: var(--hk-navy); }
-
 .btn-del { background: #fff1f2; color: var(--hk-danger); border-color: #fecaca; }
-.btn-del:hover { background: var(--hk-danger); color: white; border-color: var(--hk-danger); }
-
 
 /* ==========================================================================
-   08. RESPONSIVE DESIGN (MOBILE OPTIMIZATION)
-   TRANSFORMASI TABEL MENJADI SISTEM KARTU PADA LAYAR KECIL
-========================================================================== 
-*/
+   08. RESPONSIVE DESIGN (FINAL MOBILE FIX)
+========================================================================== */
 @media (max-width: 992px) {
-    .hk-toolbar { flex-direction: column; align-items: stretch; }
-    .hk-search-wrapper { max-width: none; }
-    
-    /* SEMBUNYIKAN HEADER TABEL PADA MOBILE */
-    .hk-grid-table thead { display: none; }
-    
-    .hk-grid-table, .hk-grid-table tbody, .hk-tr-item, .hk-tr-item td {
-        display: block;
-        width: 100%;
+    .hk-main-wrapper { 
+        padding: 10px !important; 
     }
     
+    .hk-grid-table thead { 
+        display: none !important; 
+    }
+    
+    .hk-grid-table, .hk-grid-table tbody, .hk-tr-item {
+        display: block !important;
+        width: 100% !important;
+    }
+
     .hk-tr-item {
-        margin-bottom: 15px;
-        border-radius: 12px !important;
+        background: white !important;
         border: 1px solid var(--hk-border) !important;
-        padding: 10px;
+        border-radius: 15px !important;
+        margin-bottom: 20px !important;
+        padding: 10px 0 !important;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05) !important;
     }
-    
+
     .hk-tr-item td {
-        text-align: left !important;
+        display: flex !important;
+        padding: 12px 15px !important;
         border: none !important;
-        padding: 8px 15px !important;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        border-bottom: 1px solid #f1f5f9 !important;
+        width: 100% !important;
+        justify-content: space-between !important; 
+        align-items: center !important;
+        text-align: right !important;
     }
-    
-    /* MENAMBAHKAN LABEL OTOMATIS DI MOBILE */
+
+    .hk-tr-item td:last-child { 
+        border-bottom: none !important; 
+        background: #fafafa; 
+        border-radius: 0 0 15px 15px; 
+    }
+
+    /* LABEL DI SEBELAH KIRI */
     .hk-tr-item td::before {
         content: attr(data-label);
         font-weight: 800;
         font-size: 0.65rem;
-        color: #64748b;
+        color: #94a3b8;
         text-transform: uppercase;
+        text-align: left;
+        flex: 1;
+        margin-right: 10px;
+    }
+
+    /* KONTEN DI SEBELAH KANAN */
+    .hk-tr-item td > div, 
+    .hk-tr-item td > span, 
+    .hk-tr-item td > a, 
+    .hk-tr-item td > form {
+        flex: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    /* 🔥 PERKECIL & BERI JARAK BUTTON STRUK */
+    .hk-proof-mini {
+        margin-top: -7px !important; 
+        padding: 2px 4px !important; /* Padding lebih kecil agar mungil */
+        font-size: 0.6rem !important; 
+        border-width: 0.5px !important;
+        gap: 2px !important;
+        width: fit-content !important;
+        letter-spacing: 0.5px;
+    }
+
+    .hk-proof-mini i {
+        font-size: 0.25rem !important; /* Icon ikut mengecil */
+    }
+
+    /* Penyesuaian khusus elemen */
+    .hk-no-circle { 
+        margin: 0; 
     }
     
-    .hk-no-circle { margin: 0; }
-    .hk-ctrl-group { justify-content: flex-start; margin-top: 10px; }
+    .hk-unit-link { 
+        justify-content: flex-end; 
+    }
+    
+    .hk-ctrl-group { 
+        width: 100%; 
+        justify-content: flex-end !important; 
+        flex-direction: row !important;
+        gap: 8px;
+    }
+    
+    .hk-status-dropdown { 
+        width: auto; 
+        min-width: 120px; 
+    }
+}
+
+.hk-hidden {
+    display: none !important;
+}
+
+.notes {
+    color: #2563eb; 
+    font-weight: 600;
+    font-size: 12px;
 }
 
 @media (max-width: 576px) {
-    .hk-header-banner { padding: 1.2rem; }
-    .hk-main-title { font-size: 1.3rem; }
-    .hk-header-inner { flex-direction: column; align-items: flex-start; gap: 15px; }
+    .hk-main-title { font-size: 1.2rem; }
+    .hk-header-banner { padding: 1rem; }
+    .hk-tr-item td { font-size: 0.75rem; }
 }

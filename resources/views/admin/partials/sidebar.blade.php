@@ -5,7 +5,7 @@
                 <img src="{{ asset('assets/img/logo-hk.png') }}" alt="HK Logo" style="width: 100%; height: 100%; object-fit: contain;">
             </div>
             <div class="brand-text">
-                <span class="brand-name">HK <span class="text-danger">EQUIPMENT</span></span>
+                <span class="brand-name">HK <span class="text-danger">ADMIN</span></span>
             </div>
         </div>
     </div>

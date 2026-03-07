@@ -42,7 +42,7 @@ $slides = [
                         <p class="hero-subtitle">{{ $slide['subtitle'] }}</p>
                         <div class="hero-cta">
                             <a href="#alat" class="btn btn-danger btn-lg shadow">Pilih Armada</a>
-                            <a href="https://wa.me/628123456789" target="_blank" class="btn btn-outline-light btn-lg ms-2">Konsultasi Unit</a>
+                            <a href="https://wa.me/6281230054652111" target="_blank" class="btn btn-outline-light btn-lg ms-2">Konsultasi Unit</a>
                         </div>
                     </div>
                 </div>

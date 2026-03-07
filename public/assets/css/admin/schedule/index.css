@@ -247,10 +247,46 @@
         font-size: 0.75rem !important;
     }
 
-    .hk-schedule-wrapper { padding: 0.75rem; }
-
     .hk-calendar-container {
         padding: 1rem;
         border-radius: 20px;
+    }
+
+    .bg-primary.px-3.py-2 {
+        display: none !important;
+    }
+
+     /* 🔥 HILANGKAN BATAS KIRI-KANAN */
+    .hk-schedule-wrapper {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    /* BANNER FULL WIDTH */
+    .hk-banner {
+        border-radius: 10 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    /* FILTER CARD FULL */
+    .hk-filter-card {
+        border-radius: 10 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    /* KALENDER FULL */
+    .hk-calendar-container {
+        border-radius: 10 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    /* HEATMAP FULL */
+    .hk-heatmap-card {
+        border-radius: 10 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
     }
 }

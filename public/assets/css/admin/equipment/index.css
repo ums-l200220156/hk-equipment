@@ -1,5 +1,5 @@
 /* ==========================================================================
-   01. VARIABEL GLOBAL & DASAR
+    01. VARIABEL GLOBAL & DASAR
 ========================================================================== */
 :root {
     --hk-navy: #0f172a;
@@ -9,123 +9,360 @@
     --hk-white: #ffffff;
     --hk-success: #10b981;
     --hk-danger: #ef4444;
+    --hk-text-muted: #64748b;
 }
 
-body { background-color: var(--hk-bg); font-family: 'Plus Jakarta Sans', sans-serif; }
-.hk-main-wrapper { padding: 1.5rem; max-width: 1400px; margin: 0 auto; }
+body { 
+    background-color: var(--hk-bg); 
+    font-family: 'Plus Jakarta Sans', sans-serif; 
+    color: var(--hk-navy);
+    overflow-x: hidden;
+}
+
+.hk-main-wrapper { 
+    padding: 1.5rem; 
+    max-width: 1400px; 
+    margin: 0 auto; 
+    transition: all 0.3s ease;
+}
 
 /* ==========================================================================
-   02. HEADER & TOOLBAR
+    02. HEADER & TOOLBAR (RESPONSIVE FILTERING)
 ========================================================================== */
 .hk-header-banner {
     background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-    padding: 1.5rem 2rem; border-radius: 15px; color: white;
+    padding: 1.5rem 2rem; 
+    border-radius: 15px; 
+    color: white;
     border-bottom: 4px solid var(--hk-warning);
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
-.hk-main-title { font-weight: 800; font-size: 1.6rem; margin: 0; }
-.btn-hk-action { background: var(--hk-warning); color: #000; padding: 10px 20px; border-radius: 10px; font-weight: 800; text-decoration: none; font-size: 0.75rem; transition: 0.3s; display: inline-flex; align-items: center; gap: 8px; }
 
-.hk-toolbar { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
-.hk-search-wrapper { width: 100%; max-width: 350px; background: white; border: 2px solid var(--hk-warning); border-radius: 10px; display: flex; align-items: center; padding: 0 12px; }
-.hk-search-wrapper input { border: none; padding: 10px 0; width: 100%; outline: none; font-weight: 600; font-size: 0.85rem; }
-.hk-select-pill { padding: 10px 15px; border-radius: 10px; border: 1px solid var(--hk-border); font-weight: 700; font-size: 0.75rem; background: white; }
+.hk-main-title { font-weight: 800; font-size: 1.6rem; margin: 0; }
+.hk-main-subtitle { font-size: 0.85rem; opacity: 0.8; margin-top: 5px; }
+
+.btn-hk-action { 
+    background: var(--hk-warning); 
+    color: #000; 
+    padding: 10px 20px; 
+    border-radius: 10px; 
+    font-weight: 800; 
+    text-decoration: none; 
+    font-size: 0.75rem; 
+    transition: 0.3s; 
+    display: inline-flex; 
+    align-items: center; 
+    gap: 8px; 
+}
+
+.hk-toolbar { 
+    display: flex; 
+    gap: 12px; 
+    align-items: center; 
+    flex-wrap: wrap; 
+}
+
+.hk-search-wrapper { 
+    flex: 1;
+    min-width: 280px;
+    background: white; 
+    border: 2px solid var(--hk-warning); 
+    border-radius: 10px; 
+    display: flex; 
+    align-items: center; 
+    padding: 0 12px; 
+}
+
+.hk-search-wrapper i { color: var(--hk-warning); margin-right: 10px; }
+.hk-search-wrapper input { 
+    border: none; padding: 10px 0; width: 100%; outline: none; 
+    font-weight: 600; font-size: 0.85rem; 
+}
+
+.hk-filter-wrapper { 
+    display: flex; 
+    gap: 8px; 
+    flex-wrap: nowrap; 
+}
+
+.hk-select-pill { 
+    padding: 10px 15px; 
+    border-radius: 10px; 
+    border: 1px solid var(--hk-border); 
+    font-weight: 700; 
+    font-size: 0.75rem; 
+    background: white; 
+    cursor: pointer;
+    min-width: 140px;
+}
+
+.btn-hk-refresh-small {
+    background: var(--hk-navy);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s;
+}
 
 /* ==========================================================================
-   03. MASTER DATA TABLE (DESKTOP)
+    03. MASTER DATA TABLE (DESKTOP)
 ========================================================================== */
 .hk-grid-table { border-collapse: separate; border-spacing: 0 8px; width: 100%; }
-.hk-grid-table thead th { background: #f1f5f9; color: #64748b; font-weight: 800; font-size: 0.7rem; text-transform: uppercase; padding: 15px; border: none; }
-.hk-tr-item { background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.02); transition: 0.2s; }
-.hk-tr-item td { padding: 15px; border-top: 1px solid var(--hk-border); border-bottom: 1px solid var(--hk-border); }
+.hk-grid-table thead th { 
+    background: #f1f5f9; 
+    color: var(--hk-text-muted); 
+    font-weight: 800; 
+    font-size: 0.7rem; 
+    text-transform: uppercase; 
+    padding: 15px; 
+    border: none; 
+}
 
-/* Identity Styling */
-.hk-no-circle { width: 30px; height: 30px; background: var(--hk-navy); color: white; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.75rem; margin: auto; }
-.hk-name-text { font-weight: 800; color: #000; background: var(--hk-warning); padding: 2px 10px; border-radius: 6px; display: inline-block; font-size: 0.85rem; }
-.badge-id { font-size: 0.65rem; color: #64748b; font-weight: 700; }
-.badge-cat { font-size: 0.65rem; color: #fff; background: var(--hk-navy); padding: 1px 6px; border-radius: 4px; font-weight: 700; }
+.hk-tr-item { 
+    background: white; 
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02); 
+    transition: 0.2s; 
+}
 
+.hk-tr-item td { 
+    padding: 15px; 
+    border-top: 1px solid var(--hk-border); 
+    border-bottom: 1px solid var(--hk-border); 
+}
+
+/* Identity & Specs Styling */
+.hk-no-circle { 
+    width: 30px; height: 30px; 
+    background: var(--hk-navy); color: white; 
+    border-radius: 8px; display: flex; 
+    align-items: center; justify-content: center; 
+    font-weight: 800; font-size: 0.75rem; margin: auto; 
+}
+
+.hk-name-text { 
+    font-weight: 800; color: #000; 
+    background: var(--hk-warning); 
+    padding: 4px 12px; border-radius: 6px; 
+    display: inline-block; font-size: 0.85rem; 
+}
+
+.badge-id { font-size: 0.65rem; color: var(--hk-text-muted); font-weight: 700; }
+.badge-cat { font-size: 0.65rem; color: #fff; background: var(--hk-navy); padding: 2px 8px; border-radius: 4px; font-weight: 700; }
+
+.hk-spec-row { margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+.hk-spec-row .label { color: var(--hk-text-muted); font-size: 0.7rem; font-weight: 600; min-width: 50px; }
 .val-amber { color: var(--hk-warning); font-weight: 700; font-size: 0.8rem; }
 .val-black { color: #000; font-weight: 700; font-size: 0.8rem; }
 .text-blue-soft { color: #3b82f6; font-style: italic; font-size: 0.7rem; }
-.clickable-desc { cursor: pointer; border-bottom: 1px dashed #3b82f6; display: inline-block; }
 
-.hk-price-badge { background: rgba(16, 185, 129, 0.1); padding: 6px 12px; border-radius: 10px; border: 1px solid rgba(16, 185, 129, 0.2); display: inline-block; }
+.hk-price-badge { 
+    background: rgba(16, 185, 129, 0.1); 
+    padding: 6px 12px; border-radius: 10px; 
+    border: 1px solid rgba(16, 185, 129, 0.2); 
+}
 .hk-price-badge .amount { color: #10b981; font-weight: 800; font-size: 1rem; }
 
-.hk-status-dropdown { background: var(--hk-navy); color: white; border: none; font-size: 0.7rem; padding: 6px 12px; border-radius: 8px; font-weight: 700; cursor: pointer; width: 100%; }
-.st-available { background: #064e3b; color: #6ee7b7; }
-.st-rented { background: #451a03; color: #fbbf24; }
-.st-maintenance { background: #bb0e0e; color: #fca5a5; }
+.hk-status-dropdown { 
+    background: var(--hk-navy); color: white; border: none; 
+    font-size: 0.7rem; padding: 8px 12px; border-radius: 8px; 
+    font-weight: 700; cursor: pointer; width: 100%; 
+}
 
-/* Control Icons Desktop */
+/* 🔥 STATUS COLOR BASED */
+
+/* READY / AVAILABLE */
+.hk-status-dropdown.st-available {
+    background: rgba(16,185,129,0.15);
+    color: #059669;
+    border: 1px solid rgba(16,185,129,0.4);
+}
+
+/* RENTED */
+.hk-status-dropdown.st-rented {
+    background: rgba(239,68,68,0.15);
+    color: #dc2626;
+    border: 1px solid rgba(239,68,68,0.4);
+}
+
+/* MAINTENANCE */
+.hk-status-dropdown.st-maintenance {
+    background: rgba(245,158,11,0.15);
+    color: #d97706;
+    border: 1px solid rgba(245,158,11,0.4);
+}
+
+/* Desktop Action Buttons */
 @media (min-width: 993px) {
     .btn-text { display: none; }
     .hk-btn-action-mobile { 
-        width: 34px; height: 34px; display: inline-flex; 
+        width: 36px; height: 36px; display: inline-flex; 
         align-items: center; justify-content: center; 
-        border-radius: 8px; border: 1px solid var(--hk-border); 
-        text-decoration: none; transition: 0.2s;
+        border-radius: 10px; border: 1px solid var(--hk-border); 
+        transition: 0.2s;
     }
-    .btn-edit { color: var(--hk-navy); background: var(--hk-white); }
+    .btn-edit { color: var(--hk-navy); background: white; }
     .btn-edit:hover { background: var(--hk-navy); color: white; }
     .btn-del { background: #fff1f2; color: var(--hk-danger); border-color: #fecaca; }
     .btn-del:hover { background: var(--hk-danger); color: white; }
 }
 
-/* Media Container */
-.hk-media-container { width: 85px; height: 60px; border-radius: 10px; overflow: hidden; position: relative; cursor: pointer; border: 1px solid var(--hk-border); }
+.hk-media-container { 
+    width: 85px; height: 60px; border-radius: 10px; 
+    overflow: hidden; position: relative; border: 1px solid var(--hk-border); 
+}
 .hk-img-fit { width: 100%; height: 100%; object-fit: cover; }
-.hk-zoom-overlay { position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; color: white; }
 
 /* ==========================================================================
-   05. RESPONSIVE DESIGN (MOBILE CARD SYSTEM)
+    04. RESPONSIVE DESIGN (MOBILE CARD & FILTERING)
 ========================================================================== */
 @media (max-width: 992px) {
-    .hk-toolbar { flex-direction: column; align-items: stretch; }
-    .hk-search-wrapper { max-width: none; }
-    
+    .hk-main-wrapper { padding: 0.8rem; }
+
+    /* Filtering */
+    .hk-toolbar { flex-direction: column; align-items: stretch; gap: 10px; }
+    .hk-search-wrapper { max-width: none; min-width: 0; }
+    .hk-filter-wrapper { 
+        display: grid;
+        grid-template-columns: 1fr 1fr auto;
+        width: 100%;
+        gap: 8px;
+    }
+    .hk-select-pill { min-width: 0; font-size: 0.65rem; padding: 10px 8px; }
+
+    /* Card System */
     .hk-grid-table thead { display: none; }
     .hk-grid-table, .hk-grid-table tbody, .hk-tr-item, .hk-tr-item td { display: block; width: 100%; }
     
     .hk-tr-item { 
-        margin-bottom: 20px; border-radius: 15px !important; 
-        border: 1px solid var(--hk-border) !important; padding: 15px; 
-        box-shadow: 0 4px 10px rgba(0,0,0,0.05); background: white;
+        margin-bottom: 20px; 
+        border-radius: 15px !important; 
+        border: 1px solid var(--hk-border) !important; 
+        padding: 0 !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
+        background: white;
+        overflow: hidden;
     }
     
+    .hk-col-preview { 
+        background: #f1f5f9 !important; 
+        padding: 15px !important; 
+        border-bottom: 2px solid var(--hk-warning) !important;
+        display: flex !important;
+        justify-content: center !important;
+    }
+    .hk-media-container { width: 100% !important; max-width: 280px; height: 150px; }
+
     .hk-tr-item td { 
         text-align: left !important; border: none !important; 
         padding: 12px 15px !important; display: flex; 
-        justify-content: space-between; align-items: center;
-        border-bottom: 1px solid rgba(0,0,0,0.05) !important;
+        justify-content: space-between; align-items: flex-start; /* Mengubah align ke start untuk spesifikasi panjang */
+        border-bottom: 1px solid rgba(0,0,0,0.03) !important;
+        font-size: 0.75rem !important;
     }
-    
-    .hk-tr-item td:last-child { border-bottom: none !important; }
     
     .hk-tr-item td::before { 
-        content: attr(data-label); font-weight: 800; font-size: 0.65rem; 
-        color: #64748b; text-transform: uppercase; flex: 1; text-align: left;
+        content: attr(data-label); font-weight: 800; font-size: 0.6rem; 
+        color: var(--hk-text-muted); text-transform: uppercase; flex: 1;
+        padding-top: 2px;
     }
     
-    .hk-tr-item td > div, .hk-tr-item td > form, .hk-tr-item td > span {
-        flex: 1.5; display: flex; justify-content: flex-end; align-items: center; text-align: right;
+    .hk-tr-item td > div, .hk-tr-item td > form {
+        flex: 1.8; display: flex; flex-direction: column; align-items: flex-end; text-align: right;
     }
 
-    .hk-unit-main-info { align-items: flex-end; text-align: right; }
-    .hk-spec-stack { align-items: flex-end; text-align: right; }
-    .hk-no-circle { margin: 0; }
+    /* PERUBAHAN KHUSUS REQ USER */
+    .badge-cat, .badge-id { display: none !important; } /* Hilangkan Kategori & ID di Mobile */
+    
+    .hk-name-text { 
+        font-size: 0.8rem !important; 
+        padding: 5px 10px;
+        margin-bottom: 0;
+    }
 
-    /* BUTTON AKSI MOBILE DENGAN TEKS */
-    .hk-ctrl-group { justify-content: flex-end; width: 100%; gap: 10px; }
+    /* Penyesuaian Jarak Spesifikasi agar Terbaca */
+    .hk-spec-stack {
+        width: 100%;
+        gap: 6px; /* Memberi jarak antar baris spek */
+        display: flex;
+        flex-direction: column;
+    }
+
+    .hk-spec-row {
+        margin-bottom: 4px;
+        justify-content: flex-end;
+    }
+
+    .hk-spec-row .label {
+        min-width: 60px; /* Lebar label spek agar rapi */
+        text-align: right;
+    }
+
+    /* Tombol Aksi */
+    .hk-ctrl-group { 
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px; 
+    width: 100%;
+}
+
     .hk-btn-action-mobile {
-        display: flex !important; align-items: center; gap: 6px;
-        padding: 8px 15px !important; border-radius: 10px;
-        font-size: 0.75rem; font-weight: 800; text-decoration: none;
-    }
-    .btn-edit { background: rgba(59, 130, 246, 0.1); color: #3b82f6; border: 1px solid #3b82f6; }
-    .btn-del { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid #ef4444; }
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    padding: 12px;
+    height: 44px; /* 🔥 samakan tinggi */
     
-    .hk-col-preview { justify-content: center !important; border-bottom: 1.5px solid var(--hk-warning) !important; padding-bottom: 15px !important; }
-    .hk-media-container { width: 120px; height: 80px; }
+    font-size: 0.7rem;
+    font-weight: 800;
+
+    border-radius: 10px !important; /* 🔥 biar keliatan tombol */
+    text-decoration: none;
+
+    transition: all 0.2s ease;
+}
+
+    .btn-edit { background: #3b82f6 !important; color: white !important; }
+    .btn-del { background: #ef4444 !important; color: white !important; }
+}
+
+
+/* ======================================================
+   FORCE FULL WIDTH MOBILE (SAMAKAN DENGAN TESTIMONI)
+====================================================== */
+@media (max-width: 768px) {
+
+    .hk-main-wrapper {
+        max-width: 100% !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    /* Biar semua card & konten nempel ke edge */
+    .hk-header-banner,
+    .hk-table-card,
+    .hk-toolbar {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        border-radius: 10 !important; /* opsional: biar full edge */
+    }
+
+    /* Table wrapper full */
+    .table-responsive {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .hk-filter-wrapper { grid-template-columns: 1fr; }
+    .hk-main-title { font-size: 1.2rem; }
+    .hk-header-banner { padding: 1rem; }
 }

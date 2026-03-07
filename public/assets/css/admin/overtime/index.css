@@ -385,53 +385,76 @@
 .btn-delete { color: var(--text-muted); }
 .btn-delete:hover { background: #fee2e2; color: var(--danger); border-color: #fecaca; }
 
-/* ==========================================================================
-   H. RESPONSIVE SYSTEM (FIX TOTAL)
-========================================================================== */
-@media (max-width: 768px) {
+/* ======================================================================
+   H. RESPONSIVE SYSTEM (FULL OPTIMIZED)
+====================================================================== */
 
+/* Mencegah Scroll Kanan Kiri di Semua Ukuran */
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+@media (max-width: 991px) {
     .hk-overtime-wrapper {
-        padding: 1rem;
+        padding: 1rem 0.5rem; /* Padding lebih rapat agar konten lebih lebar */
     }
 
     .hk-glass-card {
         padding: 1.5rem;
         border-radius: 20px;
+        margin-bottom: 1rem !important;
     }
 
-    .hk-page-title {
-        font-size: 1.3rem;
+    /* Statistik Header di Mobile */
+    .hk-header-stats {
+        width: 100%;
     }
 
-    .hk-glass-card p {
-        font-size: 0.75rem;
+    .hk-header-stats .stat-item {
+        padding: 1rem;
+        justify-content: center;
     }
+}
 
-    /* HEADER STACK FIX */
-    .hk-glass-card .d-flex {
-        flex-direction: column !important;
-        align-items: flex-start !important;
-        gap: 10px;
-    }
-
-    /* FILTER */
+@media (max-width: 768px) {
+    /* Filter Nav agar Lebar & Scrollable Rapi */
     .hk-filter-nav {
         margin-top: 0;
+        margin-bottom: 1.5rem !important;
+        padding: 0 5px;
     }
 
     .nav-scroll-wrapper {
-        width: 100%;
-        border-radius: 14px;
+        display: flex;
+        overflow-x: auto;
+        white-space: nowrap;
+        gap: 8px;
+        padding: 5px 0 10px 0;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; /* Sembunyikan scrollbar Firefox */
+    }
+
+    .nav-scroll-wrapper::-webkit-scrollbar {
+        display: none; /* Sembunyikan scrollbar Chrome/Safari */
     }
 
     .nav-link-custom {
-        padding: 0.6rem 1rem;
-        font-size: 0.75rem;
+        flex: 0 0 auto; /* Mencegah tombol menyusut */
+        padding: 0.7rem 1.2rem;
+        font-size: 0.8rem;
     }
 
-    /* =========================
-       TABLE → CARD PERFECT GRID
-    ========================== */
+    /* TABLE TO CARD TRANSFORMATION */
+    .hk-main-card {
+        border: none;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .table-responsive {
+        overflow-x: hidden !important; /* Kunci horizontal */
+    }
 
     .table thead {
         display: none;
@@ -439,209 +462,80 @@
 
     .table tbody tr {
         display: block;
-        margin-bottom: 1rem;
+        background: #ffffff;
         border: 1px solid var(--border-color);
-        border-radius: 16px;
-        padding: 14px;
-        background: #fff;
-        box-shadow: 0 5px 12px rgba(0,0,0,0.04);
+        border-radius: 20px;
+        padding: 15px;
+        margin-bottom: 15px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        position: relative;
     }
 
+    /* Penyelarasan Grid Data */
     .table tbody td {
-        display: grid;
-        grid-template-columns: 110px 1fr;
+        display: flex !important;
+        justify-content: space-between !important;
         align-items: center;
-        gap: 10px;
-        padding: 8px 0;
-        border: none;
+        padding: 10px 0 !important;
+        border-bottom: 1px dashed #f1f5f9 !important;
+        width: 100%;
     }
 
-    /* LABEL */
+    .table tbody td:last-child {
+        border-bottom: none !important;
+        padding-top: 15px !important;
+    }
+
+    /* Label Dinamis */
     .table tbody td::before {
         content: attr(data-label);
-        font-size: 0.65rem;
-        font-weight: 700;
+        font-size: 0.7rem;
+        font-weight: 800;
         color: var(--text-muted);
         text-transform: uppercase;
         letter-spacing: 0.5px;
-    }
-
-    /* VALUE (KANAN) */
-    .table tbody td > * {
-        justify-self: end;
-        text-align: right;
-    }
-
-    /* KHUSUS UNIT (BIAR TETAP KIRI) */
-    .table tbody td:first-child {
-        grid-template-columns: 1fr;
-    }
-
-    .table tbody td:first-child::before {
-        display: none;
-    }
-
-    .table tbody td:first-child > * {
-        justify-self: start;
         text-align: left;
     }
 
-    /* UNIT */
-    .hk-unit-thumbnail {
-        width: 55px;
-        height: 40px;
-    }
-
-    .hk-unit-name-link {
-        font-size: 0.85rem;
-    }
-
-    .hk-client-name {
-        font-size: 0.7rem;
-    }
-
-    /* STATUS / TIMER */
-    .hk-live-timer {
-        padding: 0.4rem 0.7rem;
-        font-size: 0.8rem;
-        justify-content: center;
-    }
-
-    .timer-text {
-        font-size: 0.8rem;
-    }
-
-    /* TARIF */
-    .hk-price-tag .amount {
-        font-size: 0.9rem;
-    }
-
-    /* BILLING */
-    .billing-amount {
-        font-size: 1rem;
-    }
-
-    /* STATUS BAYAR */
-    td[data-label="Bayar"] {
-        align-items: center;
-    }
-
-    td[data-label="Bayar"] > * {
-        justify-self: end;
-    }
-
-    /* ACTION BUTTONS (RAPI & SEIMBANG) */
-    .btn-group-custom {
+    /* Mengatur Isi Data (Kanan) */
+    .table tbody td > * {
+        text-align: right;
         justify-content: flex-end;
-        flex-wrap: wrap;
-        gap: 6px;
+    }
+
+    /* Special Case: Unit Info (Baris Pertama) */
+    .table tbody td[data-label="Unit"] {
+        display: block !important;
+        background: #f8fafc;
+        margin: -15px -15px 10px -15px;
+        padding: 15px !important;
+        width: calc(100% + 30px);
+        border-radius: 20px 20px 0 0;
+        border-bottom: 1px solid var(--border-color) !important;
+    }
+
+    .table tbody td[data-label="Unit"]::before {
+        display: none;
+    }
+
+    .table tbody td[data-label="Unit"] .d-flex {
+        justify-content: flex-start !important;
+    }
+
+    /* Action Buttons Mobile */
+    .btn-group-custom {
+        width: 100%;
+        justify-content: flex-end;
+        gap: 10px;
     }
 
     .btn-action {
-        width: 34px;
-        height: 34px;
-        font-size: 0.9rem;
+        width: 42px; /* Lebih besar agar mudah di-tap jari */
+        height: 42px;
     }
 
-
-    /* =========================
-   PERFECT ALIGNMENT SYSTEM
-========================= */
-
-/* SET ROW GRID YANG KONSISTEN */
-.table tbody td {
-    display: grid;
-    grid-template-columns: 110px 1fr;
-    align-items: center; /* INI KUNCI BIAR LURUS */
-    gap: 12px;
-    padding: 10px 0;
-}
-
-/* LABEL FIX WIDTH & ALIGN */
-.table tbody td::before {
-    content: attr(data-label);
-    font-size: 0.7rem;
-    font-weight: 700;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-
-    display: flex;
-    align-items: center; /* BIKIN SEJAJAR */
-    height: 100%;
-}
-
-/* VALUE AREA */
-.table tbody td > * {
-    display: flex;
-    align-items: center;   /* SEMUA ISI TENGAH */
-    justify-content: flex-end;
-    text-align: right;
-    gap: 6px;
-}
-
-/* KHUSUS MULTI LINE (MULAI) */
-
-td[data-label="Mulai"] > div {
-    grid-column: 2; /* PASTIKAN SEMUA MASUK KOLOM KANAN */
-    display: block;
-    width: 100%;
-    text-align: right;
-}
-
-/* tanggal */
-td[data-label="Mulai"] .fw-bold {
-    display: block;
-}
-
-/* jam di bawah tanggal */
-td[data-label="Mulai"] .text-muted {
-    display: block;
-    margin-top: 2px;
-}
-
-/* STATUS (BADGE / TIMER) */
-td[data-label="Status"] > * {
-    justify-content: flex-end;
-}
-
-/* BILLING */
-td[data-label="Billing"] > * {
-    flex-direction: column;
-    align-items: flex-end;
-}
-
-/* BAYAR */
-td[data-label="Bayar"] > * {
-    flex-direction: column;
-    align-items: flex-end;
-}
-
-/* AKSI */
-td[data-label="Aksi"] {
-    align-items: center;
-}
-
-.btn-group-custom {
-    justify-content: flex-end;
-    width: 100%;
-}
-
-/* UNIT (SPECIAL CASE) */
-.table tbody td:first-child {
-    display: block;
-    padding-bottom: 12px;
-    margin-bottom: 10px;
-    border-bottom: 1px dashed var(--border-color);
-}
-
-.table tbody td:first-child::before {
-    display: none;
-}
-
-/* FIX HEIGHT CONSISTENCY */
-.table tbody tr {
-    line-height: 1.4;
-}
-
+    /* Form Input Tarif di Mobile */
+    .hk-inline-form .input-group {
+        width: 180px;
+    }
 }

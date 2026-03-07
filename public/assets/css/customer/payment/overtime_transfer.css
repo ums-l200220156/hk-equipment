@@ -1,10 +1,13 @@
 :root {
     --primary-gradient: linear-gradient(135deg, #2d3436 0%, #000000 100%);
     --accent-color: #dc3545;
+    --text-muted: #718096;
+    --border-color: #dee2e6;
 }
 
+/* --- Layout Dasar --- */
 .transfer-section {
-    padding: 100px 0;
+    padding: 80px 0;
     background-color: #f8f9fa;
     background-image: radial-gradient(#dee2e6 0.5px, transparent 0.5px);
     background-size: 20px 20px;
@@ -18,11 +21,11 @@
     align-items: start;
 }
 
-/* --- Info Side --- */
+/* --- Info Side & Badge --- */
 .badge-status-ot {
     display: inline-block;
     padding: 6px 16px;
-    background: #fff3cd; /* Warna kuning soft agar senada */
+    background: #fff3cd;
     color: #856404;
     border-radius: 50px;
     font-size: 0.85rem;
@@ -31,6 +34,18 @@
     border: 1px solid #ffeeba;
 }
 
+.title-display {
+    font-weight: 800;
+    color: #1a1a1a;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: var(--text-muted);
+    margin-bottom: 30px;
+}
+
+/* --- Price Card --- */
 .ot-price-card {
     background: white;
     padding: 25px;
@@ -43,8 +58,9 @@
 .ot-label {
     font-size: 0.75rem;
     font-weight: 800;
-    color: #718096;
+    color: var(--text-muted);
     letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
 .ot-amount {
@@ -53,7 +69,7 @@
     color: #1a1a1a;
 }
 
-/* --- Bank Card (Samakan dengan Payment Utama) --- */
+/* --- Bank Card Modern --- */
 .bank-card-modern {
     background: var(--primary-gradient);
     border-radius: 24px;
@@ -67,60 +83,144 @@
 
 .bank-chip {
     width: 50px;
-    height: 40px;
+    height: 38px;
     background: linear-gradient(135deg, #f1c40f, #f39c12);
     border-radius: 8px;
     margin-bottom: 20px;
 }
 
+.bank-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    opacity: 0.9;
+}
+
 .account-number {
-    font-size: 2rem;
-    letter-spacing: 4px;
+    font-size: 1.8rem;
+    letter-spacing: 3px;
     font-weight: 700;
     margin: 15px 0;
+    word-break: break-all;
+}
+
+.account-holder {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .btn-copy-ot {
     position: absolute;
-    right: 30px;
-    bottom: 30px;
+    right: 25px;
+    bottom: 25px;
     background: rgba(255,255,255,0.1);
     border: 1px solid rgba(255,255,255,0.2);
     color: white;
-    padding: 8px 15px;
-    border-radius: 10px;
+    padding: 8px 16px;
+    border-radius: 12px;
     font-size: 0.8rem;
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(8px);
     transition: 0.3s;
     cursor: pointer;
 }
 
-.btn-copy-ot:hover { background: white; color: black; }
+.btn-copy-ot:hover {
+    background: white;
+    color: black;
+}
 
-/* --- Form Side (Sama dengan Payment Utama) --- */
+/* --- Step Transfer (Rapikan Sejajar) --- */
+.payment-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 20px;
+    border: 1px solid #edf2f7;
+}
+
+.step-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.step-num {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    background: #f8f9fa;
+    border: 2px solid var(--border-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--accent-color);
+}
+
+.step-item p {
+    margin: 0;
+    padding-top: 4px;
+    line-height: 1.5;
+    color: #4a5568;
+    font-size: 0.95rem;
+}
+
+/* --- Form Side --- */
 .upload-box-container {
     background: white;
     border-radius: 24px;
     padding: 35px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.05);
     border: 1px solid #edf2f7;
+    position: sticky;
+    top: 20px;
 }
 
 .upload-area {
-    border: 2px dashed #dee2e6;
+    border: 2px dashed var(--border-color);
     border-radius: 16px;
     padding: 40px 20px;
     text-align: center;
     cursor: pointer;
     transition: 0.3s;
     margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.upload-area i {
+    font-size: 3rem;
+    color: var(--accent-color);
+    opacity: 0.5;
 }
 
 .upload-area.active {
     border-color: var(--accent-color);
     background: #fff5f5;
     border-style: solid;
-    padding: 20px;
+}
+
+.file-name-display {
+    font-size: 0.85rem;
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+.img-preview-result {
+    width: 100%;
+    max-height: 250px;
+    object-fit: contain;
+    border-radius: 12px;
+    margin-bottom: 10px;
 }
 
 .btn-gradient-submit-ot {
@@ -137,64 +237,89 @@
     gap: 10px;
     transition: 0.3s;
     box-shadow: 0 10px 20px rgba(220, 53, 69, 0.2);
+    cursor: pointer;
 }
 
-/* --- Steps (Perbaikan Sejajar) --- */
-.payment-steps {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+.btn-gradient-submit-ot:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(220, 53, 69, 0.3);
 }
 
-.step-item {
-    display: flex;
-    align-items: flex-start; /* Mengubah center ke flex-start */
-    gap: 15px;
-}
-
-.step-num {
-    flex-shrink: 0; /* Menjaga agar lingkaran angka tidak gepeng */
-    width: 28px;
-    height: 28px;
-    background: white;
-    border: 2px solid #dee2e6;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.8rem;
-    font-weight: 800;
-    margin-top: 2px; /* Menurunkan sedikit lingkaran agar pas dengan baris pertama teks */
-}
-
-.step-item p {
-    margin: 0;
-    padding-top: 4px; /* Menurunkan teks agar sejajar dengan angka */
-    line-height: 1.4;
-    color: #4a5568;
-}
-
-.img-preview-result {
-    width: 100%;
-    max-height: 250px;
-    object-fit: contain;
-    border-radius: 12px;
-    margin-bottom: 15px;
-}
-
-/* --- Security Info Styling --- */
 .security-info {
     font-size: 0.8rem;
-    color: #adb5bd; /* Warna abu-abu soft */
+    color: #adb5bd;
     text-align: center;
-    margin-bottom: 20px;
+    margin: 20px 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px; /* Jarak antara ikon dan teks */
+    gap: 8px;
 }
 
 .security-info i {
-    color: #50a728; 
+    color: #50a728;
     font-size: 1rem;
+}
+
+/* ======================================================================
+   RESPONSIVE QUERIES (MOBILE OPTIMIZATION)
+====================================================================== */
+
+@media (max-width: 991px) {
+    .transfer-section {
+        padding: 40px 0;
+    }
+    
+    .transfer-wrapper {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .info-side {
+        text-align: center;
+    }
+
+    .badge-status-ot {
+        margin: 0 auto 15px;
+    }
+
+    .step-item {
+        max-width: 500px;
+        margin: 0 auto;
+    }
+    
+    .upload-box-container {
+        position: static;
+    }
+}
+
+@media (max-width: 576px) {
+    .ot-amount {
+        font-size: 1.7rem;
+    }
+
+    .bank-card-modern {
+        padding: 20px;
+    }
+
+    .account-number {
+        font-size: 1.4rem;
+        letter-spacing: 2px;
+    }
+
+    .btn-copy-ot {
+        position: static;
+        width: 100%;
+        margin-top: 15px;
+        display: block;
+        text-align: center;
+    }
+
+    .upload-box-container {
+        padding: 25px 20px;
+    }
+
+    .step-item p {
+        font-size: 0.85rem;
+    }
 }

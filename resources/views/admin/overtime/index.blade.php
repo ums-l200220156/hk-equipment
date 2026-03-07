@@ -112,20 +112,18 @@
 
                         {{-- 3. KOLOM BARU: WAKTU MULAI --}}
                         <td class="text-center" data-label="Mulai">
-                            @if($ot->started_at)
-                                <div class="fw-bold text-dark" style="font-size: 12px;">
-                                    {{ \Carbon\Carbon::parse($ot->started_at)
-                                        ->timezone('Asia/Jakarta')
-                                        ->format('d/m/Y') }}
-                                </div>
-                                <div class="text-muted" style="font-size: 11px;">
-                                    {{ \Carbon\Carbon::parse($ot->started_at)
-                                        ->timezone('Asia/Jakarta')
-                                        ->format('H:i') }} WIB
-                                </div>
-                            @else
-                                <span class="text-muted small">Belum mulai</span>
-                            @endif
+                            <div class="d-flex flex-column align-items-end align-items-md-center">
+                                @if($ot->started_at)
+                                    <span class="fw-bold text-dark" style="font-size: 12px;">
+                                        {{ \Carbon\Carbon::parse($ot->started_at)->timezone('Asia/Jakarta')->format('d/m/Y') }}
+                                    </span>
+                                    <span class="text-muted" style="font-size: 11px;">
+                                        {{ \Carbon\Carbon::parse($ot->started_at)->timezone('Asia/Jakarta')->format('H:i') }} WIB
+                                    </span>
+                                @else
+                                    <span class="text-muted small">Belum mulai</span>
+                                @endif
+                            </div>
                         </td>
 
                         {{-- 4. MANAJEMEN TARIF --}}

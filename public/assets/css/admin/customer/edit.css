@@ -147,3 +147,35 @@
     transform: translateY(-3px);
     box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2);
 }
+
+
+@media (max-width: 768px) {
+
+    /* 🔥 WRAPPER FULL WIDTH */
+    .hk-form-wrapper {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        max-width: 100% !important;
+    }
+
+    /* HEADER FULL BLEED */
+    .hk-header-banner {
+        border-radius: 10 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    /* FORM CARD FULL */
+    .hk-card-form {
+        border-radius: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding: 1.2rem !important;
+    }
+
+    /* ACTION BUTTON RAPAT */
+    .hk-form-actions {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}

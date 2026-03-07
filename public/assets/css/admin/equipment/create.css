@@ -91,3 +91,47 @@
     font-size: 1rem;
     letter-spacing: 1px;
 }
+
+/* ======================================================
+   FORCE FULL WIDTH MOBILE (SAMAKAN TESTIMONI)
+====================================================== */
+@media (max-width: 768px) {
+
+    /* Hilangkan padding container utama */
+    .container-fluid {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    /* Hilangkan gutter bootstrap */
+    .row {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    .row > * {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    /* Header full lebar */
+    .header-banner {
+        border-radius: 10 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    /* Card full lebar */
+    .card-colorful,
+    .card-sidebar,
+    .bg-primary-dark {
+        border-radius: 10 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    /* Spacing dalam tetap nyaman */
+    .card-body {
+        padding: 20px !important;
+    }
+}

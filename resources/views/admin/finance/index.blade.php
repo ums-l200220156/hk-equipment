@@ -110,27 +110,23 @@
                             <div class="fw-bold text-navy">{{ $row->transaction_date->format('d/m/Y') }}</div>
                         </td>
                         <td data-label="Kategori"><span class="badge-cat-modern">{{ strtoupper($row->category) }}</span></td>
-                        <td data-label="Deskripsi"><p class="mb-0 text-muted small" style="max-width: 300px;">{{ $row->description ?? 'Tanpa deskripsi' }}</p></td>
+                        <td data-label="Deskripsi"><p class="mb-0 text-muted small">{{ $row->description ?? 'Tanpa deskripsi' }}</p></td>
                         <td class="text-end fw-extrabold text-danger" data-label="Nominal">Rp {{ number_format($row->amount, 0, ',', '.') }}</td>
                         <td class="text-center" data-label="Aksi">
-                            
-                                <div class="action-wrapper">
-                                    {{-- TOMBOL EDIT --}}
-                                    <button type="button" class="btn-delete-luxury text-primary" 
-                                        style="background: #eef2ff;"
-                                        data-bs-toggle="modal" 
-                                        data-bs-target="#modalEditExpense{{ $row->id }}">
-                                        <i class="bi bi-pencil-square"></i>
+                            <div class="action-wrapper">
+                                <button type="button" class="btn-delete-luxury text-primary" 
+                                    style="background: #eef2ff;"
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#modalEditExpense{{ $row->id }}">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                                <form action="{{ route('admin.finance.destroy', $row->id) }}" method="POST" class="d-inline">
+                                    @csrf @method('DELETE')
+                                    <button type="button" class="btn-delete-luxury" onclick="confirmDelete(this.form)">
+                                        <i class="bi bi-trash3-fill"></i>
                                     </button>
-                            
-                                    {{-- TOMBOL HAPUS --}}
-                                    <form action="{{ route('admin.finance.destroy', $row->id) }}" method="POST" class="d-inline">
-                                        @csrf @method('DELETE')
-                                        <button type="button" class="btn-delete-luxury" onclick="confirmDelete(this.form)">
-                                            <i class="bi bi-trash3-fill"></i>
-                                        </button>
-                                    </form>
-                                </div>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                     @empty
@@ -158,11 +154,11 @@
                         <input type="text" name="category" class="form-control-custom" placeholder="Misal: BBM, Gaji" required>
                     </div>
                     <div class="row mb-3">
-                        <div class="col-md-7">
+                        <div class="col-7">
                             <label class="form-label-custom">NOMINAL (RP)</label>
                             <input type="number" name="amount" class="form-control-custom" placeholder="0" required>
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-5">
                             <label class="form-label-custom">TANGGAL</label>
                             <input type="date" name="transaction_date" class="form-control-custom" value="{{ date('Y-m-d') }}" required>
                         </div>
@@ -197,11 +193,11 @@
                         <input type="text" name="category" class="form-control-custom" value="{{ $row->category }}" required>
                     </div>
                     <div class="row mb-3">
-                        <div class="col-md-7">
+                        <div class="col-7">
                             <label class="form-label-custom">NOMINAL (RP)</label>
                             <input type="number" name="amount" class="form-control-custom" value="{{ $row->amount }}" required>
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-5">
                             <label class="form-label-custom">TANGGAL</label>
                             <input type="date" name="transaction_date" class="form-control-custom" value="{{ $row->transaction_date->format('Y-m-d') }}" required>
                         </div>
@@ -219,7 +215,6 @@
     </div>
 </div>
 @endforeach
-
 @endsection
 
 @push('scripts')
@@ -233,8 +228,7 @@
                 title: 'Transaksi Berhasil',
                 text: "{{ session('swal_success') }}",
                 timer: 2500,
-                showConfirmButton: false,
-                borderRadius: '15px'
+                showConfirmButton: false
             });
         });
     </script>

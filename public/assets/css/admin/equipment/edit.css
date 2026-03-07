@@ -94,3 +94,56 @@ body { font-family: 'Inter', sans-serif; background-color: var(--bg-light); }
     border-radius: 12px; transition: 0.3s;
 }
 .btn-warning:hover { background-color: #e68a00; transform: translateY(-2px); }
+
+/* ======================================================
+   FORCE FULL WIDTH MOBILE (INDUSTRIAL EDIT PAGE)
+====================================================== */
+@media (max-width: 768px) {
+
+    /* Container full lebar */
+    .container-fluid {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    /* Override px-md-5 */
+    .container-fluid.px-md-5 {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    /* Hilangkan gutter bootstrap */
+    .row {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    .row > * {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    /* Header jadi full width */
+    .header-industrial {
+        border-radius: 10 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    /* Card full width */
+    .card-industrial,
+    .card-action {
+        border-radius: 10 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    /* Spacing dalam tetap nyaman */
+    .card-body {
+        padding: 20px !important;
+    }
+
+    .card-header-accent {
+        padding: 16px !important;
+    }
+}

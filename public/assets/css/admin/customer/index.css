@@ -342,6 +342,40 @@ body {
         color: #ef4444;
         border: 1px solid #ef4444;
     }
+
+    /* 🔥 FULL WIDTH WRAPPER */
+    .hk-main-wrapper {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        max-width: 100% !important;
+    }
+
+    /* HEADER FULL */
+    .hk-header-banner {
+        border-radius: 20 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    /* TOOLBAR FULL */
+    .hk-toolbar {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    /* TABLE CARD FULL */
+    .hk-table-card {
+        border-radius: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    /* ROW CARD BIAR EDGE TO EDGE */
+    .hk-tr-item {
+        border-radius: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
 }
 
 /* ==========================================================================

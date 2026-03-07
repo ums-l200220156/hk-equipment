@@ -5,7 +5,7 @@
 }
 
 .transfer-section {
-    padding: 100px 0;
+    padding: 60px 0;
     background-color: #f8f9fa;
     background-image: radial-gradient(#dee2e6 0.5px, transparent 0.5px);
     background-size: 20px 20px;
@@ -19,7 +19,7 @@
     align-items: start;
 }
 
-/* --- Info Side --- */
+/* --- Badge & Title --- */
 .badge-status {
     display: inline-block;
     padding: 6px 16px;
@@ -45,7 +45,7 @@
     margin-bottom: 30px;
 }
 
-/* --- Bank Card (Modern Style) --- */
+/* --- Bank Card --- */
 .bank-card-modern {
     background: var(--primary-gradient);
     border-radius: 24px;
@@ -98,11 +98,50 @@
     font-size: 0.8rem;
     backdrop-filter: blur(5px);
     transition: 0.3s;
+    cursor: pointer;
 }
 
 .btn-copy:hover {
     background: white;
     color: black;
+}
+
+/* --- Payment Steps (Improved) --- */
+.payment-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    border: 1px solid #edf2f7;
+}
+
+.step-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.step-num {
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    background: #f1f5f9;
+    border: 2px solid #e2e8f0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 800;
+}
+
+.step-item p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #4a5568;
+    line-height: 1.6;
 }
 
 /* --- Form Side --- */
@@ -127,16 +166,12 @@
 .upload-area i {
     font-size: 3rem;
     color: #cbd5e0;
-    transition: 0.3s;
 }
 
 .upload-area:hover, .upload-area.active {
     border-color: var(--accent-color);
     background: #fff5f5;
-}
-
-.upload-area.active i {
-    color: var(--accent-color);
+    border-style: solid;
 }
 
 .file-name-display {
@@ -144,6 +179,17 @@
     font-size: 0.85rem;
     color: #2d3436;
     font-weight: 600;
+}
+
+.security-info {
+    font-size: 0.75rem; /* Ukuran diperkecil */
+    color: #94a3b8;
+    text-align: center;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
 }
 
 .btn-gradient-submit {
@@ -159,102 +205,47 @@
     align-items: center;
     gap: 10px;
     transition: 0.3s;
-    box-shadow: 0 10px 20px rgba(220, 53, 69, 0.2);
 }
 
-.btn-gradient-submit:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 25px rgba(220, 53, 69, 0.3);
-    background: #c82333;
-}
-
-.security-info {
-    font-size: 0.8rem;
-    color: #adb5bd;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-/* --- Steps --- */
-.payment-steps {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.step-item {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.step-num {
-    width: 28px;
-    height: 28px;
-    background: white;
-    border: 2px solid #dee2e6;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.8rem;
-    font-weight: 800;
-}
-
-/* --- Responsive --- */
+/* --- Responsive & Mobile Fix --- */
 @media (max-width: 992px) {
-    .transfer-wrapper {
-        grid-template-columns: 1fr;
+    .transfer-section { padding: 40px 0; }
+    .transfer-wrapper { grid-template-columns: 1fr; gap: 25px; }
+    .title-display { font-size: 1.8rem; }
+    .subtitle { font-size: 0.95rem; }
+
+    .bank-card-modern { padding: 20px; }
+    .account-number { font-size: 1.4rem; letter-spacing: 2px; }
+
+    .btn-copy {
+        position: relative !important; /* Memaksa posisi relative */
+        right: auto !important;
+        bottom: auto !important;
+        margin-top: 25px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10; 
+        padding: 12px; 
+        background: rgba(255, 255, 255, 0.2); 
     }
-    
-    .title-display {
-        font-size: 2rem;
-    }
+
+    .step-item p { font-size: 0.85rem; }
 }
 
-/* Gaya untuk Preview Gambar */
+/* Preview Image Animation */
 .img-preview-result {
     width: 100%;
     max-height: 250px;
-    object-fit: contain; /* Agar gambar tidak gepeng */
+    object-fit: contain;
     border-radius: 12px;
     margin-bottom: 15px;
     display: block;
     animation: zoomIn 0.3s ease;
 }
 
-/* Animasi muncul kecil ke besar */
 @keyframes zoomIn {
-    from {
-        transform: scale(0.9);
-        opacity: 0;
-    }
-    to {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-
-/* Penyesuaian saat upload area aktif */
-.upload-area.active {
-    padding: 20px; /* Kurangi padding saat ada gambar agar tidak terlalu panjang */
-    border-style: solid; /* Ubah garis putus-putus jadi solid */
-}
-
-
-.upload-area * {
-    pointer-events: none; /* Mencegah gangguan saat drop file */
-}
-
-.upload-area {
-    transition: all 0.3s ease;
-    border: 2px dashed #dee2e6;
-}
-
-/* Saat file diseret di atasnya atau aktif */
-.upload-area.active {
-    border-color: var(--accent-color);
-    background: #fff5f5;
-    border-style: solid;
-    padding: 20px;
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
 }

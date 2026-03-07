@@ -11,22 +11,27 @@
     <div class="hero-overlay"></div>
     <div class="container position-relative">
         
-        {{-- HEADER BAR --}}
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <button type="button" class="btn btn-back-modern" onclick="if (history.length > 1) { history.back(); } else { window.location.href='{{ route('customer.catalog') }}'; }">
-                <i class="bi bi-arrow-left-short fs-5"></i> <span>Kembali</span>
-            </button>
+       
+        <div class="d-flex flex-column gap-2">
+            
+            
+            <div class="d-flex justify-content-between align-items-center">
+                <button type="button" class="btn btn-back-modern" onclick="if (history.length > 1) { history.back(); } else { window.location.href='{{ route('customer.catalog') }}'; }">
+                    <i class="bi bi-arrow-left-short fs-5"></i> <span>Kembali</span>
+                </button>
 
-            <div class="header-right d-none d-md-block">
-                <span class="badge-category-small">
-                    <i class="bi bi-tags-fill me-2"></i>{{ ucfirst($item->category) }}
-                </span>
+                <div class="header-right d-none d-md-block">
+                    <span class="badge-category-small">
+                        <i class="bi bi-tags-fill me-2"></i>{{ ucfirst($item->category) }}
+                    </span>
+                </div>
             </div>
-        </div>
 
-        {{-- 🔥 TITLE CENTER --}}
-        <div class="hero-title-center text-center">
-            <h1 class="hero-title-big text-white">{{ $item->name }}</h1>
+            
+            <div class="hero-title-center text-center mt-2 mt-md-0">
+                <h1 class="hero-title-big text-white mb-0">{{ $item->name }}</h1>
+            </div>
+            
         </div>
 
     </div>

@@ -145,6 +145,28 @@ body {
 }
 
 @media (max-width: 768px) {
-    .hk-edit-container { padding: 1rem; }
-    .hk-form-card { padding: 2rem 1.5rem; }
+
+    .container-fluid {
+        padding: 0 !important;
+    }
+
+    .hk-edit-container {
+        padding: 0 !important;
+        max-width: 100% !important;
+    }
+
+    /* HEADER FULL BLEED */
+    .hk-header-card {
+        border-radius: 10 !important;
+        padding: 1.5rem !important;
+    }
+
+    /* FORM FULL BLEED */
+    .hk-form-card {
+        border-radius: 10 !important;
+        padding: 1.5rem !important;
+        border-left: none !important;
+        border-right: none !important;
+    }
+
 }

@@ -33,7 +33,7 @@ class EquipmentController extends Controller
     }
 
     // Data alat
-    $equipment = $query->orderBy('id', 'DESC')->get();
+    $equipment = $query->orderBy('id', 'ASC')->get();
 
     // Untuk dropdown filter
     $categories = Equipment::select('category')->distinct()->pluck('category');
