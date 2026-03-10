@@ -18,12 +18,13 @@ document.addEventListener('DOMContentLoaded', () => {
        2. INPUT JAM MULAI (FORMAT 24 JAM)
     ===================================================== */
     const timeInput = document.getElementById('start_time');
+    const dateInput = document.getElementById('rent_date');
     const errorText = document.querySelector('.time-error');
     const regex = /^([01]\d|2[0-3]):[0-5]\d$/;
 
     if (!timeInput) return;
 
-    /* Auto-format saat mengetik: 2100 → 21:00 */
+    /* Auto-format saat mengetik */
     timeInput.addEventListener('input', () => {
         let v = timeInput.value.replace(/\D/g, '');
 
@@ -32,12 +33,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         timeInput.value = v;
 
-        // Reset error saat user mengetik
         errorText?.classList.add('d-none');
         timeInput.classList.remove('is-invalid');
     });
 
-    /* Validasi saat keluar dari field */
+    /* Validasi format */
     timeInput.addEventListener('blur', () => {
         if (timeInput.value && !regex.test(timeInput.value)) {
             errorText?.classList.remove('d-none');
@@ -47,26 +47,54 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     /* =====================================================
-       3. BLOK SUBMIT JIKA JAM TIDAK VALID
+       3. BLOK JAM YANG SUDAH LEWAT (LOGIKA REAL)
+    ===================================================== */
+    function isPastTime() {
+
+        if (!dateInput || !timeInput.value) return false;
+
+        const today = new Date().toISOString().split("T")[0];
+
+        if (dateInput.value !== today) return false;
+
+        const now = new Date();
+        const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+        const [h, m] = timeInput.value.split(':').map(Number);
+        const inputMinutes = h * 60 + m;
+
+        return inputMinutes < currentMinutes;
+    }
+
+
+    /* =====================================================
+       4. BLOK SUBMIT JIKA JAM INVALID ATAU SUDAH LEWAT
     ===================================================== */
     const form = timeInput.closest('form');
 
     if (form) {
         form.addEventListener('submit', (e) => {
+
             if (!regex.test(timeInput.value)) {
                 errorText?.classList.remove('d-none');
                 timeInput.classList.add('is-invalid');
                 e.preventDefault();
+                return;
             }
+
+            if (isPastTime()) {
+                alert('Jam mulai tidak boleh lebih awal dari waktu sekarang.');
+                timeInput.classList.add('is-invalid');
+                e.preventDefault();
+            }
+
         });
     }
 
 
     /* =====================================================
-       4. BLOK JAM YANG SUDAH LEWAT JIKA TANGGAL = HARI INI
+       5. SET MIN TIME JIKA TANGGAL = HARI INI
     ===================================================== */
-    const dateInput = document.getElementById('rent_date');
-
     function updateTimeLimit() {
 
         if (!dateInput) return;
@@ -76,13 +104,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (dateInput.value === today) {
 
             const now = new Date();
+            const hours = String(now.getHours()).padStart(2,'0');
+            const minutes = String(now.getMinutes()).padStart(2,'0');
 
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-
-            const currentTime = `${hours}:${minutes}`;
-
-            timeInput.min = currentTime;
+            timeInput.min = `${hours}:${minutes}`;
 
         } else {
 
