@@ -71,12 +71,21 @@ class RentalAdminController extends Controller
         $request->validate([
             'user_id' => 'required|exists:users,id',
             'equipment_id' => 'required|exists:equipment,id',
-            'rent_date' => 'required|date',
+            'rent_date' => 'required|date|after_or_equal:today',
             'start_time' => 'required',
             'duration_hours' => 'required|integer|min:1',
             'location' => 'required|string',
             'notes' => 'nullable|string|min:5|max:200',
         ]);
+
+        // Validasi waktu tidak boleh masa lalu
+        $startDateTime = strtotime($request->rent_date . ' ' . $request->start_time);
+
+        if ($startDateTime < time()) {
+            return back()
+                ->withErrors(['start_time' => 'Waktu sewa tidak boleh di masa lalu.'])
+                ->withInput();
+        }
 
         $equipment = Equipment::findOrFail($request->equipment_id);
 
@@ -87,13 +96,15 @@ class RentalAdminController extends Controller
             'start_time' => $request->start_time,
             'duration_hours' => $request->duration_hours,
             'location' => $request->location,
-            'notes' => $request->notes, 
+            'notes' => $request->notes,
             'total_price' => $equipment->price_per_hour * $request->duration_hours,
-            'status' => 'approved', 
+            'status' => 'approved',
         ]);
 
         $equipment->update(['status' => 'rented']);
-        return redirect()->route('admin.rentals.index')->with('swal_success', 'Penyewaan manual berhasil ditambahkan.');
+
+        return redirect()->route('admin.rentals.index')
+            ->with('swal_success', 'Penyewaan manual berhasil ditambahkan.');
     }
 
     public function edit($id)
@@ -107,15 +118,25 @@ class RentalAdminController extends Controller
     {
         $request->validate([
             'equipment_id' => 'required|exists:equipment,id',
-            'rent_date' => 'required|date',
+            'rent_date' => 'required|date|after_or_equal:today',
             'start_time' => 'required',
             'duration_hours' => 'required|integer|min:1',
             'location' => 'required|string',
             'notes' => 'nullable|string|min:5|max:200'
         ]);
 
+        // Validasi waktu tidak boleh masa lalu
+        $startDateTime = strtotime($request->rent_date . ' ' . $request->start_time);
+
+        if ($startDateTime < time()) {
+            return back()
+                ->withErrors(['start_time' => 'Waktu sewa tidak boleh di masa lalu.'])
+                ->withInput();
+        }
+
         $rental = Rental::findOrFail($id);
         $equipment = Equipment::findOrFail($request->equipment_id);
+
         $total = $equipment->price_per_hour * $request->duration_hours;
 
         $rental->update([
@@ -128,28 +149,37 @@ class RentalAdminController extends Controller
             'total_price' => $total
         ]);
 
-        return redirect()->route('admin.rentals.index')->with('swal_success', 'Perubahan transaksi berhasil disimpan.');
+        return redirect()->route('admin.rentals.index')
+            ->with('swal_success', 'Perubahan transaksi berhasil disimpan.');
     }
 
     public function destroy($id)
     {
         $rental = Rental::findOrFail($id);
+
         if(in_array($rental->status, ['waiting_payment', 'approved', 'on_progress'])) {
             $rental->equipment->update(['status' => 'available']);
         }
+
         $rental->delete();
+
         return back()->with('swal_success', 'Data transaksi berhasil dihapus.');
     }
 
     public function updateOvertime(Request $request, $id)
     {
-        $request->validate(['status' => 'required|in:approved,rejected']);
+        $request->validate([
+            'status' => 'required|in:approved,rejected'
+        ]);
+
         $overtime = Overtime::with('rental.equipment')->findOrFail($id);
+
         $overtime->update(['status' => $request->status]);
 
         if ($request->status === 'approved') {
             $overtime->rental->update(['status' => 'on_progress']);
         }
+
         return back()->with('swal_success', 'Status overtime berhasil dikonfirmasi.');
     }
 }

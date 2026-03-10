@@ -73,13 +73,26 @@
                     <div class="col-md-3">
                         <div class="hk-input-group">
                             <label class="hk-label">Tanggal Sewa</label>
-                            <input type="date" name="rent_date" class="form-control hk-input" value="{{ date('Y-m-d') }}" required>
+                            <input 
+                                type="date"
+                                name="rent_date"
+                                class="form-control hk-input"
+                                value="{{ date('Y-m-d') }}"
+                                min="{{ date('Y-m-d') }}"
+                                required
+                            >
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="hk-input-group">
                             <label class="hk-label">Jam Mulai</label>
-                            <input type="time" name="start_time" class="form-control hk-input" required>
+                            <input 
+                                type="time"
+                                name="start_time"
+                                class="form-control hk-input"
+                                step="60"
+                                required
+                            >
                         </div>
                     </div>
                     <div class="col-md-2">
