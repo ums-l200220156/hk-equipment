@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+
     /* =====================================================
        2. INPUT JAM MULAI (FORMAT 24 JAM)
     ===================================================== */
@@ -44,6 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+
     /* =====================================================
        3. BLOK SUBMIT JIKA JAM TIDAK VALID
     ===================================================== */
@@ -58,4 +60,40 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+
+    /* =====================================================
+       4. BLOK JAM YANG SUDAH LEWAT JIKA TANGGAL = HARI INI
+    ===================================================== */
+    const dateInput = document.getElementById('rent_date');
+
+    function updateTimeLimit() {
+
+        if (!dateInput) return;
+
+        const today = new Date().toISOString().split("T")[0];
+
+        if (dateInput.value === today) {
+
+            const now = new Date();
+
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+
+            const currentTime = `${hours}:${minutes}`;
+
+            timeInput.min = currentTime;
+
+        } else {
+
+            timeInput.min = "00:00";
+
+        }
+    }
+
+    if (dateInput) {
+        dateInput.addEventListener('change', updateTimeLimit);
+        updateTimeLimit();
+    }
+
 });
