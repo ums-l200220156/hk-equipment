@@ -11,7 +11,7 @@ class PaymentController extends Controller
 {
     public function show(Rental $rental)
     {
-        abort_if($rental->user_id !== Auth::id(), 403);
+        //abort_if($rental->user_id !== Auth::id(), 403);
         return view('customer.payment.show', compact('rental'));
     }
 
