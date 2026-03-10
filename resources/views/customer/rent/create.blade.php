@@ -77,7 +77,12 @@
                     <div class="col-md-6">
                         <div class="input-group-custom">
                             <label><i class="fas fa-calendar-alt"></i> Tanggal Sewa</label>
-                            <input type="date" name="rent_date" required>
+                            <input 
+                                type="date" 
+                                name="rent_date" 
+                                min="{{ date('Y-m-d') }}" 
+                                required
+                            >
                         </div>
                     </div>
                     <div class="col-md-6">
