@@ -6,18 +6,36 @@ use App\Http\Controllers\Controller;
 use App\Models\Rental;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PaymentController extends Controller
 {
-    public function show(Rental $rental)
+    /* ===============================
+       AMBIL RENTAL MILIK USER LOGIN
+    =============================== */
+    private function getRental($id)
     {
-        //abort_if($rental->user_id !== Auth::id(), 403);
+        return Rental::where('id', $id)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
+    }
+
+    /* ===============================
+       HALAMAN PEMBAYARAN
+    =============================== */
+    public function show($id)
+    {
+        $rental = $this->getRental($id);
+
         return view('customer.payment.show', compact('rental'));
     }
 
-    public function process(Request $request, Rental $rental)
+    /* ===============================
+       PILIH METODE PEMBAYARAN
+    =============================== */
+    public function process(Request $request, $id)
     {
-        abort_if($rental->user_id !== Auth::id(), 403);
+        $rental = $this->getRental($id);
 
         $request->validate([
             'payment_method' => 'required|in:transfer,cash',
@@ -36,73 +54,89 @@ class PaymentController extends Controller
             ->with('success', 'Pembayaran cash dipilih. Menunggu konfirmasi admin.');
     }
 
-    public function transfer(Rental $rental)
+    /* ===============================
+       HALAMAN TRANSFER
+    =============================== */
+    public function transfer($id)
     {
-        abort_if($rental->user_id !== Auth::id(), 403);
+        $rental = $this->getRental($id);
+
         return view('customer.payment.transfer', compact('rental'));
     }
 
-    public function uploadProof(Request $request, Rental $rental)
-{
-    abort_if($rental->user_id !== Auth::id(), 403);
+    /* ===============================
+       UPLOAD BUKTI TRANSFER
+    =============================== */
+    public function uploadProof(Request $request, $id)
+    {
+        $rental = $this->getRental($id);
 
-    $request->validate([
-        'payment_proof' => 'required|image|max:2048',
-    ]);
+        $request->validate([
+            'payment_proof' => 'required|image|max:2048',
+        ]);
 
-    // PERBAIKAN: Gunakan store('payment-proofs', 'public') agar tersimpan di storage/app/public/payment-proofs
-    $path = $request->file('payment_proof')->store('payment-proofs', 'public');
+        $path = $request->file('payment_proof')->store('payment-proofs', 'public');
 
-    $rental->update([
-        'payment_proof' => $path, 
-        'status' => 'paid',
-    ]);
+        $rental->update([
+            'payment_proof' => $path,
+            'status' => 'paid',
+        ]);
 
-    return redirect()->route('customer.rentals.show', $rental->id)
-        ->with('success', 'Bukti transfer berhasil dikirim.');
-}
-
-
-  public function cancel(Rental $rental)
-{
-    abort_if($rental->user_id !== Auth::id(), 403);
-
-    // Jangan izinkan batal jika sudah bayar atau berstatus selain waiting_payment
-    if ($rental->status !== 'waiting_payment') {
-        return back()->with('error', 'Pesanan ini tidak dapat dibatalkan.');
+        return redirect()->route('customer.rentals.show', $rental->id)
+            ->with('success', 'Bukti transfer berhasil dikirim.');
     }
 
-    \DB::transaction(function () use ($rental) {
-        // 1. Update status sewa jadi cancelled
-        $rental->update(['status' => 'cancelled']);
+    /* ===============================
+       BATALKAN PESANAN
+    =============================== */
+    public function cancel($id)
+    {
+        $rental = $this->getRental($id);
 
-        // 2. Update status alat jadi available (Tersedia kembali)
-        if ($rental->equipment) {
-            $rental->equipment->update(['status' => 'available']);
+        if ($rental->status !== 'waiting_payment') {
+            return back()->with('error', 'Pesanan ini tidak dapat dibatalkan.');
         }
-    });
 
-    return redirect()->route('customer.rentals')
-        ->with('success', 'Pesanan berhasil dibatalkan dan alat telah tersedia kembali.');
-}
+        DB::transaction(function () use ($rental) {
+
+            $rental->update([
+                'status' => 'cancelled'
+            ]);
+
+            if ($rental->equipment) {
+                $rental->equipment->update([
+                    'status' => 'available'
+                ]);
+            }
+        });
+
+        return redirect()->route('customer.rentals')
+            ->with('success', 'Pesanan berhasil dibatalkan.');
+    }
 
 
-
-
-    // FUNGSI OVERTIME
+    /* ===============================
+       OVERTIME PAYMENT
+    =============================== */
 
     public function showOvertime($id)
     {
         $overtime = \App\Models\Overtime::with('rental.equipment')->findOrFail($id);
-        abort_if($overtime->rental->user_id !== Auth::id(), 403);
-        
+
+        if ($overtime->rental->user_id !== Auth::id()) {
+            abort(404);
+        }
+
         return view('customer.payment.overtime_show', compact('overtime'));
     }
 
     public function processOvertime(Request $request, $id)
     {
         $overtime = \App\Models\Overtime::findOrFail($id);
-        $request->validate(['payment_method' => 'required|in:transfer,cash']);
+
+        $request->validate([
+            'payment_method' => 'required|in:transfer,cash'
+        ]);
 
         $overtime->update([
             'payment_method' => $request->payment_method,
@@ -114,25 +148,29 @@ class PaymentController extends Controller
         }
 
         return redirect()->route('customer.rentals.show', $overtime->rental_id)
-            ->with('success', 'Metode Cash dipilih. Silakan bayar ke petugas di lapangan.');
+            ->with('success', 'Metode Cash dipilih. Silakan bayar ke petugas.');
     }
 
     public function transferOvertime($id)
     {
         $overtime = \App\Models\Overtime::findOrFail($id);
+
         return view('customer.payment.overtime_transfer', compact('overtime'));
     }
 
     public function uploadProofOvertime(Request $request, $id)
     {
         $overtime = \App\Models\Overtime::findOrFail($id);
-        $request->validate(['proof' => 'required|image|max:2048']);
+
+        $request->validate([
+            'proof' => 'required|image|max:2048'
+        ]);
 
         $path = $request->file('proof')->store('overtime-proofs', 'public');
 
         $overtime->update([
             'proof' => $path,
-            'payment_status' => 'paid', // Menunggu verifikasi admin tapi sudah ada bukti
+            'payment_status' => 'paid'
         ]);
 
         return redirect()->route('customer.rentals.show', $overtime->rental_id)
