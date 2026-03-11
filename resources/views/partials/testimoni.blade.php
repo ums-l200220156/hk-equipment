@@ -32,7 +32,7 @@
 
                             {{-- ACTION OWNER --}}
                             @auth
-                                @if(auth()->id() === $testimoni->user_id)
+                                @if(auth()->id() == $testimoni->user_id)
                                     <div class="dropdown position-absolute top-0 end-0 m-2" data-bs-auto-close="outside">
                                         <button type="button"
                                                 class="btn btn-sm btn-light rounded-circle shadow"
