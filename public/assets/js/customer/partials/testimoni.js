@@ -142,22 +142,24 @@ document.addEventListener("DOMContentLoaded", () => {
                 cancelButtonText: "Batal",
                 reverseButtons: true
             }).then(async (r) => {
+
                 if (!r.isConfirmed) return;
 
                 try {
+
                     const res = await fetch(`/testimoni/${id}`, {
-                        method: "POST",
+                        method: "DELETE",
                         headers: {
                             "X-CSRF-TOKEN": csrf,
-                            "Content-Type": "application/json",
-                            "X-Requested-With": "XMLHttpRequest"
-                        },
-                        body: JSON.stringify({ _method: "DELETE" })
+                            "X-Requested-With": "XMLHttpRequest",
+                            "Accept": "application/json"
+                        }
                     });
 
                     const result = await safeJson(res);
 
                     if (res.ok && result.success) {
+
                         Swal.fire({
                             icon: "success",
                             title: "Dihapus",
@@ -165,11 +167,15 @@ document.addEventListener("DOMContentLoaded", () => {
                             timer: 1500,
                             showConfirmButton: false
                         }).then(() => location.reload());
+
                     } else {
+
                         throw new Error(result.message || "Gagal menghapus");
+
                     }
 
                 } catch (error) {
+
                     Swal.fire({
                         icon: "error",
                         title: "Gagal",
@@ -177,7 +183,9 @@ document.addEventListener("DOMContentLoaded", () => {
                         timer: 1500,
                         showConfirmButton: false
                     });
+
                 }
+
             });
         }
     });
@@ -205,6 +213,7 @@ document.addEventListener("DOMContentLoaded", () => {
             data.append("_method", "PUT");
 
             try {
+
                 const res = await fetch(`/testimoni/${id}`, {
                     method: "POST",
                     headers: {
@@ -217,6 +226,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const result = await safeJson(res);
 
                 if (res.ok && result.success) {
+
                     Swal.fire({
                         icon: "success",
                         title: "Berhasil",
@@ -224,11 +234,15 @@ document.addEventListener("DOMContentLoaded", () => {
                         timer: 1500,
                         showConfirmButton: false
                     }).then(() => location.reload());
+
                 } else {
+
                     throw new Error(result.message || "Gagal memperbarui");
+
                 }
 
             } catch (error) {
+
                 Swal.fire({
                     icon: "error",
                     title: "Gagal",
@@ -236,10 +250,14 @@ document.addEventListener("DOMContentLoaded", () => {
                     timer: 1500,
                     showConfirmButton: false
                 });
+
             } finally {
+
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalText;
+
             }
         });
     }
+
 });
