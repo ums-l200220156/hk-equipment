@@ -20,35 +20,43 @@ class ScheduleAdminController extends Controller
     // 📅 EVENT CALENDAR
     public function events(Request $request)
     {
-        $query = Rental::with('equipment','user')
+        $query = Rental::with(['equipment','user'])
             ->whereIn('status', ['pending','approved','on_progress']);
 
         if ($request->equipment_id) {
             $query->where('equipment_id', $request->equipment_id);
         }
 
-        return $query->get()->map(function ($r) {
-            // PERBAIKAN: Kunci zona waktu ke Asia/Jakarta agar jam tidak melompat
+        $events = $query->get()->map(function ($r) {
+
+            // Pastikan durasi selalu integer
+            $duration = (int) ($r->duration_hours ?? 1);
+
+            // Gunakan timezone Jakarta
             $start = Carbon::parse($r->rent_date.' '.$r->start_time, 'Asia/Jakarta');
-            $end   = $start->copy()->addHours($r->duration_hours);
+            $end   = $start->copy()->addHours($duration);
 
             return [
                 'id' => $r->id,
-                'title' => $r->equipment->name,
+                'title' => $r->equipment->name ?? 'Equipment',
                 'start' => $start->toIso8601String(),
                 'end'   => $end->toIso8601String(),
+
                 'backgroundColor' => match($r->status) {
                     'pending'     => '#facc15',
                     'approved'    => '#3b82f6',
                     'on_progress' => '#f97316',
                     default       => '#22c55e'
                 },
+
                 'extendedProps' => [
-                    'customer' => $r->user->name,
+                    'customer' => $r->user->name ?? 'Customer',
                     'status'   => $r->status,
                 ]
             ];
         });
+
+        return response()->json($events);
     }
 
     // 🔄 DRAG & DROP + ⚠️ CEK BENTROK
@@ -56,10 +64,11 @@ class ScheduleAdminController extends Controller
     {
         $rental = Rental::findOrFail($request->id);
 
-        // PERBAIKAN: Gunakan zona waktu yang sama saat update koordinat baru
+        // Gunakan timezone Jakarta
         $start = Carbon::parse($request->start, 'Asia/Jakarta');
         $end   = Carbon::parse($request->end, 'Asia/Jakarta');
-        $hours = max(1, $start->diffInHours($end));
+
+        $hours = max(1, (int) $start->diffInHours($end));
 
         // ⚠️ DETEKSI BENTROK
         $conflict = Rental::where('equipment_id', $rental->equipment_id)
@@ -70,7 +79,8 @@ class ScheduleAdminController extends Controller
                      AND TIMESTAMP(rent_date, start_time) + INTERVAL duration_hours HOUR > ?",
                     [$end, $start]
                 );
-            })->exists();
+            })
+            ->exists();
 
         if ($conflict) {
             return response()->json([
@@ -81,45 +91,59 @@ class ScheduleAdminController extends Controller
         $rental->update([
             'rent_date' => $start->toDateString(),
             'start_time' => $start->format('H:i'),
-            'duration_hours' => $hours
+            'duration_hours' => (int) $hours
         ]);
 
-        return response()->json(['success' => true]);
+        return response()->json([
+            'success' => true
+        ]);
     }
 
     // 📊 HEATMAP PEMAKAIAN 
     public function heatmap(Request $request)
     {
-        $period = $request->query('period', 'all'); // Default: Semua Waktu
+        $period = $request->query('period', 'all');
         $now = now();
 
-        // 1. Definisikan closure untuk filter status & waktu
+        // Filter status + periode
         $queryFilter = function ($query) use ($period, $now) {
+
             $query->whereIn('status', ['on_progress', 'completed']);
 
             if ($period == 'week') {
+
                 $query->whereBetween('rent_date', [
-                    $now->startOfWeek()->toDateString(), 
-                    $now->endOfWeek()->toDateString()
+                    $now->copy()->startOfWeek()->toDateString(),
+                    $now->copy()->endOfWeek()->toDateString()
                 ]);
+
             } elseif ($period == 'month') {
+
                 $query->whereMonth('rent_date', $now->month)
-                    ->whereYear('rent_date', $now->year);
+                      ->whereYear('rent_date', $now->year);
+
             } elseif ($period == 'year') {
+
                 $query->whereYear('rent_date', $now->year);
+
             }
         };
 
-        // 2. Hitung total penyewaan dalam periode tersebut sebagai pembagi (Total All)
+        // Total seluruh rental pada periode
         $totalAllRentals = Rental::where($queryFilter)->count();
 
-        // 3. Ambil data per alat dengan filter yang sama
-        return Equipment::withCount(['rentals' => $queryFilter])->get()->map(function ($e) use ($totalAllRentals) {
-            return [
-                'name' => $e->name,
-                'total' => $e->rentals_count,
-                'total_all' => $totalAllRentals 
-            ];
-        });
+        // Data heatmap per alat
+        $data = Equipment::withCount(['rentals' => $queryFilter])
+            ->get()
+            ->map(function ($e) use ($totalAllRentals) {
+
+                return [
+                    'name' => $e->name,
+                    'total' => $e->rentals_count,
+                    'total_all' => $totalAllRentals
+                ];
+            });
+
+        return response()->json($data);
     }
 }
