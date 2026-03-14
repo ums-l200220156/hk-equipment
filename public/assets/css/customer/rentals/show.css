@@ -1,8 +1,11 @@
 /* ==========================================================================
-   CSS DETAIL PENYEWAAN - MODERN INDUSTRIAL PREMIUM STYLE
-   Didesain untuk tampilan Profesional, Simetris, dan Interaktif.
+   CSS DETAIL PENYEWAAN 
    ========================================================================== 
 */
+
+html, body {
+    overflow-x: hidden;
+}
 
 /* 01. Dasar Layout & Latar Belakang
    Menggunakan radial-gradient untuk memberikan kedalaman visual pada halaman.
@@ -321,9 +324,30 @@
 /* 10. Pengaturan Responsif (Mobile)
    Grid berubah menjadi satu kolom untuk menjaga keterbacaan di layar kecil.
 */
-@media (max-width: 768px) {
-    .specs-grid { grid-template-columns: 1fr; }
-    .unit-image-showcase { height: 200px; }
-    .top-nav-wrapper { flex-direction: column; align-items: flex-start; gap: 15px; }
-    .ot-price-tag-grid { grid-template-columns: 1fr; }
+@media (max-width:768px){
+
+    .premium-glass-card{
+        padding:20px;
+    }
+
+    .top-nav-wrapper{
+        width:100%;
+    }
+
+    .action-top{
+        width:100%;
+    }
+
+    .btn-danger-glass{
+        width:100%;
+    }
+
+}
+
+
+/* FIX SWEETALERT MOBILE */
+.swal2-popup {
+    width: 90% !important;
+    max-width: 420px;
+    font-size: 0.9rem;
 }

@@ -18,6 +18,7 @@ function confirmCancelOt() {
     Swal.fire({
         title: 'Batalkan Lembur?',
         text: "Anda dapat mengajukan kembali nanti.",
+        width: '90%',
         icon: 'question',
         showCancelButton: true,
         confirmButtonColor: '#dc3545',
