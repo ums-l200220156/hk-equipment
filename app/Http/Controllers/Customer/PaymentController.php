@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Rental;
+use App\Models\Overtime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class PaymentController extends Controller
 {
+
     /* ===============================
        AMBIL RENTAL MILIK USER LOGIN
     =============================== */
@@ -20,8 +22,23 @@ class PaymentController extends Controller
             ->firstOrFail();
     }
 
+
     /* ===============================
-       HALAMAN PEMBAYARAN
+       AMBIL OVERTIME MILIK USER LOGIN
+    =============================== */
+    private function getOvertime($id)
+    {
+        return Overtime::where('id', $id)
+            ->whereHas('rental', function ($q) {
+                $q->where('user_id', Auth::id());
+            })
+            ->with('rental.equipment')
+            ->firstOrFail();
+    }
+
+
+    /* ===============================
+       HALAMAN PEMBAYARAN RENTAL
     =============================== */
     public function show($id)
     {
@@ -30,8 +47,9 @@ class PaymentController extends Controller
         return view('customer.payment.show', compact('rental'));
     }
 
+
     /* ===============================
-       PILIH METODE PEMBAYARAN
+       PILIH METODE PEMBAYARAN RENTAL
     =============================== */
     public function process(Request $request, $id)
     {
@@ -54,8 +72,9 @@ class PaymentController extends Controller
             ->with('success', 'Pembayaran cash dipilih. Menunggu konfirmasi admin.');
     }
 
+
     /* ===============================
-       HALAMAN TRANSFER
+       HALAMAN TRANSFER RENTAL
     =============================== */
     public function transfer($id)
     {
@@ -64,8 +83,9 @@ class PaymentController extends Controller
         return view('customer.payment.transfer', compact('rental'));
     }
 
+
     /* ===============================
-       UPLOAD BUKTI TRANSFER
+       UPLOAD BUKTI TRANSFER RENTAL
     =============================== */
     public function uploadProof(Request $request, $id)
     {
@@ -86,8 +106,9 @@ class PaymentController extends Controller
             ->with('success', 'Bukti transfer berhasil dikirim.');
     }
 
+
     /* ===============================
-       BATALKAN PESANAN
+       BATALKAN PESANAN RENTAL
     =============================== */
     public function cancel($id)
     {
@@ -115,24 +136,29 @@ class PaymentController extends Controller
     }
 
 
-    /* ===============================
-       OVERTIME PAYMENT
-    =============================== */
 
+    /* ======================================================
+       ================= OVERTIME PAYMENT ===================
+       ====================================================== */
+
+
+    /* ===============================
+       HALAMAN PEMBAYARAN OVERTIME
+    =============================== */
     public function showOvertime($id)
     {
-        $overtime = \App\Models\Overtime::with('rental.equipment')->findOrFail($id);
-
-        if ($overtime->rental->user_id !== Auth::id()) {
-            abort(404);
-        }
+        $overtime = $this->getOvertime($id);
 
         return view('customer.payment.overtime_show', compact('overtime'));
     }
 
+
+    /* ===============================
+       PILIH METODE PEMBAYARAN OVERTIME
+    =============================== */
     public function processOvertime(Request $request, $id)
     {
-        $overtime = \App\Models\Overtime::findOrFail($id);
+        $overtime = $this->getOvertime($id);
 
         $request->validate([
             'payment_method' => 'required|in:transfer,cash'
@@ -151,16 +177,24 @@ class PaymentController extends Controller
             ->with('success', 'Metode Cash dipilih. Silakan bayar ke petugas.');
     }
 
+
+    /* ===============================
+       HALAMAN TRANSFER OVERTIME
+    =============================== */
     public function transferOvertime($id)
     {
-        $overtime = \App\Models\Overtime::findOrFail($id);
+        $overtime = $this->getOvertime($id);
 
         return view('customer.payment.overtime_transfer', compact('overtime'));
     }
 
+
+    /* ===============================
+       UPLOAD BUKTI BAYAR OVERTIME
+    =============================== */
     public function uploadProofOvertime(Request $request, $id)
     {
-        $overtime = \App\Models\Overtime::findOrFail($id);
+        $overtime = $this->getOvertime($id);
 
         $request->validate([
             'proof' => 'required|image|max:2048'
