@@ -158,7 +158,8 @@
     const STATUS_URL = "{{ route('customer.catalog.status', $equipment->id) }}";
     const CATALOG_URL = "{{ route('customer.catalog') }}";
 </script>
-<script src="{{ asset('assets/js/customer/rent/create.js') }}"></script>
+
+<script src="{{ asset('assets/js/customer/rent/create.js') }}?v={{ time() }}"></script>
 
 </body>
 </html>

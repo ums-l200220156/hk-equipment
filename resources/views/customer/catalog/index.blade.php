@@ -42,30 +42,6 @@
     </div>
 </section>
 
-<div class="container mt-4">
-    @if(session('error'))
-        <div class="alert alert-danger border-0 shadow-sm d-flex align-items-center" role="alert" style="border-radius: 15px; padding: 1rem 1.5rem;">
-            <i class="bi bi-exclamation-triangle-fill fs-4 me-3"></i>
-            <div>
-                <strong class="d-block">Gagal Memesan</strong>
-                <span class="small">{{ session('error') }}</span>
-            </div>
-            <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
-
-    @if(session('success'))
-        <div class="alert alert-success border-0 shadow-sm d-flex align-items-center" role="alert" style="border-radius: 15px; padding: 1rem 1.5rem;">
-            <i class="bi bi-check-circle-fill fs-4 me-3"></i>
-            <div>
-                <strong class="d-block">Berhasil</strong>
-                <span class="small">{{ session('success') }}</span>
-            </div>
-            <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
-</div>
-
 <div class="container catalog-content-wrapper">
     <div class="filter-panel-premium shadow-lg mb-5">
         <div class="row g-3">
@@ -172,5 +148,38 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/js/customer/catalog/index.js') }}"></script>
+    {{-- 1. Library SweetAlert2 --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    {{-- 2. Konfigurasi Variabel Laravel untuk JS --}}
+    <script>
+        const CATALOG_URL = "{{ route('customer.catalog') }}";
+
+        // Notifikasi Error (Gagal Sewa)
+        @if(session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal Memesan',
+                text: "{{ session('error') }}",
+                showCloseButton: true,
+                confirmButtonColor: '#dc3545',
+                confirmButtonText: 'Tutup'
+            });
+        @endif
+
+        // Notifikasi Sukses
+        @if(session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: "{{ session('success') }}",
+                showCloseButton: true,
+                confirmButtonColor: '#198754',
+                confirmButtonText: 'Mantap'
+            });
+        @endif
+    </script>
+
+    {{-- 3. File JS Utama dengan Anti-Cache (?v=...) --}}
+    <script src="{{ asset('assets/js/customer/catalog/index.js') }}?v={{ time() }}"></script>
 @endpush
