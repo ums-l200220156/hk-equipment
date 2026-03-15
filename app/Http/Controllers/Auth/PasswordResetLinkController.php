@@ -52,7 +52,9 @@ class PasswordResetLinkController extends Controller
             'phone.min' => 'Nomor WhatsApp minimal 10 digit',
         ]);
 
-        $user = User::where('phone', $request->phone)->first();
+        $phone = preg_replace('/[^0-9]/', '', $request->phone);
+
+        $user = User::where('phone', $phone)->first();
 
         if (!$user) {
             return back()->withInput()->withErrors(['phone' => 'Nomor WhatsApp tidak terdaftar.']);
@@ -84,10 +86,10 @@ class PasswordResetLinkController extends Controller
         */
 
         // Log kode ke laravel.log agar Cah Bagus bisa testing tanpa API WA
-        \Log::info("OTP WA HK SYSTEM untuk {$request->phone}: {$otpCode}");
+       \Log::info("OTP WA HK SYSTEM untuk {$phone}: {$otpCode}");
 
         // 4. Redirect ke halaman verifikasi OTP
-        return redirect()->route('password.otp.view', ['phone' => $request->phone])
+        return redirect()->route('password.otp.view', ['phone' => $phone])
                         ->with('status', 'Kode OTP telah dikirim ke nomor WhatsApp Anda.');
     }
 
@@ -101,7 +103,9 @@ class PasswordResetLinkController extends Controller
             'otp' => 'required|numeric',
         ]);
 
-        $user = User::where('phone', $request->phone)->first();
+        $phone = preg_replace('/[^0-9]/', '', $request->phone);
+
+        $user = User::where('phone', $phone)->first();
 
         if (!$user) {
             return redirect()->route('password.request')->withErrors(['phone' => 'Terjadi kesalahan sistem.']);

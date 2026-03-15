@@ -57,7 +57,13 @@
                 <label class="hk-label">Nomor WhatsApp</label>
                 <div class="hk-input-group">
                     <i class="bi bi-whatsapp"></i>
-                    <input type="text" name="phone" class="hk-input" placeholder="08xxxxxxxxxx" required>
+                    <input type="text"
+                        name="phone"
+                        class="hk-input"
+                        placeholder="628xxxxxxxxxx"
+                        inputmode="numeric"
+                        pattern="[0-9]*"
+                        required>
                 </div>
                 <p style="color: #94a3b8; font-size: 0.75rem; margin-top: 5px;">Kami akan mengirimkan kode OTP untuk reset password.</p>
             </div>
