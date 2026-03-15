@@ -52,18 +52,20 @@ class PasswordResetLinkController extends Controller
             'phone.min' => 'Nomor WhatsApp minimal 10 digit',
         ]);
 
-        $phone = preg_replace('/[^0-9]/', '', $request->phone);
+        // 1. Normalisasi nomor: hilangkan karakter non-angka
+        $inputPhone = preg_replace('/[^0-9]/', '', $request->phone);
 
-        $user = User::where('phone', $phone)->first();
+        // 2. Cari user. Kita coba cari yang cocok dengan input user
+        $user = User::where('phone', $inputPhone)->first();
 
         if (!$user) {
-            return back()->withInput()->withErrors(['phone' => 'Nomor WhatsApp tidak terdaftar.']);
+            return back()->withInput()->withErrors(['phone' => 'Nomor WhatsApp tidak terdaftar di sistem kami.']);
         }
 
-        // 1. Generate OTP 6 Digit
+        // 3. Generate OTP 6 Digit
         $otpCode = rand(100000, 999999);
 
-        // 2. Simpan/Update OTP ke database (berlaku 5 menit)
+        // 4. Simpan/Update OTP ke database
         DB::table('user_otps')->updateOrInsert(
             ['user_id' => $user->id],
             [
@@ -74,25 +76,35 @@ class PasswordResetLinkController extends Controller
             ]
         );
 
-        // 3. Integrasi WA Gateway (Simulasi atau Real API)
-        // Jika pakai Fonnte, un-comment kode di bawah ini:
-        /*
-        Http::withHeaders([
-            'Authorization' => 'YOUR_FONNTE_TOKEN',
-        ])->post('https://api.fonnte.com/send', [
-            'target' => $request->phone,
-            'message' => "KODE OTP HK SYSTEM: *{$otpCode}*. Rahasiakan kode ini. Berlaku 5 menit.",
-        ]);
-        */
+        // 5. PROSES KIRIM WA REAL (FONNTE)
+        try {
+            // Pastikan format nomor diawali 62 untuk Fonnte
+            $targetPhone = $inputPhone;
+            if (str_starts_with($targetPhone, '0')) {
+                $targetPhone = '62' . substr($targetPhone, 1);
+            }
 
-        // Log kode ke laravel.log agar Cah Bagus bisa testing tanpa API WA
-       \Log::info("OTP WA HK SYSTEM untuk {$phone}: {$otpCode}");
+            $response = Http::withHeaders([
+                'Authorization' => env('FONNTE_TOKEN'), // Mengambil token dari .env
+            ])->post('https://api.fonnte.com/send', [
+                'target' => $targetPhone,
+                'message' => "KODE OTP HK EQUIPMENT: *{$otpCode}*.\n\nRahasiakan kode ini. Berlaku 5 menit.",
+            ]);
 
-        // 4. Redirect ke halaman verifikasi OTP
-        return redirect()->route('password.otp.view', ['phone' => $phone])
-                        ->with('status', 'Kode OTP telah dikirim ke nomor WhatsApp Anda.');
+            // Log untuk debug jika gagal di server Fonnte
+            if ($response->failed()) {
+                \Log::error("Fonnte Error: " . $response->body());
+            }
+
+        } catch (\Exception $e) {
+            \Log::error("WA Gateway Error: " . $e->getMessage());
+        }
+
+        // 6. Redirect ke halaman verifikasi OTP
+        return redirect()->route('password.otp.view', ['phone' => $inputPhone])
+                         ->with('status', 'Kode OTP telah dikirim ke nomor WhatsApp Anda.');
     }
-
+    
     /**
      * Verify the OTP provided by the user.
      */
