@@ -46,20 +46,24 @@ class PasswordResetLinkController extends Controller
         'phone' => ['required', 'string', 'min:10'],
     ]);
 
-    // 1. Bersihkan input dari karakter aneh
+    // 1. Bersihkan input dari karakter non-angka (spasi, strip, plus)
     $input = preg_replace('/[^0-9]/', '', $request->phone);
 
-    // 2. Buat dua versi nomor untuk pengecekan di Database
-    $phoneWith0 = $input;
-    $phoneWith62 = $input;
-
-    if (str_starts_with($input, '0')) {
-        $phoneWith62 = '62' . substr($input, 1);
-    } elseif (str_starts_with($input, '62')) {
+    // 2. Normalisasi input agar kita punya dua versi (versi 08 dan versi 62)
+    // Ini gunanya supaya kalau di DB isinya 08 tapi user ngetik 62, tetep ketemu.
+    if (str_starts_with($input, '62')) {
+        $phoneWith62 = $input;
         $phoneWith0 = '0' . substr($input, 2);
+    } elseif (str_starts_with($input, '0')) {
+        $phoneWith0 = $input;
+        $phoneWith62 = '62' . substr($input, 1);
+    } else {
+        // Jika user ngetik 89... (langsung angka 8)
+        $phoneWith0 = '0' . $input;
+        $phoneWith62 = '62' . $input;
     }
 
-    // 3. Cari user (Cek versi 08 atau 62 di database)
+    // 3. Cari user di database (Cek kedua versi tersebut)
     $user = User::where('phone', $phoneWith0)
                 ->orWhere('phone', $phoneWith62)
                 ->first();
@@ -68,7 +72,7 @@ class PasswordResetLinkController extends Controller
         return back()->withInput()->withErrors(['phone' => 'Nomor WhatsApp tidak terdaftar.']);
     }
 
-    // 4. Generate & Simpan OTP
+    // 4. Generate & Simpan OTP ke DB
     $otpCode = rand(100000, 999999);
     DB::table('user_otps')->updateOrInsert(
         ['user_id' => $user->id],
@@ -79,22 +83,16 @@ class PasswordResetLinkController extends Controller
         ]
     );
 
-    // 5. KIRIM KE FONNTE (Wajib format 62)
-    $targetFonnte = (str_starts_with($user->phone, '0')) 
-                    ? '62' . substr($user->phone, 1) 
-                    : $user->phone;
-
+    // 5. KIRIM KE FONNTE (Fonnte WAJIB 62 agar tidak "Invalid Target")
     $response = Http::withHeaders([
         'Authorization' => env('FONNTE_TOKEN'),
     ])->post('https://api.fonnte.com/send', [
-        'target' => $targetFonnte,
+        'target' => $phoneWith62, // Apapun inputnya, kita kirim ke Fonnte versi 62
         'message' => "KODE OTP HK EQUIPMENT: *{$otpCode}*.\n\nRahasiakan kode ini. Berlaku 5 menit.",
+        'countryCode' => '62',
     ]);
 
-    // Cek respon Fonnte di Log jika masih tidak masuk
-    \Log::info("Respon Fonnte: " . $response->body());
-
-    return redirect()->route('password.otp.view', ['phone' => $user->phone])
+    return redirect()->route('password.otp.view', ['phone' => $input])
                      ->with('status', 'Kode OTP telah dikirim ke WhatsApp Anda.');
 }
     /**
