@@ -70,6 +70,13 @@
                 <p>Silakan isi detail durasi dan lokasi proyek Anda.</p>
             </div>
 
+            @if(session('error'))
+                <div class="alert alert-warning border-0 shadow-sm mb-4 d-flex align-items-center" style="border-radius: 10px;">
+                    <i class="bi bi-exclamation-circle-fill me-2"></i>
+                    <span class="small">{{ session('error') }}</span>
+                </div>
+            @endif
+
             <form method="POST" action="{{ route('rent.store', $equipment->id) }}" class="styled-form">
                 @csrf
 
@@ -137,7 +144,7 @@
                         ></textarea>
                     </div>
 
-                <button type="submit" class="btn-main-submit">
+                <button type="submit" id="submitBtn" class="btn-main-submit">
                     <span>Proses Penyewaan</span>
                     <i class="fas fa-chevron-right"></i>
                 </button>
@@ -148,6 +155,8 @@
 
 <script>
     const PRICE_PER_HOUR = {{ $equipment->price_per_hour }};
+    const STATUS_URL = "{{ route('customer.catalog.status', $equipment->id) }}";
+    const CATALOG_URL = "{{ route('customer.catalog') }}";
 </script>
 <script src="{{ asset('assets/js/customer/rent/create.js') }}"></script>
 

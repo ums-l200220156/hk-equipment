@@ -42,6 +42,30 @@
     </div>
 </section>
 
+<div class="container mt-4">
+    @if(session('error'))
+        <div class="alert alert-danger border-0 shadow-sm d-flex align-items-center" role="alert" style="border-radius: 15px; padding: 1rem 1.5rem;">
+            <i class="bi bi-exclamation-triangle-fill fs-4 me-3"></i>
+            <div>
+                <strong class="d-block">Gagal Memesan</strong>
+                <span class="small">{{ session('error') }}</span>
+            </div>
+            <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    @if(session('success'))
+        <div class="alert alert-success border-0 shadow-sm d-flex align-items-center" role="alert" style="border-radius: 15px; padding: 1rem 1.5rem;">
+            <i class="bi bi-check-circle-fill fs-4 me-3"></i>
+            <div>
+                <strong class="d-block">Berhasil</strong>
+                <span class="small">{{ session('success') }}</span>
+            </div>
+            <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+</div>
+
 <div class="container catalog-content-wrapper">
     <div class="filter-panel-premium shadow-lg mb-5">
         <div class="row g-3">
