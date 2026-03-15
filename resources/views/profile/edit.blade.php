@@ -83,7 +83,7 @@
                                         <label>Nomor WhatsApp</label>
                                         <div class="input-wrapper">
                                             <i class="bi bi-whatsapp"></i>
-                                            <input type="text" name="phone" value="{{ old('phone', $user->phone) }}" placeholder="0812xxx">
+                                            <input type="text" name="phone" value="{{ old('phone', $user->phone) }}" placeholder="62812xxx">
                                         </div>
                                     </div>
                                 </div>

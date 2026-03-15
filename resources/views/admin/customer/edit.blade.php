@@ -61,7 +61,7 @@
                             <div class="hk-input-group">
                                 <i class="bi bi-telephone-outbound hk-icon"></i>
                                 <input type="text" name="phone" class="hk-input @error('phone') is-invalid @enderror" 
-                                    value="{{ old('phone', $customer->phone) }}" placeholder="0812XXXXXX" required>
+                                    value="{{ old('phone', $customer->phone) }}" placeholder="62812XXXXXX" required>
                             </div>
                         </div>
                     </div>

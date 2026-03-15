@@ -40,61 +40,70 @@ class PasswordResetLinkController extends Controller
                         ->withErrors(['email' => __($status)]);
     }
 
+    /**
+     * Handle an incoming password reset link request (WHATSAPP).
+     */
     public function storeWA(Request $request): RedirectResponse
-{
-    $request->validate([
-        'phone' => ['required', 'string', 'min:10'],
-    ]);
+    {
+        $request->validate([
+            'phone' => ['required', 'string', 'min:10'],
+        ]);
 
-    // 1. Bersihkan input dari karakter non-angka (spasi, strip, plus)
-    $input = preg_replace('/[^0-9]/', '', $request->phone);
+        // 1. Bersihkan input dari karakter non-angka
+        $input = preg_replace('/[^0-9]/', '', $request->phone);
 
-    // 2. Normalisasi input agar kita punya dua versi (versi 08 dan versi 62)
-    // Ini gunanya supaya kalau di DB isinya 08 tapi user ngetik 62, tetep ketemu.
-    if (str_starts_with($input, '62')) {
-        $phoneWith62 = $input;
-        $phoneWith0 = '0' . substr($input, 2);
-    } elseif (str_starts_with($input, '0')) {
+        // 2. Normalisasi input untuk pencarian Database (08 vs 62)
         $phoneWith0 = $input;
-        $phoneWith62 = '62' . substr($input, 1);
-    } else {
-        // Jika user ngetik 89... (langsung angka 8)
-        $phoneWith0 = '0' . $input;
-        $phoneWith62 = '62' . $input;
+        $phoneWith62 = $input;
+
+        if (str_starts_with($input, '62')) {
+            $phoneWith0 = '0' . substr($input, 2);
+        } elseif (str_starts_with($input, '0')) {
+            $phoneWith62 = '62' . substr($input, 1);
+        } else {
+            $phoneWith0 = '0' . $input;
+            $phoneWith62 = '62' . $input;
+        }
+
+        // 3. Cari user di database menggunakan kedua versi nomor
+        $user = User::where('phone', $phoneWith0)
+                    ->orWhere('phone', $phoneWith62)
+                    ->first();
+
+        if (!$user) {
+            return back()->withInput()->withErrors(['phone' => 'Nomor WhatsApp tidak terdaftar.']);
+        }
+
+        // 4. Generate & Simpan OTP ke DB (Berlaku 5 menit)
+        $otpCode = rand(100000, 999999);
+        DB::table('user_otps')->updateOrInsert(
+            ['user_id' => $user->id],
+            [
+                'otp' => $otpCode,
+                'expire_at' => now()->addMinutes(5),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        );
+
+        // 5. KIRIM KE FONNTE (Wajib 62 agar tidak Invalid Target)
+        try {
+            Http::withHeaders([
+                'Authorization' => env('FONNTE_TOKEN'),
+            ])->post('https://api.fonnte.com/send', [
+                'target' => $phoneWith62,
+                'message' => "KODE OTP HK EQUIPMENT: *{$otpCode}*.\n\nRahasiakan kode ini. Berlaku 5 menit.\n(Ref: ".time().")",
+                'countryCode' => '62',
+            ]);
+        } catch (\Exception $e) {
+            \Log::error("Fonnte Error: " . $e->getMessage());
+        }
+
+        // 6. Redirect ke halaman verifikasi OTP dengan membawa input asli user
+        return redirect()->route('password.otp.view', ['phone' => $request->phone])
+                         ->with('status', 'Kode OTP telah dikirim ke WhatsApp Anda.');
     }
 
-    // 3. Cari user di database (Cek kedua versi tersebut)
-    $user = User::where('phone', $phoneWith0)
-                ->orWhere('phone', $phoneWith62)
-                ->first();
-
-    if (!$user) {
-        return back()->withInput()->withErrors(['phone' => 'Nomor WhatsApp tidak terdaftar.']);
-    }
-
-    // 4. Generate & Simpan OTP ke DB
-    $otpCode = rand(100000, 999999);
-    DB::table('user_otps')->updateOrInsert(
-        ['user_id' => $user->id],
-        [
-            'otp' => $otpCode,
-            'expire_at' => now()->addMinutes(5),
-            'updated_at' => now(),
-        ]
-    );
-
-    // 5. KIRIM KE FONNTE (Fonnte WAJIB 62 agar tidak "Invalid Target")
-    $response = Http::withHeaders([
-        'Authorization' => env('FONNTE_TOKEN'),
-    ])->post('https://api.fonnte.com/send', [
-        'target' => $phoneWith62, // Apapun inputnya, kita kirim ke Fonnte versi 62
-        'message' => "KODE OTP HK EQUIPMENT: *{$otpCode}*.\n\nRahasiakan kode ini. Berlaku 5 menit.",
-        'countryCode' => '62',
-    ]);
-
-    return redirect()->route('password.otp.view', ['phone' => $input])
-                     ->with('status', 'Kode OTP telah dikirim ke WhatsApp Anda.');
-}
     /**
      * Verify the OTP provided by the user.
      */
@@ -105,15 +114,33 @@ class PasswordResetLinkController extends Controller
             'otp' => 'required|numeric',
         ]);
 
-        $phone = preg_replace('/[^0-9]/', '', $request->phone);
+        // 1. Bersihkan input nomor
+        $input = preg_replace('/[^0-9]/', '', $request->phone);
 
-        $user = User::where('phone', $phone)->first();
+        // 2. Normalisasi pencarian (sama seperti storeWA agar sinkron)
+        $phoneWith0 = $input;
+        $phoneWith62 = $input;
 
-        if (!$user) {
-            return redirect()->route('password.request')->withErrors(['phone' => 'Terjadi kesalahan sistem.']);
+        if (str_starts_with($input, '62')) {
+            $phoneWith0 = '0' . substr($input, 2);
+        } elseif (str_starts_with($input, '0')) {
+            $phoneWith62 = '62' . substr($input, 1);
+        } else {
+            $phoneWith0 = '0' . $input;
+            $phoneWith62 = '62' . $input;
         }
 
-        // Cek kode OTP di database
+        // 3. Cari user di database
+        $user = User::where('phone', $phoneWith0)
+                    ->orWhere('phone', $phoneWith62)
+                    ->first();
+
+        if (!$user) {
+            return redirect()->route('password.request')
+                             ->withErrors(['phone' => 'Sesi berakhir atau user tidak ditemukan.']);
+        }
+
+        // 4. Cek kode OTP di database (pastikan belum expire)
         $otpData = DB::table('user_otps')
                     ->where('user_id', $user->id)
                     ->where('otp', $request->otp)
@@ -124,12 +151,13 @@ class PasswordResetLinkController extends Controller
             return back()->withErrors(['otp' => 'Kode OTP salah atau sudah kadaluwarsa.']);
         }
 
-        // Jika benar, hapus OTP agar tidak bisa dipakai lagi
+        // 5. Jika benar, hapus OTP agar tidak bisa dipakai lagi
         DB::table('user_otps')->where('user_id', $user->id)->delete();
 
-        // Redirect ke halaman ganti password baru dengan membawa token/phone
-        // Kita gunakan email sebagai identifier standar Laravel
-        return redirect()->route('password.reset', ['token' => 'wa-verification-success', 'email' => $user->email])
-                        ->with('status', 'Verifikasi berhasil. Silakan atur password baru Anda.');
+        // 6. Redirect ke halaman ganti password standar Laravel
+        return redirect()->route('password.reset', [
+            'token' => 'wa-verification-success', 
+            'email' => $user->email
+        ])->with('status', 'Verifikasi berhasil. Silakan atur password baru Anda.');
     }
 }

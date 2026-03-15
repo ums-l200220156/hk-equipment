@@ -73,7 +73,7 @@
                             <div class="hk-input-group">
                                 <i class="bi bi-whatsapp hk-icon"></i>
                                 <input type="text" name="phone" class="hk-input" 
-                                    value="{{ old('phone') }}" placeholder="0812XXXXXX">
+                                    value="{{ old('phone') }}" placeholder="62812XXXXXX">
                             </div>
                         </div>
                     </div>

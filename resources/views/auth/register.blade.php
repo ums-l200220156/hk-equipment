@@ -114,7 +114,7 @@
                                         <label class="hk-label">Nomor Telepon / WhatsApp</label>
                                         <div class="hk-input-group">
                                             <i class="bi bi-whatsapp"></i>
-                                            <input type="text" name="phone" class="hk-input" value="{{ old('phone') }}" placeholder="0812XXXX" required>
+                                            <input type="text" name="phone" class="hk-input" value="{{ old('phone') }}" placeholder="62812XXXX" required>
                                         </div>
                                     </div>
 
