@@ -40,71 +40,63 @@ class PasswordResetLinkController extends Controller
                         ->withErrors(['email' => __($status)]);
     }
 
-    /**
-     * Handle an incoming password reset link request (WHATSAPP).
-     */
     public function storeWA(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'phone' => ['required', 'string', 'min:10'],
-        ], [
-            'phone.required' => 'Nomor WhatsApp wajib diisi',
-            'phone.min' => 'Nomor WhatsApp minimal 10 digit',
-        ]);
+{
+    $request->validate([
+        'phone' => ['required', 'string', 'min:10'],
+    ]);
 
-        // 1. Normalisasi nomor: hilangkan karakter non-angka
-        $inputPhone = preg_replace('/[^0-9]/', '', $request->phone);
+    // 1. Bersihkan input dari karakter aneh
+    $input = preg_replace('/[^0-9]/', '', $request->phone);
 
-        // 2. Cari user. Kita coba cari yang cocok dengan input user
-        $user = User::where('phone', $inputPhone)->first();
+    // 2. Buat dua versi nomor untuk pengecekan di Database
+    $phoneWith0 = $input;
+    $phoneWith62 = $input;
 
-        if (!$user) {
-            return back()->withInput()->withErrors(['phone' => 'Nomor WhatsApp tidak terdaftar di sistem kami.']);
-        }
-
-        // 3. Generate OTP 6 Digit
-        $otpCode = rand(100000, 999999);
-
-        // 4. Simpan/Update OTP ke database
-        DB::table('user_otps')->updateOrInsert(
-            ['user_id' => $user->id],
-            [
-                'otp' => $otpCode,
-                'expire_at' => now()->addMinutes(5),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]
-        );
-
-        // 5. PROSES KIRIM WA REAL (FONNTE)
-        try {
-            // Pastikan format nomor diawali 62 untuk Fonnte
-            $targetPhone = $inputPhone;
-            if (str_starts_with($targetPhone, '0')) {
-                $targetPhone = '62' . substr($targetPhone, 1);
-            }
-
-            $response = Http::withHeaders([
-                'Authorization' => env('FONNTE_TOKEN'), // Mengambil token dari .env
-            ])->post('https://api.fonnte.com/send', [
-                'target' => $targetPhone,
-                'message' => "KODE OTP HK EQUIPMENT: *{$otpCode}*.\n\nRahasiakan kode ini. Berlaku 5 menit.",
-            ]);
-
-            // Log untuk debug jika gagal di server Fonnte
-            if ($response->failed()) {
-                \Log::error("Fonnte Error: " . $response->body());
-            }
-
-        } catch (\Exception $e) {
-            \Log::error("WA Gateway Error: " . $e->getMessage());
-        }
-
-        // 6. Redirect ke halaman verifikasi OTP
-        return redirect()->route('password.otp.view', ['phone' => $inputPhone])
-                         ->with('status', 'Kode OTP telah dikirim ke nomor WhatsApp Anda.');
+    if (str_starts_with($input, '0')) {
+        $phoneWith62 = '62' . substr($input, 1);
+    } elseif (str_starts_with($input, '62')) {
+        $phoneWith0 = '0' . substr($input, 2);
     }
-    
+
+    // 3. Cari user (Cek versi 08 atau 62 di database)
+    $user = User::where('phone', $phoneWith0)
+                ->orWhere('phone', $phoneWith62)
+                ->first();
+
+    if (!$user) {
+        return back()->withInput()->withErrors(['phone' => 'Nomor WhatsApp tidak terdaftar.']);
+    }
+
+    // 4. Generate & Simpan OTP
+    $otpCode = rand(100000, 999999);
+    DB::table('user_otps')->updateOrInsert(
+        ['user_id' => $user->id],
+        [
+            'otp' => $otpCode,
+            'expire_at' => now()->addMinutes(5),
+            'updated_at' => now(),
+        ]
+    );
+
+    // 5. KIRIM KE FONNTE (Wajib format 62)
+    $targetFonnte = (str_starts_with($user->phone, '0')) 
+                    ? '62' . substr($user->phone, 1) 
+                    : $user->phone;
+
+    $response = Http::withHeaders([
+        'Authorization' => env('FONNTE_TOKEN'),
+    ])->post('https://api.fonnte.com/send', [
+        'target' => $targetFonnte,
+        'message' => "KODE OTP HK EQUIPMENT: *{$otpCode}*.\n\nRahasiakan kode ini. Berlaku 5 menit.",
+    ]);
+
+    // Cek respon Fonnte di Log jika masih tidak masuk
+    \Log::info("Respon Fonnte: " . $response->body());
+
+    return redirect()->route('password.otp.view', ['phone' => $user->phone])
+                     ->with('status', 'Kode OTP telah dikirim ke WhatsApp Anda.');
+}
     /**
      * Verify the OTP provided by the user.
      */
