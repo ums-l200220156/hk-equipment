@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\ScheduleAdminController;
 use App\Http\Controllers\Admin\OvertimeAdminController;
 use App\Http\Controllers\Admin\TestimoniAdminController;
 use App\Http\Controllers\Admin\FinanceAdminController;
+use App\Http\Controllers\Admin\AdminProfileController;
 
 
 
@@ -141,6 +142,13 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 });
 
 
+
+
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    // Route Edit Profil Admin
+    Route::get('/profile', [AdminProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [AdminProfileController::class, 'update'])->name('profile.update');
+});
 
 
 

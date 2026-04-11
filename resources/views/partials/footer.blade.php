@@ -1,4 +1,18 @@
 <footer class="main-footer">
+    @php
+        // Mengambil data user dengan role admin untuk mendapatkan nomor HP dinamis
+        $admin = \App\Models\User::where('role', 'admin')->first();
+        $adminPhone = $admin ? $admin->phone : '081230054652'; // Nomor default jika data di database kosong
+        
+        // Membersihkan karakter selain angka (menghapus spasi, strip, dll) untuk link wa.me
+        $cleanPhone = preg_replace('/[^0-9]/', '', $adminPhone);
+        
+        // Memastikan format link WA diawali dengan 62 (jika admin input mulai dari 0)
+        if (str_starts_with($cleanPhone, '0')) {
+            $cleanPhone = '62' . substr($cleanPhone, 1);
+        }
+    @endphp
+
     <div class="container">
         <div class="row g-4 text-center text-lg-start"> {{-- Center di mobile, Start di desktop --}}
             
@@ -32,7 +46,8 @@
                 <ul class="footer-links">
                     <li><a href="{{ route('customer.home') }}#proses">Sewa Unit</a></li>
                     <li><a href="{{ route('customer.home') }}#alat">Perawatan</a></li>
-                    <li><a href="https://wa.me/6281230054652111" target="_blank" rel="noopener noreferrer">Konsultasi</a></li>
+                    {{-- Link Konsultasi Dinamis --}}
+                    <li><a href="https://wa.me/{{ $cleanPhone }}" target="_blank" rel="noopener noreferrer">Konsultasi</a></li>
                 </ul>
             </div>
 
@@ -41,8 +56,9 @@
                 <h6 class="footer-title">Hubungi Kami</h6>
                 <div class="footer-contact-card">
                     <p class="small mb-2 text-white-50">Layanan Pelanggan 24/7:</p>
-                    <a href="https://wa.me/6281230054652111" class="text-danger fw-bold fs-5 text-decoration-none d-block">
-                        <i class="bi bi-whatsapp me-2"></i> 081230054652111111
+                    {{-- Link dan Tampilan Nomor HP Dinamis --}}
+                    <a href="https://wa.me/{{ $cleanPhone }}" class="text-danger fw-bold fs-5 text-decoration-none d-block" target="_blank">
+                        <i class="bi bi-whatsapp me-2"></i> {{ $adminPhone }}
                     </a>
                 </div>
             </div>

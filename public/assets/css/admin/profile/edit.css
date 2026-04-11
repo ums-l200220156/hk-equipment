@@ -1,0 +1,109 @@
+/* Container Utama */
+.profile-edit-container {
+    background: #15151b;
+    min-height: 100vh;
+    padding: 3rem 0;
+}
+
+/* Kartu Glassmorphism */
+.glass-edit-card {
+    background: #1e1e26;
+    border-radius: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    overflow: hidden;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+}
+
+.edit-header {
+    background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+    padding: 40px 50px;
+}
+
+.btn-back {
+    color: white;
+    font-size: 1.5rem;
+    transition: 0.3s;
+}
+
+.btn-back:hover { 
+    transform: translateX(-5px); 
+    opacity: 0.8; 
+}
+
+/* Input Styling */
+.section-divider {
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+}
+
+.input-group-modern label {
+    display: block; 
+    color: #888; 
+    font-size: 0.75rem;
+    font-weight: 700; 
+    text-transform: uppercase;
+    letter-spacing: 1.5px; 
+    margin-bottom: 10px;
+}
+
+.input-wrapper {
+    position: relative; 
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 18px; 
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: 0.3s;
+}
+
+.input-wrapper i:not(.password-toggle) {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #ff416c;
+}
+
+/* Icon Mata Styling */
+.password-toggle {
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #888;
+    z-index: 10;
+}
+
+.password-toggle:hover { color: #ff416c; }
+
+.input-wrapper input {
+    width: 100%; 
+    background: transparent; 
+    border: none;
+    padding: 14px 50px 14px 50px; 
+    color: white; 
+    outline: none;
+}
+
+.input-wrapper:focus-within {
+    border-color: #ff416c; 
+    box-shadow: 0 0 20px rgba(255, 65, 108, 0.2);
+}
+
+/* Tombol Simpan */
+.btn-save-modern {
+    background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%); 
+    border: none; 
+    padding: 14px 40px; 
+    border-radius: 50px;
+    font-weight: 800; 
+    color: white;
+    transition: 0.3s;
+}
+
+.btn-save-modern:hover {
+    transform: translateY(-3px); 
+    box-shadow: 0 15px 30px rgba(255, 65, 108, 0.4);
+}
+
+.error-msg { color: #ff4b2b; font-size: 0.75rem; margin-top: 5px; }

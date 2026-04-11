@@ -45,7 +45,13 @@
             <i class="bi bi-wallet2"></i> <span class="link-text">Keuangan (Kas)</span>
         </a>
 
+       
+
         <div class="nav-label">AKUN</div>
+        <a class="nav-link {{ Request::is('admin/profile*') ? 'active' : '' }}" href="{{ route('admin.profile.edit') }}">
+        <i class="bi bi-person-circle"></i> <span class="link-text">Edit Profil</span>
+        </a>
+
         <form method="POST" action="{{ route('logout') }}" id="logout-form">
             @csrf
             <button type="button" onclick="confirmLogout()" class="nav-link btn-logout-custom">

@@ -10,14 +10,14 @@ use Carbon\Carbon;
 
 class ScheduleAdminController extends Controller
 {
-    // 🧠 HALAMAN UTAMA
+    //  HALAMAN UTAMA
     public function index()
     {
         $equipment = Equipment::orderBy('name')->get();
         return view('admin.schedule.index', compact('equipment'));
     }
 
-    // 📅 EVENT CALENDAR
+    //  EVENT CALENDAR
     public function events(Request $request)
     {
         $query = Rental::with(['equipment','user'])
@@ -59,7 +59,7 @@ class ScheduleAdminController extends Controller
         return response()->json($events);
     }
 
-    // 🔄 DRAG & DROP + ⚠️ CEK BENTROK
+    //  DRAG & DROP + ⚠️ CEK BENTROK
     public function update(Request $request)
     {
         $rental = Rental::findOrFail($request->id);
@@ -99,7 +99,7 @@ class ScheduleAdminController extends Controller
         ]);
     }
 
-    // 📊 HEATMAP PEMAKAIAN 
+    //  HEATMAP PEMAKAIAN 
     public function heatmap(Request $request)
     {
         $period = $request->query('period', 'all');

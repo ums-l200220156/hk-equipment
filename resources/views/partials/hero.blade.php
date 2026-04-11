@@ -1,24 +1,34 @@
 @php
-$slides = [
-    [
-        'img' => asset('uploads/slide/slider1.jpg'),
-        'badge' => 'SEWA UNIT TANPA OPERATOR',
-        'title' => 'Alat Berat Siap Pakai, Kendali di Tangan Anda',
-        'subtitle' => 'Unit prima, langsung kerja di proyek Anda. Tanpa ribet, tanpa ketergantungan operator.'
-    ],
-    [
-        'img' => asset('uploads/slide/slider2.jpg'),
-        'badge' => 'EFISIEN & TERPERCAYA',
-        'title' => 'Performa Tinggi dengan Biaya Lebih Terkontrol',
-        'subtitle' => 'Maintenance rutin memastikan alat selalu siap. Anda fokus target, kami siapkan unit terbaik.'
-    ],
-    [
-        'img' => asset('uploads/slide/slider3.jpg'),
-        'badge' => 'PROSES CEPAT & MUDAH',
-        'title' => 'Sewa Alat Berat Tanpa Ribet',
-        'subtitle' => 'Booking cepat, transparan, dan siap kirim ke lokasi proyek Anda kapan saja.'
-    ],
-];
+    // Ambil data admin secara dinamis
+    $admin = \App\Models\User::where('role', 'admin')->first();
+    $adminPhone = $admin ? $admin->phone : '081230054652';
+    
+    // Bersihkan nomor untuk link WA
+    $cleanPhone = preg_replace('/[^0-9]/', '', $adminPhone);
+    if (str_starts_with($cleanPhone, '0')) {
+        $cleanPhone = '62' . substr($cleanPhone, 1);
+    }
+
+    $slides = [
+        [
+            'img' => asset('uploads/slide/slider1.jpg'),
+            'badge' => 'SEWA UNIT TANPA OPERATOR',
+            'title' => 'Alat Berat Siap Pakai, Kendali di Tangan Anda',
+            'subtitle' => 'Unit prima, langsung kerja di proyek Anda. Tanpa ribet, tanpa ketergantungan operator.'
+        ],
+        [
+            'img' => asset('uploads/slide/slider2.jpg'),
+            'badge' => 'EFISIEN & TERPERCAYA',
+            'title' => 'Performa Tinggi dengan Biaya Lebih Terkontrol',
+            'subtitle' => 'Maintenance rutin memastikan alat selalu siap. Anda fokus target, kami siapkan unit terbaik.'
+        ],
+        [
+            'img' => asset('uploads/slide/slider3.jpg'),
+            'badge' => 'PROSES CEPAT & MUDAH',
+            'title' => 'Sewa Alat Berat Tanpa Ribet',
+            'subtitle' => 'Booking cepat, transparan, dan siap kirim ke lokasi proyek Anda kapan saja.'
+        ],
+    ];
 @endphp
 
 <section id="home">
@@ -42,7 +52,8 @@ $slides = [
                         <p class="hero-subtitle">{{ $slide['subtitle'] }}</p>
                         <div class="hero-cta">
                             <a href="#alat" class="btn btn-danger btn-lg shadow">Pilih Armada</a>
-                            <a href="https://wa.me/6281230054652111" target="_blank" class="btn btn-outline-light btn-lg ms-2">Konsultasi Unit</a>
+                            {{-- Link WA Dinamis di sini --}}
+                            <a href="https://wa.me/{{ $cleanPhone }}" target="_blank" class="btn btn-outline-light btn-lg ms-2">Konsultasi Unit</a>
                         </div>
                     </div>
                 </div>
